@@ -1,0 +1,17 @@
+.header {
+  height: 8vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+
+  color: $white;
+
+  background-color: $gray;
+}
+
+.header__logo {
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+}

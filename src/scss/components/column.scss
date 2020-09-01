@@ -1,0 +1,14 @@
+.column {
+  width: 33.333%;
+}
+
+.column:nth-child(2) {
+  border: 1px solid $teal;
+}
+
+.column__title {
+  font-size: 28px;
+  color: $white;
+  text-transform: uppercase;
+  text-align: center;
+}
