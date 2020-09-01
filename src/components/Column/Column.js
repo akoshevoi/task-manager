@@ -1,21 +1,26 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import AddTaskButton from '../AddTaskButton/AddTaskButton';
-import CardName from '../CardName/CardName';
 import {generate} from 'shortid';
+import {addingTask} from '../../redux/actions/actions';
+import AddTaskForm from '../AddTaskForm/AddTaskForm';
+import CardName from '../CardName/CardName';
 
-const Column = ({name}) => {
+const Column = ({statusTask}) => {
   const tasks = useSelector(state => state.tasks);
-  console.log(tasks);
+
   return (
     <div className='column'>
-      <h3 className='column__title'>{name}</h3>
-      <AddTaskButton name={name}/>
+      <h3 className='column__title'>{statusTask}</h3>
+      <AddTaskForm 
+        action={addingTask} 
+        statusTask={statusTask} 
+        //payload={{name: 'task1', status: 'to do'}}
+      />
       {tasks && tasks.map(task => {
-        let uid = generate();
+        let uid = generate();      
         return (
-          task.status === name
-          ? <CardName key={uid} task={task} name={name}/>
+          task.status === statusTask
+          ? <CardName key={uid} task={task} statusTask={statusTask} id={task.name}/>
           : null
         )
       })}

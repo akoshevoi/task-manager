@@ -9,22 +9,23 @@ export const tasks = (state = [], action) => {
       ];
     case CHANGE_STATUS_TASK: 
       const currentTasksArray = [...state];
-      const index = currentTasksArray.findIndex(task => task.name === action.task.name);
+      const index = currentTasksArray.findIndex(task => {
+        return task.name === action.task.name
+      });
       currentTasksArray[index].status = action.status;
       return currentTasksArray;
     case ADD_SUB_TASK:
       const initialTasksArray = [...state];
-      const idx = initialTasksArray.findIndex(task => task.name === action.task.name);
+      const idx = initialTasksArray.findIndex(task => {
+        console.log(task);
+        console.log(action);
+        return task.name === action.task.name
+      });
+
       const findTask = initialTasksArray[idx];
       const initialSubTasks = findTask.subTasks;
-      /*
-      findTask.subTasks = initialSubTasks
-      ? [...initialSubTasks, action.subTask]
-      : [action.subTask];
-      */
       findTask.subTasks = [...initialSubTasks, action.subTask]
       return [...initialTasksArray];
-
     default: 
       return state;
   }

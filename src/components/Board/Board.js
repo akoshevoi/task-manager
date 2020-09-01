@@ -1,6 +1,6 @@
 import React from 'react';
-import Column from '../Column/Column';
 import {generate} from 'shortid';
+import Column from '../Column/Column';
 
 const Board = () => {
   const columnNames = ['To Do', 'In Progress', 'Done'];
@@ -9,7 +9,7 @@ const Board = () => {
       {columnNames.map(name => {
         let uid = generate();
         return (
-          <Column key={uid} name={name}/>
+          <Column key={uid} statusTask={name}/>
         )
         })}
     </div>

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {addingTask} from '../../redux/actions/actions';
+//import {addingTask} from '../../redux/actions/actions';
 
-const AddTaskButton = ({name}) => {
+const AddTaskForm = ({action, statusTask, arg}) => {
   const [task, setTask] = useState('');
   const dispatch = useDispatch();
 
@@ -12,8 +12,8 @@ const AddTaskButton = ({name}) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addingTask({name: task, status:name}));
-    setTask('')
+    dispatch(action({name: task, [arg ? 'done' : 'status']: statusTask}, arg));
+    setTask('');
   };
 
   return (
@@ -24,11 +24,19 @@ const AddTaskButton = ({name}) => {
         value={task}
         onChange={handleChange}
       />
-      <button name={name}>
+      <button 
+      /*
+      name={
+        statusTask 
+        ? typeof statusTask === 'boolean' 
+        : 'addSubTask'
+      }
+      */
+      >
         Add Task
       </button>
     </form>
   );
 };
 
-export default AddTaskButton;
+export default AddTaskForm;
