@@ -3,30 +3,25 @@ import {useDispatch} from 'react-redux';
 import {addingTask} from '../../redux/actions/actions';
 
 const AddTaskButton = ({name}) => {
-  const [values, setValues] = useState({
-    taskName: ''
-  });
+  const [task, setTask] = useState('');
   const dispatch = useDispatch();
 
   const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name] : event.target.value
-    })
-  }
+    setTask(event.target.value)
+  };
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addingTask({name: values.taskName, status:name}));
-    setValues({taskName: ''})
-  }
+    dispatch(addingTask({name: task, status:name}));
+    setTask('')
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <input 
         type='text'
         name='taskName'
-        value={values.taskName}
+        value={task}
         onChange={handleChange}
       />
       <button name={name}>
