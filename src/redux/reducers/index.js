@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {modalIsOpen} from './modal';
+import {modal} from './modal';
 import {tasks} from './tasks';
 
-export const rootReducer = combineReducers({modalIsOpen, tasks});
+export const rootReducer = combineReducers({modal, tasks});

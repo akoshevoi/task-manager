@@ -5,11 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import CardDetail from '../CardDetail/CardDetail';
 
-const CardName = ({task, statusTask, id}) => {
+const CardName = ({task, statusTask}) => {
   const [status, setStatus] = useState(statusTask);
-  const [idTaskCard, setIdTaskCard] = useState('');
+  //const [idTaskCard, setIdTaskCard] = useState('');
   const dispatch = useDispatch();
   
   const handleChange = (event) => {
@@ -18,15 +17,13 @@ const CardName = ({task, statusTask, id}) => {
     dispatch(changingStatusTask(task, event.target.value));
   };
 
-  const openModal = event => {
-    const idCard = event.target.parentNode.parentNode.id;
-    //console.log(idCard);
-    setIdTaskCard(idCard)
-    dispatch(showingModal(true, idCard, task.name));
+  const openModal = () => {
+    //setIdTaskCard(idCard)
+    dispatch(showingModal(true, task));
   }
     
   return (
-    <div className='card-name' id={id}>
+    <div className='card-name'>
       <Paper>
         <h2 className='card-name__title'>{task.name}</h2>
         <InputLabel id='demo-simple-select-label'>Status</InputLabel>
@@ -41,7 +38,6 @@ const CardName = ({task, statusTask, id}) => {
           <MenuItem value='Done'>Done</MenuItem>
         </Select>
         <button onClick={openModal}>Open Task</button>
-        <CardDetail task={task} id={idTaskCard}/>
       </Paper>
     </div> 
   );

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 //import {addingTask} from '../../redux/actions/actions';
 
-const AddTaskForm = ({action, statusTask, arg}) => {
+const AddTaskForm = ({action, statusTask}) => {
   const [task, setTask] = useState('');
   const dispatch = useDispatch();
 
@@ -12,7 +12,7 @@ const AddTaskForm = ({action, statusTask, arg}) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(action({name: task, [arg ? 'done' : 'status']: statusTask}, arg));
+    dispatch(action({name: task, status: statusTask}));
     setTask('');
   };
 

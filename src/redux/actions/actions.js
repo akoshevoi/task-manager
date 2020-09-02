@@ -2,7 +2,8 @@ import {
   ADD_TASK, 
   CHANGE_STATUS_TASK, 
   ADD_SUB_TASK, 
-  MODAL_SHOW
+  MODAL_SHOW,
+  CHANGE_STATUS_SUB_TASK
 } from '../types/types';
 
 export const addingTask = task => ({
@@ -16,15 +17,21 @@ export const changingStatusTask = (task, status) => ({
   status
 });
 
-export const addingSubTask = (subTask, task) => ({
+export const addingSubTask = (task, subTask) => ({
   type: ADD_SUB_TASK,
-  subTask,
-  task
+  task,
+  subTask
 });
 
-export const showingModal = (boolean, id, taskId) => ({
+export const showingModal = (boolean, task) => ({
   type: MODAL_SHOW,
-  boolean,
-  id,
-  taskId
-})
+  payload: boolean,
+  target: task
+});
+
+export const changingStatusSubTask = (task, nameSubtask, status) => ({
+  type: CHANGE_STATUS_SUB_TASK,
+  task,
+  nameSubtask,
+  status
+});

@@ -1,4 +1,9 @@
-import {ADD_TASK, CHANGE_STATUS_TASK, ADD_SUB_TASK} from '../types/types';
+import {
+  ADD_TASK, 
+  CHANGE_STATUS_TASK, 
+  ADD_SUB_TASK, 
+  CHANGE_STATUS_SUB_TASK
+} from '../types/types';
 
 export const tasks = (state = [], action) => {
   switch(action.type) {
@@ -17,8 +22,6 @@ export const tasks = (state = [], action) => {
     case ADD_SUB_TASK:
       const initialTasksArray = [...state];
       const idx = initialTasksArray.findIndex(task => {
-        console.log(task);
-        console.log(action);
         return task.name === action.task.name
       });
 
@@ -26,6 +29,32 @@ export const tasks = (state = [], action) => {
       const initialSubTasks = findTask.subTasks;
       findTask.subTasks = [...initialSubTasks, action.subTask]
       return [...initialTasksArray];
+    case CHANGE_STATUS_SUB_TASK:
+      const startingTasksArray = [...state];
+      const nameMainTask = action.task.name;
+      const searchingTask = startingTasksArray.find(item => {
+        return item.name === nameMainTask
+        ? item.subTasks
+        : null
+        
+      });
+      const initialSubTasksArray = searchingTask.subTasks;
+      const findingSubTask = initialSubTasksArray.find(subTask => {
+        return subTask.name === action.nameSubtask;
+      });
+      findingSubTask.done = action.status;
+      //const initialSubTasksArray = action.task.subTasks;
+/*
+      const initialSubTasksArray = state.subTasks;
+      console.log(initialTasksArray);
+      const findingSubTask = initialSubTasksArray.find(subTask => {
+        return subTask.name === action.nameSubtask;
+      });
+      findingSubTask.done = action.status;
+      return [...state, findingSubTask];
+      */
+     return startingTasksArray;
+      
     default: 
       return state;
   }
