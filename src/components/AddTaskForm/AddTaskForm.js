@@ -1,40 +1,45 @@
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-//import {addingTask} from '../../redux/actions/actions';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const AddTaskForm = ({action, statusTask}) => {
   const [task, setTask] = useState('');
   const dispatch = useDispatch();
 
   const handleChange = event => {
-    setTask(event.target.value)
+    const value = event.target.value;
+    setTask(value);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(action({name: task, status: statusTask}));
+    if (task.length > 0) {
+      dispatch(action({name: task, status: statusTask}));
+    }
     setTask('');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input 
+    <form onSubmit={handleSubmit} className='add-task-form__form'>
+      <TextField 
+        label='Add Task' 
+        name='taskName'
+        value={task}
+        onChange={handleChange}
+        variant='filled'
+        className='add-task-form__input'
+        />
+      {/* <input 
         type='text'
         name='taskName'
         value={task}
         onChange={handleChange}
-      />
-      <button 
-      /*
-      name={
-        statusTask 
-        ? typeof statusTask === 'boolean' 
-        : 'addSubTask'
-      }
-      */
-      >
+      /> */}
+      <Button variant='contained' color='primary' type='submit'>
         Add Task
-      </button>
+      </Button>
+      {/* <button>Add Task</button> */}
     </form>
   );
 };

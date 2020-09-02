@@ -4,8 +4,9 @@
 @import './components//board';
 @import './components/column';
 @import './components/header'; 
-@import './components/card-name';
+@import './components/task-name';
 @import './components/card-detail'; 
+@import './components/add-task.form';
 
 body {
   margin: 0;

@@ -11,10 +11,10 @@ export const modal = (state = initialState, action) => {
   switch(action.type) {
     case MODAL_SHOW:
     return {
-        ...state,
-        isShow: action.payload,
-        task: action.target,
-      }
+      ...state,
+      isShow: action.payload,
+      task: action.target,
+    }
     default:
       return state;
   }

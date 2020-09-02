@@ -3,8 +3,8 @@ import {useSelector} from 'react-redux';
 import {generate} from 'shortid';
 import {addingTask} from '../../redux/actions/actions';
 import AddTaskForm from '../AddTaskForm/AddTaskForm';
-import CardName from '../CardName/CardName';
-import CardDetail from '../CardDetail/CardDetail';
+import TaskName from '../TaskName/TaskName';
+import TaskDetail from '../TaskDetail/TaskDetail';
 
 const Column = ({statusTask}) => {
   const tasks = useSelector(state => state.tasks);
@@ -17,17 +17,16 @@ const Column = ({statusTask}) => {
       <AddTaskForm 
         action={addingTask} 
         statusTask={statusTask} 
-        //payload={{name: 'task1', status: 'to do'}}
       />
       {tasks && tasks.map(task => {
         let uid = generate();      
         return (
           task.status === statusTask
-          ? <CardName key={uid} task={task} statusTask={statusTask} />
+          ? <TaskName key={uid} task={task} statusTask={statusTask} />
           : null
         )
       })}
-      <CardDetail currentTask={currentTask} isShow={isShow} />
+      <TaskDetail currentTask={currentTask} isShow={isShow} />
     </div>
   )
 };

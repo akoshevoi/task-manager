@@ -1,8 +1,8 @@
 import {
   ADD_TASK, 
-  CHANGE_STATUS_TASK, 
-  ADD_SUB_TASK, 
   MODAL_SHOW,
+  ADD_SUB_TASK, 
+  CHANGE_STATUS_TASK,
   CHANGE_STATUS_SUB_TASK
 } from '../types/types';
 
