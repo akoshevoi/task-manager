@@ -1,6 +1,6 @@
 import React from 'react';
 import {generate} from 'shortid';
-import Column from '../Column/Column';
+import Column from '../../containers/Column/Column';
 
 const Board = () => {
   const columnNames = ['To Do', 'In Progress', 'Done'];
@@ -11,7 +11,7 @@ const Board = () => {
         return (
           <Column key={uid} statusTask={name}/>
         )
-        })}
+      })}
     </div>
   );
 };

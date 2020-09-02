@@ -5,6 +5,8 @@ import SubTaskList from '../SubTaskList/SubTaskList';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import AddSubTaskForm from '../AddSubTaskForm/AddSubTaskForm';
+import ClearIcon from '@material-ui/icons/Clear';
+import AddDescriptionForm from '../AddDescriptionForm/AddDescriptionForm';
 
 const TaskDetail = ({currentTask, isShow}) => {
   const [progressBarLength, setProgressBarLength] = useState(0);
@@ -39,19 +41,22 @@ const TaskDetail = ({currentTask, isShow}) => {
       aria-labelledby='simple-modal-title'
       aria-describedby='simple-modal-description'
     >
-      <div className='card-detail'>
-        <h2 className='card-detail__title'>{currentTask.name && currentTask.name}</h2>
-        <div className='card-detail__form-group'>
-           <label htmlFor='textarea' className='card-detail__label'>Description</label>
+      <div className='task-detail'>
+        <div className='task-detail__icon' onClick={handleClose}>
+          <ClearIcon />
         </div>
-        <textarea id='textarea'></textarea>
+        <h2 className='task-detail__title'>{currentTask.name && currentTask.name}</h2>
+        <AddDescriptionForm currentTask={currentTask}/>
+        { currentTask.description &&
+          <h3 className='task-detail__subtitle'>Description of task</h3>
+        }
+        <div className='task-detail__description'>{currentTask.description && currentTask.description}</div>
         <LinearProgress variant='determinate' value={progressBarLength}/>
-        <div className='card-detail__percent'>{progressBarLength}%</div>
+        <div className='task-detail__percent'>{progressBarLength}%</div>
         <AddSubTaskForm 
           currentTask={currentTask} 
           calculateProgressBarLength={calculateProgressBarLength}
         />
-        <button onClick={handleClose}>Close Modal</button>
           <SubTaskList 
             currentTask={currentTask} 
             calculateProgressBarLength={calculateProgressBarLength}

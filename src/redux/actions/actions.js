@@ -3,7 +3,8 @@ import {
   MODAL_SHOW,
   ADD_SUB_TASK, 
   CHANGE_STATUS_TASK,
-  CHANGE_STATUS_SUB_TASK
+  CHANGE_STATUS_SUB_TASK,
+  ADD_DESCRIPTION_TO_TASK
 } from '../types/types';
 
 export const addingTask = task => ({
@@ -34,4 +35,10 @@ export const changingStatusSubTask = (task, nameSubtask, status) => ({
   task,
   nameSubtask,
   status
+});
+
+export const addingDescriptionToTask = (task, description) => ({
+  type: ADD_DESCRIPTION_TO_TASK,
+  task,
+  description
 });

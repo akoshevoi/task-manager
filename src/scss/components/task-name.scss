@@ -6,6 +6,16 @@
 .task-name__inner {
   padding: 15px 10px; 
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+}
+
+.task-name__top {
+  display: flex;
+  align-items: center;
+}
+
+.task-name__text,
+.task-name__select {
+  margin: 0 50px;
 }

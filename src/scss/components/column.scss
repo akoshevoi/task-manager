@@ -1,9 +1,13 @@
 .column {
   width: 33.333%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .column:nth-child(2) {
-  border: 1px solid $teal;
+  border-left: 1px solid $blue;
+  border-right: 1px solid $blue;
 }
 
 .column__title {

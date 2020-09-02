@@ -2,7 +2,8 @@ import {
   ADD_TASK, 
   ADD_SUB_TASK, 
   CHANGE_STATUS_TASK, 
-  CHANGE_STATUS_SUB_TASK
+  CHANGE_STATUS_SUB_TASK,
+  ADD_DESCRIPTION_TO_TASK
 } from '../types/types';
 
 export const tasks = (state = [], action) => {
@@ -33,8 +34,8 @@ export const tasks = (state = [], action) => {
       const nameMainTask = action.task.name;
       const searchingTask = startingTasksArray.find(item => {
         return item.name === nameMainTask
-        ? item.subTasks
-        : null
+          ? item.subTasks
+          : null
       });
       const initialSubTasksArray = searchingTask.subTasks;
       const findingSubTask = initialSubTasksArray.find(subTask => {
@@ -42,6 +43,16 @@ export const tasks = (state = [], action) => {
       });
       findingSubTask.done = action.status;
       return startingTasksArray;
+    case ADD_DESCRIPTION_TO_TASK:
+      const originalTasksArray = [...state];
+      const nameGeneralTask = action.task.name;
+      const findingTask = originalTasksArray.find(item => {
+        return item.name === nameGeneralTask
+          ? item
+          : null
+      });
+      findingTask.description = action.description;
+      return originalTasksArray
     default: 
       return state;
   }

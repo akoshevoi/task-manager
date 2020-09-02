@@ -12,15 +12,15 @@ const SubTask = ({task, currentTask, calculateProgressBarLength}) => {
     calculateProgressBarLength();
   }
   return (
-    <div  className='sub-task'>
+    <div className='sub-task'>
       <input 
         checked={task.done} 
         type='checkbox' 
         name={task.name} 
         onChange={handleChangeCheckbox}
+        className='sub-task__checkbox'
       />
-      <label 
-      >{task.name}</label>
+      <label className='sub-task__label'>{task.name}</label>
     </div>
   );
 };

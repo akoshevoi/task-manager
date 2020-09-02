@@ -1,0 +1,31 @@
+.task-detail {
+  width: 800px;
+  padding: 15px 30px;
+  display: flex;
+  flex-direction: column;
+
+  background-color: $white;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.task-detail__title {
+  margin-bottom: 40px;
+}
+
+.task-detail__description {
+  margin-bottom: 20px;
+}
+
+.task-detail__percent {
+  margin: 15px 0;
+}
+
+.task-detail__icon {
+  align-self: flex-end;
+
+  cursor: pointer;
+}

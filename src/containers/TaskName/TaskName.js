@@ -25,8 +25,10 @@ const TaskName = ({task, statusTask}) => {
     <div className='task-name'>
       <Paper>
         <div className="task-name__inner">
-          <div className="task-name__top"></div>
-            <h2 className='task-name__title'>{task.name}</h2>
+          <div className="task-name__top">
+            <div className="task-name__text">
+              <h2 className='task-name__title'>{task.name}</h2>
+            </div>
             <div className="task-name__select">
               <InputLabel id='demo-simple-select-label'>Status</InputLabel>
               <Select
@@ -43,7 +45,7 @@ const TaskName = ({task, statusTask}) => {
           <Button variant='contained' color='primary' onClick={openModal}>
             Open Task
           </Button>
-        {/* <button onClick={openModal}>Open Task</button> */}
+        </div>
       </Paper>
     </div> 
   );

@@ -1,7 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {generate} from 'shortid';
-import {addingTask} from '../../redux/actions/actions';
 import AddTaskForm from '../AddTaskForm/AddTaskForm';
 import TaskName from '../TaskName/TaskName';
 import TaskDetail from '../TaskDetail/TaskDetail';
@@ -14,10 +13,7 @@ const Column = ({statusTask}) => {
   return (
     <div className='column'>
       <h3 className='column__title'>{statusTask}</h3>
-      <AddTaskForm 
-        action={addingTask} 
-        statusTask={statusTask} 
-      />
+      <AddTaskForm statusTask={statusTask} />
       {tasks && tasks.map(task => {
         let uid = generate();      
         return (

@@ -5,8 +5,10 @@
 @import './components/column';
 @import './components/header'; 
 @import './components/task-name';
-@import './components/card-detail'; 
+@import './components/task-detail'; 
 @import './components/add-task.form';
+@import './components/add-description-form';
+@import './components/sub-task';
 
 body {
   margin: 0;
