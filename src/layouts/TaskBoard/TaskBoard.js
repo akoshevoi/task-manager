@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom';
 import {generate} from 'shortid';
 import Column from '../../containers/Column';
 
-const Board = () => {
+const TaskBoard = () => {
   let params = useParams();
 
   const columnNames = ['To Do', 'In Progress', 'Done'];
@@ -22,4 +22,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default TaskBoard;
