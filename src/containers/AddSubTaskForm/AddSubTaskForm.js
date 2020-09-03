@@ -4,7 +4,7 @@ import {addingSubTask} from '../../redux/actions/actions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const AddSubTaskForm = ({currentTask, calculateProgressBarLength}) => {
+const AddSubTaskForm = ({currentTask, calculateProgressBarLength, projectName}) => {
   const [subTask, setSubTask] = useState('');
   
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const AddSubTaskForm = ({currentTask, calculateProgressBarLength}) => {
   const handleSubmit = event => {
     event.preventDefault();
     if (subTask.length > 0) {
-      dispatch(addingSubTask(currentTask, {name: subTask, done: false}));
+      dispatch(addingSubTask(projectName, currentTask, {name: subTask, done: false}));
       calculateProgressBarLength();
     }
     setSubTask('');

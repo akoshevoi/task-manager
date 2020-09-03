@@ -7,14 +7,14 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 
-const TaskName = ({task, statusTask}) => {
+const TaskName = ({task, statusTask, projectName}) => {
   const [status, setStatus] = useState(statusTask);
   const dispatch = useDispatch();
   
   const handleChange = (event) => {
     const status = event.target.value;
     setStatus(status);
-    dispatch(changingStatusTask(task, event.target.value));
+    dispatch(changingStatusTask(projectName, task, event.target.value));
   };
 
   const openModal = () => {

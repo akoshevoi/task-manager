@@ -1,4 +1,5 @@
 import {
+  ADD_PROJECT, 
   ADD_TASK, 
   MODAL_SHOW,
   ADD_SUB_TASK, 
@@ -7,21 +8,25 @@ import {
   ADD_DESCRIPTION_TO_TASK
 } from '../types/types';
 
-export const addingTask = task => ({
+export const addingProject = project => ({
+  type: ADD_PROJECT,
+  payload: project
+});
+
+export const addingTask = (project, task) => ({
   type: ADD_TASK,
-  payload: task
+  payload: {project, task}
+  
 });
 
-export const changingStatusTask = (task, status) => ({
+export const changingStatusTask = (project, task, status) => ({
   type: CHANGE_STATUS_TASK,
-  task,
-  status
+  payload: {project, task, status}
 });
 
-export const addingSubTask = (task, subTask) => ({
+export const addingSubTask = (project, task, subTask) => ({
   type: ADD_SUB_TASK,
-  task,
-  subTask
+  payload: {project, task, subTask}
 });
 
 export const showingModal = (boolean, task) => ({

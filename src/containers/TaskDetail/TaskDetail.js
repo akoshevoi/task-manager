@@ -1,14 +1,28 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {showingModal} from '../../redux/actions/actions';
-import SubTaskList from '../SubTaskList/SubTaskList';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import AddSubTaskForm from '../AddSubTaskForm/AddSubTaskForm';
 import ClearIcon from '@material-ui/icons/Clear';
-import AddDescriptionForm from '../AddDescriptionForm/AddDescriptionForm';
+import SubTaskList from '../SubTaskList';
+import AddSubTaskForm from '../AddSubTaskForm';
+import AddDescriptionForm from '../AddDescriptionForm';
+import { projects } from '../../redux/reducers/projects';
 
-const TaskDetail = ({currentTask, isShow}) => {
+const TaskDetail = ({currentTask, isShow, projectName}) => {
+  useSelector(state => { 
+    for (let project of state.projects) {
+      if (project.name === projectName) {
+        for (let task of project.tasks.taskList) {
+          if (task.name === currentTask.name) {
+            console.log(task.subTasks);
+            return task.subTasks;
+          }
+        }
+      }
+    }
+  });
+  
   const [progressBarLength, setProgressBarLength] = useState(0);
   const dispatch = useDispatch();
 
@@ -56,6 +70,7 @@ const TaskDetail = ({currentTask, isShow}) => {
         <AddSubTaskForm 
           currentTask={currentTask} 
           calculateProgressBarLength={calculateProgressBarLength}
+          projectName={projectName}
         />
           <SubTaskList 
             currentTask={currentTask} 

@@ -1,8 +1,9 @@
 import React from 'react';
 import {generate} from 'shortid';
-import SubTask from '../SubTask/SubTask';
+import SubTask from '../SubTask';
 
 const SubTaskList = ({currentTask, calculateProgressBarLength}) => {
+  
   return (
     <div className='sub-tasks'>
       {currentTask.subTasks.map(task => {

@@ -3,13 +3,13 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {store} from './redux/store/store';
 
-import App from './components/App/App';
+import Router from './router';
 
 import './scss/style.scss';
 
 render(
   <Provider store={store}>
-    <App />
+    <Router />
   </Provider>,
   document.getElementById('root')
 )
