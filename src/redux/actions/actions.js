@@ -35,15 +35,12 @@ export const showingModal = (boolean, task) => ({
   target: task
 });
 
-export const changingStatusSubTask = (task, nameSubtask, status) => ({
+export const changingStatusSubTask = (project, task, nameSubtask, status) => ({
   type: CHANGE_STATUS_SUB_TASK,
-  task,
-  nameSubtask,
-  status
+  payload: {project, task, nameSubtask, status}
 });
 
-export const addingDescriptionToTask = (task, description) => ({
+export const addingDescriptionToTask = (projectName, task, description) => ({
   type: ADD_DESCRIPTION_TO_TASK,
-  task,
-  description
+  payload: {projectName, task, description}
 });

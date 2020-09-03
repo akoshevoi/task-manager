@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {addingTask} from '../../redux/actions/actions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const AddTaskForm = ({statusTask, projectName}) => {
+const AddTaskForm = ({statusTask, projectName, dispatchAction}) => {
   const [task, setTask] = useState('');
-  const dispatch = useDispatch();
 
   const handleChange = event => {
     const value = event.target.value;
@@ -16,7 +13,12 @@ const AddTaskForm = ({statusTask, projectName}) => {
   const handleSubmit = event => {
     event.preventDefault();
     if (task.length > 0) {
-      dispatch(addingTask(projectName, {name: task, status: statusTask, subTasks: []}));
+      dispatchAction(projectName, {
+        name: task, 
+        status: statusTask, 
+        description: '', 
+        subTasks: []
+      });
     }
     setTask('');
   };

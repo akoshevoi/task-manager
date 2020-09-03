@@ -1,4 +1,13 @@
-.board {
+.board__title {
+  margin: 0;
+  padding: 25px 0;
+
+  font-size: 32px;
+  color: $white;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.board__content {
   display: flex;
-  min-height: 92vh;
 }

@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {addingSubTask} from '../../redux/actions/actions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const AddSubTaskForm = ({currentTask, calculateProgressBarLength, projectName}) => {
+const AddSubTaskForm = ({
+  currentTask, 
+  calculateProgressBarLength, 
+  projectName, 
+  dispatchAction
+}) => {
   const [subTask, setSubTask] = useState('');
   
-  const dispatch = useDispatch();
-
   const handleChange = event => {
     const value = event.target.value;
     setSubTask(value);
@@ -17,7 +18,7 @@ const AddSubTaskForm = ({currentTask, calculateProgressBarLength, projectName}) 
   const handleSubmit = event => {
     event.preventDefault();
     if (subTask.length > 0) {
-      dispatch(addingSubTask(projectName, currentTask, {name: subTask, done: false}));
+      dispatchAction(projectName, currentTask, {name: subTask, done: false});
       calculateProgressBarLength();
     }
     setSubTask('');

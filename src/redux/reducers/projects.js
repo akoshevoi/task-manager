@@ -1,4 +1,11 @@
-import {ADD_PROJECT, ADD_TASK, CHANGE_STATUS_TASK, ADD_SUB_TASK,} from '../types/types';
+import {
+  ADD_PROJECT, 
+  ADD_TASK, 
+  CHANGE_STATUS_TASK, 
+  ADD_SUB_TASK, 
+  CHANGE_STATUS_SUB_TASK,
+  ADD_DESCRIPTION_TO_TASK
+} from '../types/types';
 
 const initialState = [];
   
@@ -78,6 +85,33 @@ export const projects = (state = initialState, {type, payload}) => {
             }
           }
         }
+       
+      case CHANGE_STATUS_SUB_TASK:
+        for (let project of currentState) {
+          if (project.name === payload.project) {
+            for (let task of project.tasks.taskList) {
+              if (task.name === payload.task.name) {
+                for (let subTask of task.subTasks) {
+                  if (subTask.name === payload.nameSubtask) {
+                    subTask.done = payload.status;
+                  }
+                }
+              }
+            }
+          }
+        }
+      
+      case ADD_DESCRIPTION_TO_TASK:
+        for (let project of currentState) {
+          if (project.name === payload.projectName) {
+            for (let task of project.tasks.taskList) {
+              if (task.name === payload.task.name) {
+                task.description = payload.description
+              }
+            }
+          }
+        }
+       
     default:
       return state;
   }

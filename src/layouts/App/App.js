@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../Header/Header';
-import Board from '../Board/Board';
+import Header from '../Header';
+import Board from '../Board';
 
 const App = () => (
   <div className='app'>

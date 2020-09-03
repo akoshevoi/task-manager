@@ -1,21 +1,22 @@
+/*
 import {
   //ADD_TASK, 
-  ADD_SUB_TASK, 
+  //ADD_SUB_TASK, 
   //CHANGE_STATUS_TASK, 
-  CHANGE_STATUS_SUB_TASK,
-  ADD_DESCRIPTION_TO_TASK
+  //CHANGE_STATUS_SUB_TASK,
+  //ADD_DESCRIPTION_TO_TASK
 } from '../types/types';
-
+*/
+/*
 export const tasks = (state = [], action) => {
   switch(action.type) {
-    /*
+ 
     case ADD_TASK:
       return [
         ...state,
         {...action.payload, subTasks: []}
       ];
-      */
-     /*
+  
     case CHANGE_STATUS_TASK: 
       const currentTasksArray = [...state];
       const index = currentTasksArray.findIndex(task => {
@@ -23,8 +24,7 @@ export const tasks = (state = [], action) => {
       });
       currentTasksArray[index].status = action.status;
       return currentTasksArray;
-    */
-   /*
+  
     case ADD_SUB_TASK:
       const initialTasksArray = [...state];
       const idx = initialTasksArray.findIndex(task => {
@@ -34,7 +34,7 @@ export const tasks = (state = [], action) => {
       const initialSubTasks = findTask.subTasks;
       findTask.subTasks = [...initialSubTasks, action.subTask]
       return [...initialTasksArray];
-    */
+   
     case CHANGE_STATUS_SUB_TASK:
       const startingTasksArray = [...state];
       const nameMainTask = action.task.name;
@@ -49,6 +49,7 @@ export const tasks = (state = [], action) => {
       });
       findingSubTask.done = action.status;
       return startingTasksArray;
+   
     case ADD_DESCRIPTION_TO_TASK:
       const originalTasksArray = [...state];
       const nameGeneralTask = action.task.name;
@@ -60,7 +61,9 @@ export const tasks = (state = [], action) => {
       findingTask.description = action.description;
       return originalTasksArray
     default: 
+    
       return state;
   }
 }
 
+*/

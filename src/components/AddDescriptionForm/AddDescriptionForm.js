@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {addingDescriptionToTask} from '../../redux/actions/actions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const AddDescriptionForm = ({currentTask}) => {
-  const dispatch = useDispatch();
+const AddDescriptionForm = ({projectName, currentTask, dispatchAction}) => {
   const [description, setDescription] = useState('');
 
   const handleChange = event => {
@@ -17,7 +14,7 @@ const AddDescriptionForm = ({currentTask}) => {
     event.preventDefault();
     
     if (description.length > 0) {
-      dispatch(addingDescriptionToTask(currentTask, description));
+      dispatchAction(projectName, currentTask, description);
     }
     setDescription('');
   };
