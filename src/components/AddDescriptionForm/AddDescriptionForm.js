@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const AddDescriptionForm = ({projectName, currentTask, dispatchAction}) => {
+const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) => {
   const [description, setDescription] = useState('');
 
   const handleChange = event => {
@@ -14,7 +14,7 @@ const AddDescriptionForm = ({projectName, currentTask, dispatchAction}) => {
     event.preventDefault();
     
     if (description.length > 0) {
-      dispatchAction(projectName, currentTask, description);
+      dispatchAction(action(projectName, currentTask, description));
     }
     setDescription('');
   };

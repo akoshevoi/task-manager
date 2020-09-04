@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {showingModal, addingDescriptionToTask, addingSubTask} from '../../redux/actions/actions';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -9,6 +9,7 @@ import AddSubTaskForm from '../../components/AddSubTaskForm';
 import AddDescriptionForm from '../../components/AddDescriptionForm';
 
 const TaskDetail = ({currentTask, isShow, projectName}) => {
+  /*
   useSelector(state => { 
     for (let project of state.projects) {
       if (project.name === projectName) {
@@ -44,7 +45,7 @@ const TaskDetail = ({currentTask, isShow, projectName}) => {
       }
     }
   });
-  
+  */
   const [progressBarLength, setProgressBarLength] = useState(0);
   const dispatch = useDispatch();
 
@@ -70,12 +71,8 @@ const TaskDetail = ({currentTask, isShow, projectName}) => {
     dispatch(showingModal(false, currentTask));
   }
 
-  const dispatchActionAddingDescriptionToTask = (...args) => {
-    dispatch(addingDescriptionToTask(...args));
-  }
-
-  const dispatchActionAddingSubTask = (...args) => {
-    dispatch(addingSubTask(...args));
+  const dispatchAction = action => {
+    dispatch(action);
   }
 
   return (
@@ -95,7 +92,8 @@ const TaskDetail = ({currentTask, isShow, projectName}) => {
         <AddDescriptionForm 
           projectName={projectName} 
           currentTask={currentTask}
-          dispatchAction={dispatchActionAddingDescriptionToTask}
+          dispatchAction={dispatchAction}
+          action={addingDescriptionToTask}
         />
         { currentTask.description &&
           <h3 className='task-detail__subtitle'>Description of task</h3>
@@ -109,7 +107,8 @@ const TaskDetail = ({currentTask, isShow, projectName}) => {
           currentTask={currentTask} 
           calculateProgressBarLength={calculateProgressBarLength}
           projectName={projectName}
-          dispatchAction={dispatchActionAddingSubTask}
+          dispatchAction={dispatchAction}
+          action={addingSubTask}
         />
           <SubTaskList 
             projectName={projectName}

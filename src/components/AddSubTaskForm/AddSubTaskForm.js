@@ -6,7 +6,8 @@ const AddSubTaskForm = ({
   currentTask, 
   calculateProgressBarLength, 
   projectName, 
-  dispatchAction
+  dispatchAction,
+  action
 }) => {
   const [subTask, setSubTask] = useState('');
   
@@ -18,7 +19,7 @@ const AddSubTaskForm = ({
   const handleSubmit = event => {
     event.preventDefault();
     if (subTask.length > 0) {
-      dispatchAction(projectName, currentTask, {name: subTask, done: false});
+      dispatchAction(action(projectName, currentTask, {name: subTask, done: false}));
       calculateProgressBarLength();
     }
     setSubTask('');

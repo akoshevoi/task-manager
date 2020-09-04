@@ -40,7 +40,7 @@ export const changingStatusSubTask = (project, task, nameSubtask, status) => ({
   payload: {project, task, nameSubtask, status}
 });
 
-export const addingDescriptionToTask = (projectName, task, description) => ({
+export const addingDescriptionToTask = (project, task, description) => ({
   type: ADD_DESCRIPTION_TO_TASK,
-  payload: {projectName, task, description}
+  payload: {project, task, description}
 });
