@@ -11,7 +11,13 @@
 }
 
 .header__logo {
-  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  fill: $white;
+}
+
+.header__name {
   text-transform: uppercase;
-  font-weight: 700;
+  color: $white;
+  font-size: 23px;
 }

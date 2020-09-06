@@ -1,5 +1,16 @@
+.authentication-page {
+  background-color: $dark-gray;
+  min-height: 100vh;
+}
+
 .authentication {
-  margin: 20px 0;
+  width: 500px;
+  margin: 60px auto;
+}
+
+.authentication__content {
+  background: $white;
+  padding: 20px;
 }
 
 .authentication__form {
@@ -11,4 +22,10 @@
 
 .authentication__btn {
   align-self: center;
+}
+
+.authentication__helper-text {
+  margin: 10px auto !important;
+
+  text-align: center !important;
 }

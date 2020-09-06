@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
-import Input from '../Input';
-import InputPassword from '../InputPassword';
-import FormButton from '../FormButton';
+import SignInForm from '../../components/SignInForm';
 
 const SignIn = () => {
   const [values, setValues] = useState({
     email: '',
-    password: '',
+    password: ''
+  });
+
+  const [showingPassword, setShowingPassword] = useState({
     showPassword: false
   });
+
 
   const [isGlowError, setIsGlowError] = useState({
     email: false,
@@ -17,15 +19,76 @@ const SignIn = () => {
 
   const [helperTexts, setHelperTexts] = useState({
     email: ' ',
-    password: ' '
+    password: ' ',
+    formSubmit: ' '
   });
+
+  const getInfoAboutEmptyInputs = () => {
+    const objectLength = Object.keys(values).length;
+    let qtyFilledInputs = 0;
+    
+    for (let key in values) {
+      if (values[key].length > 0) {
+        qtyFilledInputs++;
+      }
+    } 
+
+    return objectLength === qtyFilledInputs 
+      ? true
+      : false
+  };
+
+  const getInfoAboutValidInputs = () => {
+    const objectLength = Object.keys(values).length;
+    let qtyValidInputs = 0;
+
+    for (let key in isGlowError) {
+      if (isGlowError[key] === false) {
+        qtyValidInputs++;
+      }
+    }
+
+    return objectLength === qtyValidInputs
+      ? true
+      : false
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    const conditionEmptyInputs = getInfoAboutEmptyInputs();
+    const conditionValidInputs = getInfoAboutValidInputs();
+
+    if (!conditionEmptyInputs) {
+      console.log('empty inputs');
+      
+      setHelperTexts({
+        ...helperTexts,
+        formSubmit: 'Fill all inputs'
+      }); 
+    } else if (!conditionValidInputs) {
+      console.log('valid inputs');
+
+      setHelperTexts({
+        ...helperTexts,
+        formSubmit: 'Check validity inputs'
+      }); 
+    } else {
+      console.log('submit form');
+
+      setHelperTexts({
+        ...helperTexts,
+        formSubmit: ' '
+      }); 
+    }
+  }
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
   const handleClickShowPassword = prop => () => {
-    setValues({ ...values, [prop]: !values[prop] });
+    setShowingPassword({ ...showingPassword, [prop]: !showingPassword[prop] });
   };
 
   const handleMouseDownPassword = event => {
@@ -102,37 +165,30 @@ const SignIn = () => {
   }
 
   return (
-    <div className='authentication'>
     <div className='container'>
-      <form className='authentication__form'>
-        <Input 
-          value={values.email}
-          isGlowError={isGlowError.email} 
-          label='Enter email' 
-          helperText={helperTexts.email}
-          onChange={handleChange('email')}
-          onBlur={checkEmailCorrect('email')}
-        />
-        <InputPassword 
-          label='Enter password'
-          isGlowError={isGlowError.password}
-          value={values.password}
-          onChange={handleChange('password')}
-          onBlur={checkPasswordCorrect('password')}
-          onClick={handleClickShowPassword('showPassword')}
-          isShowPassword={values.showPassword}
-          helperText = {helperTexts.password}
-          onMouseDown={handleMouseDownPassword}
-          idInput='outlined-adornment-password'
-          idHelperText='standard-password-helper-text'
-          labelWidth={115}
-        />
-        <FormButton 
-          name='Sign In'
-        />
-      </form>
+      <SignInForm 
+        values={values}
+        setValues={setValues}
+        showingPassword={showingPassword} 
+        setShowingPassword={setShowingPassword}
+        isGlowError={isGlowError}
+        setIsGlowError={setIsGlowError}
+        helperTexts={helperTexts}
+        setHelperTexts={setHelperTexts}
+        getInfoAboutEmptyInputs={getInfoAboutEmptyInputs}
+        getInfoAboutValidInputs={getInfoAboutValidInputs}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        handleClickShowPassword={handleClickShowPassword}
+        handleMouseDownPassword={handleMouseDownPassword}
+        setErrorState={setErrorState}
+        checkEmptyInputs={checkEmptyInputs}
+        checkEmailValidity={checkEmailValidity}
+        checkPasswordValidity={checkPasswordValidity}
+        checkEmailCorrect={checkEmailCorrect}
+        checkPasswordCorrect={checkPasswordCorrect}
+      />
     </div>
-  </div>
   );
 };
 

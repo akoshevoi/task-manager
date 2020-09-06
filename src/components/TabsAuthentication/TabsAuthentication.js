@@ -4,8 +4,8 @@ import {useTheme} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import SignUp from '../SignUp';
-import SignIn from '../SignIn';
+import SignUp from '../../containers/SignUp';
+import SignIn from '../../containers/SignIn';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -19,7 +19,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <div p={3}>
+        <div p={3} className='authentication__content' >
           <div>{children}</div>
         </div>
       )}
@@ -49,8 +49,8 @@ export default function Authentication() {
   };
 
   return (
-    <div>
-      <AppBar position="static" color="default">
+    <div className='authentication'>
+      <AppBar position='static' color='default' className='authentication__tabs'>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -59,8 +59,8 @@ export default function Authentication() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Sign In" {...a11yProps(0)} />
-          <Tab label="Sign Up" {...a11yProps(1)} />
+          <Tab label="Sign In" {...a11yProps(0)} className='authentication__tab' />
+          <Tab label="Sign Up" {...a11yProps(1)} className='authentication__tab' />
         </Tabs>
       </AppBar>
         <TabPanel value={value} index={0} dir={theme.direction}>

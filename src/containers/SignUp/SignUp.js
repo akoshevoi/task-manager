@@ -1,17 +1,17 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import Input from '../Input';
-import InputPassword from '../InputPassword';
-import FormButton from '../FormButton';
+import React, {useState} from 'react';
+import SignUpForm from '../../components/SignUpForm';
 
 const SignUp = () => {
   const [values, setValues] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    confirmPassword: ''
+  });
+
+  const [showingPassword, setShowingPassword] = useState({
     showPassword: false,
-    showConfirmPassword: false,
-    isDisabledSubmitBtn: false
+    showConfirmPassword: false
   });
 
   const [isGlowError, setIsGlowError] = useState({
@@ -26,39 +26,75 @@ const SignUp = () => {
     email: ' ',
     password: ' ',
     confirmPassword: ' ',
+    formSubmit: ''
   });
 
-
-/*
-  const setDisabledStateSubmitBtn = () => {
-    console.log(isGlowError);
-  }
-*/
-  const setDisabledStateSubmitBtn = useCallback(
-    () => {
-
-      for (let key in isGlowError) {
-        if (isGlowError[key]) {
-          console.log('disabled');
-         
-        } 
+  const getInfoAboutEmptyInputs = () => {
+    const objectLength = Object.keys(values).length;
+    let qtyFilledInputs = 0;
+    
+    for (let key in values) {
+      if (values[key].length > 0) {
+        qtyFilledInputs++;
       }
+    } 
+
+    return objectLength === qtyFilledInputs 
+      ? true
+      : false
+  };
+
+  const getInfoAboutValidInputs = () => {
+    const objectLength = Object.keys(values).length;
+    let qtyValidInputs = 0;
+
+    for (let key in isGlowError) {
+      if (isGlowError[key] === false) {
+        qtyValidInputs++;
+      }
+    }
+
+    return objectLength === qtyValidInputs
+      ? true
+      : false
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    const conditionEmptyInputs = getInfoAboutEmptyInputs();
+    const conditionValidInputs = getInfoAboutValidInputs();
+
+    if (!conditionEmptyInputs) {
+      console.log('empty inputs');
       
-     console.log(isGlowError);
-    },
-    [isGlowError]
-  )
-  
-  useEffect(() => {
-    setDisabledStateSubmitBtn();
-  }, [setDisabledStateSubmitBtn])
+      setHelperTexts({
+        ...helperTexts,
+        formSubmit: 'Fill all inputs'
+      }); 
+    } else if (!conditionValidInputs) {
+      console.log('valid inputs');
+
+      setHelperTexts({
+        ...helperTexts,
+        formSubmit: 'Check validity inputs'
+      }); 
+    } else {
+      console.log('submit form');
+
+      setHelperTexts({
+        ...helperTexts,
+        formSubmit: ' '
+      }); 
+    }
+  }
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
   const handleClickShowPassword = prop => () => {
-    setValues({ ...values, [prop]: !values[prop] });
+    setShowingPassword({ ...showingPassword, [prop]: !showingPassword[prop] });
   };
 
   const handleMouseDownPassword = event => {
@@ -67,13 +103,6 @@ const SignUp = () => {
 
   const setErrorState = (prop, condition, text) => {
     if (condition) {
-      /*
-      setValues({
-        ...values,
-        isDisabledSubmitBtn: true
-      });
-      */
- 
       setIsGlowError({
         ...isGlowError,
         [prop]: true
@@ -83,13 +112,6 @@ const SignUp = () => {
         [prop]: text
       }); 
     } else {
-      /*
-      setValues({
-        ...values,
-        isDisabledSubmitBtn: false
-      });
-      */
-       
       setIsGlowError({
         ...isGlowError,
         [prop]: false
@@ -167,59 +189,31 @@ const SignUp = () => {
   }
 
   return (
-    <div className='authentication'>
-      <div className='container'>
-        <form className='authentication__form'>
-          <Input 
-            value={values.name}
-            isGlowError={isGlowError.name} 
-            label='Enter name' 
-            helperText={helperTexts.name}
-            onChange={handleChange('name')}
-            onBlur={checkEmptyInputs('name')}
-          />
-          <Input 
-            value={values.email}
-            isGlowError={isGlowError.email} 
-            label='Enter email' 
-            helperText={helperTexts.email}
-            onChange={handleChange('email')}
-            onBlur={checkEmailCorrect('email')}
-          />
-          <InputPassword 
-            label='Enter password'
-            isGlowError={isGlowError.password}
-            value={values.password}
-            onChange={handleChange('password')}
-            onBlur={checkPasswordCorrect('password')}
-            onClick={handleClickShowPassword('showPassword')}
-            isShowPassword={values.showPassword}
-            helperText = {helperTexts.password}
-            onMouseDown={handleMouseDownPassword}
-            idInput='outlined-adornment-password'
-            idHelperText='standard-password-helper-text'
-            labelWidth={115}
-          />
-          <InputPassword 
-            label='Confirm password'
-            isGlowError={isGlowError.confirmPassword}
-            value={values.confirmPassword}
-            onChange={handleChange('confirmPassword')}
-            onBlur={checkConfirmPasswordCorrect('confirmPassword')}
-            onClick={handleClickShowPassword('showConfirmPassword')}
-            isShowPassword={values.showConfirmPassword}
-            helperText = {helperTexts.confirmPassword}
-            onMouseDown={handleMouseDownPassword}
-            idInput='outlined-adornment-confirmPassword'
-            idHelperText='standard-confirmPassword-helper-text'
-            labelWidth={130}
-          />
-          <FormButton 
-            name='Sign Up'
-            disabled={values.isDisabledSubmitBtn}
-          />
-        </form>
-      </div>
+    <div className='container'>
+      <SignUpForm 
+        values={values}
+        setValues={setValues}
+        showingPassword={showingPassword} 
+        setShowingPassword={setShowingPassword}
+        isGlowError={isGlowError}
+        setIsGlowError={setIsGlowError}
+        helperTexts={helperTexts}
+        setHelperTexts={setHelperTexts}
+        getInfoAboutEmptyInputs={getInfoAboutEmptyInputs}
+        getInfoAboutValidInputs={getInfoAboutValidInputs}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        handleClickShowPassword={handleClickShowPassword}
+        handleMouseDownPassword={handleMouseDownPassword}
+        setErrorState={setErrorState}
+        checkEmptyInputs={checkEmptyInputs}
+        checkEmailValidity={checkEmailValidity}
+        checkPasswordValidity={checkPasswordValidity}
+        checkEqualityOfPasswords={checkEqualityOfPasswords}
+        checkEmailCorrect={checkEmailCorrect}
+        checkPasswordCorrect={checkPasswordCorrect}
+        checkConfirmPasswordCorrect={checkConfirmPasswordCorrect}
+      />
     </div>
   );
 };
