@@ -9,9 +9,11 @@ import Header from '../../layouts/Header';
 import Paper from '@material-ui/core/Paper';
 import * as ROUTES from '../../constants/routes';
 import {firebaseApp} from '../../firebaseConfig';
+import {getDocument} from '../../api/users';
 
 const ProjectsBoard = () => {
   const userID = useSelector(state => state.user.uid);
+  const userEmail = useSelector(state => state.user.email);
   const projectsArray = useSelector(state => state.projects);
   const projects = useSelector(state => {
     let projectsNameArray = [];
@@ -35,7 +37,7 @@ const ProjectsBoard = () => {
     if (project.length > 0) {
       dispatch(addingProject(project));
     };
-
+    /*
     firebaseApp.firestore().collection('users').doc(userID).update({
       projects: [
         ...projectsArray,
@@ -47,7 +49,63 @@ const ProjectsBoard = () => {
         }
       ]
     });
+    */    
+    getDocument(firebaseApp.firestore(), userEmail, userID, projectsArray, project)
+    /*
+    const projectRef = firebaseApp.firestore().collection('users').doc('dHSXgvkNXHXHmO5xtzitzOGErmE3');
+    const doc = projectRef.get();
+    console.log(doc.exists);
+    */
+    //getDocument(firebaseApp.firestore());
+    //getDocument(firebaseApp.firestore())
 
+    /*
+      if (!projectRef.exists) {
+        console.log('No such document!');
+        projectRef.add({
+          userId: userID,
+          projectsList: [
+            ...projectsArray,
+            {
+              name: project,
+              tasks: {
+                taskList: []
+              }
+            }
+          ]
+        })
+      } else {
+        console.log('Document data');
+        projectRef.update({
+          projects: [
+            ...projectsArray,
+            {
+              name: project,
+              tasks: {
+                taskList: []
+              }
+            }
+          ]
+        });
+      }
+*/
+    //console.log(firebaseApp.firestore().collection('projects').get().data());
+    
+
+    /*
+    firebaseApp.firestore().collection('projects').add({
+      userId: userID,
+      projectsList: [
+        ...projectsArray,
+        {
+          name: project,
+          tasks: {
+            taskList: []
+          }
+        }
+      ]
+    })
+    */
     setProject('');
   }
 

@@ -1,8 +1,15 @@
 import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {useSelector} from 'react-redux';
+import {getDocument1} from '../../api/users';
+import {firebaseApp} from '../../firebaseConfig';
 
 const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) => {
+  const projectsArray = useSelector(state => state.projects);
+  const userEmail = useSelector(state => state.user.email);
+  console.log(projectsArray);
+
   const [description, setDescription] = useState('');
 
   const handleChange = event => {
@@ -16,6 +23,7 @@ const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) 
     if (description.length > 0) {
       dispatchAction(action(projectName, currentTask, description));
     }
+    getDocument1(firebaseApp.firestore(), userEmail,  projectsArray);
     setDescription('');
   };
 

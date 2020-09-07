@@ -1,13 +1,19 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {changingStatusTask, showingModal} from '../../redux/actions/actions';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import {getDocument1} from '../../api/users';
+import {firebaseApp} from '../../firebaseConfig';
 
 const TaskName = ({task, statusTask, projectName}) => {
+  const projectsArray = useSelector(state => state.projects);
+  const userEmail = useSelector(state => state.user.email);
+  console.log(projectsArray);
+  
   const [status, setStatus] = useState(statusTask);
   const dispatch = useDispatch();
   
@@ -15,6 +21,7 @@ const TaskName = ({task, statusTask, projectName}) => {
     const status = event.target.value;
     setStatus(status);
     dispatch(changingStatusTask(projectName, task, event.target.value));
+    getDocument1(firebaseApp.firestore(), userEmail,  projectsArray);
   };
 
   const openModal = () => {
