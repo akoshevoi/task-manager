@@ -1,7 +1,17 @@
 import React, {useState} from 'react';
 import SignUpForm from '../../components/SignUpForm';
+import {createUserWithEmailAndPassword} from '../../api/auth';
+import {saveUserById} from '../../api/users';
+import {useDispatch} from 'react-redux';
+import {authenticationUser} from '../../redux/actions/actions';
+import {useHistory} from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
+import { firebaseApp } from '../../firebaseConfig';
 
 const SignUp = () => {
+  let history = useHistory();
+  const dispatch = useDispatch();
+
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -66,26 +76,57 @@ const SignUp = () => {
     const conditionValidInputs = getInfoAboutValidInputs();
 
     if (!conditionEmptyInputs) {
-      console.log('empty inputs');
-      
       setHelperTexts({
         ...helperTexts,
         formSubmit: 'Fill all inputs'
       }); 
     } else if (!conditionValidInputs) {
-      console.log('valid inputs');
-
       setHelperTexts({
         ...helperTexts,
         formSubmit: 'Check validity inputs'
       }); 
     } else {
-      console.log('submit form');
-
       setHelperTexts({
         ...helperTexts,
         formSubmit: ' '
       }); 
+
+      createUserWithEmailAndPassword(values.email, values.password)
+      .then(authUser => {
+        saveUserById(authUser.uid, {
+          uid: authUser.uid,
+          name: values.name,
+          email: values.email, 
+          password: values.password,
+          projects: [
+            {
+              name: '',
+              tasks: {
+                taskList: []
+              }
+            }
+          ]
+        })
+          dispatch(authenticationUser(authUser));
+          history.push(ROUTES.PROJECTS_BOARD);
+        //return firebaseApp.auth().currentUser
+      })
+      /*
+      .then(user => {
+        user.updateProfile({
+          displayName: values.name
+        })
+        dispatch(authenticationUser(user));
+        history.push(ROUTES.PROJECTS_BOARD);
+      });
+      */
+
+      setValues({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
     }
   }
 

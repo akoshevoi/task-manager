@@ -1,8 +1,16 @@
 import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {firebaseApp} from '../../firebaseConfig';
+import {useSelector} from 'react-redux';
 
 const AddTaskForm = ({statusTask, projectName, dispatchAction}) => {
+  const userID = useSelector(state => state.user.uid);
+  const searchingTask = useSelector(state => {
+    state.projects.find(item => {
+      return item.name === projectName
+    })
+  });
   const [task, setTask] = useState('');
 
   const handleChange = event => {
@@ -20,6 +28,13 @@ const AddTaskForm = ({statusTask, projectName, dispatchAction}) => {
         subTasks: []
       });
     }
+
+    console.log(searchingTask);
+
+    firebaseApp.firestore().collection('users').doc(userID).update({
+    
+    });
+
     setTask('');
   };
 

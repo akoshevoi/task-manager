@@ -32,7 +32,6 @@ export const projects = (state = initialState, {type, payload}) => {
               taskList: []
             }
           }
-          
         ]
       } else {
         return [

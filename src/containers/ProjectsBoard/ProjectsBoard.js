@@ -8,8 +8,11 @@ import Button from '@material-ui/core/Button';
 import Header from '../../layouts/Header';
 import Paper from '@material-ui/core/Paper';
 import * as ROUTES from '../../constants/routes';
+import {firebaseApp} from '../../firebaseConfig';
 
 const ProjectsBoard = () => {
+  const userID = useSelector(state => state.user.uid);
+  const projectsArray = useSelector(state => state.projects);
   const projects = useSelector(state => {
     let projectsNameArray = [];
     for (let i = 0; i < state.projects.length; i++) {
@@ -31,7 +34,20 @@ const ProjectsBoard = () => {
     event.preventDefault();
     if (project.length > 0) {
       dispatch(addingProject(project));
-    }
+    };
+
+    firebaseApp.firestore().collection('users').doc(userID).update({
+      projects: [
+        ...projectsArray,
+        {
+          name: project,
+          tasks: {
+            taskList: []
+          }
+        }
+      ]
+    });
+
     setProject('');
   }
 

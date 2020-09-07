@@ -1,7 +1,15 @@
 import React, {useState} from 'react';
 import SignInForm from '../../components/SignInForm';
+import {signInWithEmailAndPassword} from '../../api/auth';
+import {useDispatch} from 'react-redux';
+import {authenticationUser} from '../../redux/actions/actions';
+import {useHistory} from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
 
 const SignIn = () => {
+  let history = useHistory();
+  const dispatch = useDispatch();
+
   const [values, setValues] = useState({
     email: '',
     password: ''
@@ -58,30 +66,45 @@ const SignIn = () => {
 
     const conditionEmptyInputs = getInfoAboutEmptyInputs();
     const conditionValidInputs = getInfoAboutValidInputs();
-
+    
     if (!conditionEmptyInputs) {
-      console.log('empty inputs');
-      
       setHelperTexts({
         ...helperTexts,
         formSubmit: 'Fill all inputs'
       }); 
     } else if (!conditionValidInputs) {
-      console.log('valid inputs');
-
       setHelperTexts({
         ...helperTexts,
         formSubmit: 'Check validity inputs'
       }); 
     } else {
-      console.log('submit form');
-
       setHelperTexts({
         ...helperTexts,
         formSubmit: ' '
       }); 
+
+      signInWithEmailAndPassword(values.email, values.password)
+        .then(authUser => {
+          dispatch(authenticationUser(authUser));
+          history.push(ROUTES.PROJECTS_BOARD);
+        })
+        .catch(error => {
+          setHelperTexts({
+            ...helperTexts,
+            formSubmit: error.message
+          });
+        })
+      
+      setValues({
+        email: '',
+        password: ''
+      });
+
+
     }
   }
+
+
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });

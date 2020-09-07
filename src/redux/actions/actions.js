@@ -5,7 +5,8 @@ import {
   ADD_SUB_TASK, 
   CHANGE_STATUS_TASK,
   CHANGE_STATUS_SUB_TASK,
-  ADD_DESCRIPTION_TO_TASK
+  ADD_DESCRIPTION_TO_TASK,
+  USER_AUTHENTICATED
 } from '../types/types';
 
 export const addingProject = project => ({
@@ -44,3 +45,8 @@ export const addingDescriptionToTask = (project, task, description) => ({
   type: ADD_DESCRIPTION_TO_TASK,
   payload: {project, task, description}
 });
+
+export const authenticationUser = user => ({
+  type: USER_AUTHENTICATED,
+  payload: {...user}
+})

@@ -2,7 +2,6 @@ import React from 'react';
 import Input from '../Input';
 import InputPassword from '../InputPassword';
 import FormButton from '../FormButton';
-import {appFirebase} from '../../firebase/config';
 
 const SignInForm = ({
   values, 
@@ -26,8 +25,6 @@ const SignInForm = ({
   checkEmailCorrect,
   checkPasswordCorrect,
 }) => {
-  console.log(appFirebase);
-  
   return (
     <form className='authentication__form' onSubmit={handleSubmit}>
       <Input 
