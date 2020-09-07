@@ -97,15 +97,7 @@ const SignUp = () => {
           uid: authUser.uid,
           name: values.name,
           email: values.email, 
-          password: values.password,
-          projects: [
-            {
-              name: '',
-              tasks: {
-                taskList: []
-              }
-            }
-          ]
+          password: values.password
         })
           dispatch(authenticationUser(authUser));
           history.push(ROUTES.PROJECTS_BOARD);
