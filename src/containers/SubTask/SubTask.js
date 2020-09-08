@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {changingStatusSubTask} from '../../redux/actions/actions';
-import {getDocument1} from '../../api/users';
+import {addProjectsArrayToDB} from '../../api/projects';
 import {firebaseApp} from '../../firebaseConfig';
 
 const SubTask = ({
@@ -20,7 +20,7 @@ const SubTask = ({
     dispatch(changingStatusSubTask(
       projectName, currentTask, nameCheckbox, isCheckedCheckbox
     ));
-    getDocument1(firebaseApp.firestore(), userEmail,  projectsArray);
+    addProjectsArrayToDB(firebaseApp.firestore(), userEmail,  projectsArray);
     calculateProgressBarLength();
   }
   return (

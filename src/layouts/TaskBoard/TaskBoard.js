@@ -2,6 +2,7 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 import {generate} from 'shortid';
 import Column from '../../containers/Column';
+import withAuth from '../../HOC';
 
 const TaskBoard = () => {
   let params = useParams();
@@ -22,4 +23,4 @@ const TaskBoard = () => {
   );
 };
 
-export default TaskBoard;
+export default withAuth(TaskBoard);

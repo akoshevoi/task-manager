@@ -48,5 +48,5 @@ export const addingDescriptionToTask = (project, task, description) => ({
 
 export const authenticationUser = user => ({
   type: USER_AUTHENTICATED,
-  payload: {...user}
+  payload: user
 })

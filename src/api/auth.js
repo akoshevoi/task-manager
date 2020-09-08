@@ -10,7 +10,8 @@ export const createUserWithEmailAndPassword = (email, password) => {
 export const signInWithEmailAndPassword = (email, password) => {
   return firebaseApp  
     .auth()
-    .signInWithEmailAndPassword(email, password);
+    .signInWithEmailAndPassword(email, password)
+    .then(async ({user}) => user);
 };
 
 export const signOut = () => {

@@ -1,25 +1,18 @@
 import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
+import {firebaseApp} from '../../firebaseConfig';
+import {addProjectsArrayToDB} from '../../api/projects';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {firebaseApp} from '../../firebaseConfig';
-import {getDocument1} from '../../api/users';
-import {useSelector} from 'react-redux';
+import {foo} from '../../api/projects';
+
 
 const AddTaskForm = ({statusTask, projectName, dispatchAction}) => {
-  const userID = useSelector(state => state.user.uid);
+  const [task, setTask] = useState('');
+
+  const user = useSelector(state => state.user);
   const userEmail = useSelector(state => state.user.email);
   const projectsArray = useSelector(state => state.projects);
-  const searchingProject = useSelector(state => {
-    return state.projects.find(item => {
-      return item.name === projectName
-    })
-  });
-  const searchingProjectIndex = useSelector(state => {
-    return state.projects.findIndex(item => {
-      return item.name === projectName
-    })
-  });
-  const [task, setTask] = useState('');
 
   const handleChange = event => {
     const value = event.target.value;
@@ -28,6 +21,7 @@ const AddTaskForm = ({statusTask, projectName, dispatchAction}) => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    /*
     if (task.length > 0) {
       dispatchAction(projectName, {
         name: task, 
@@ -35,13 +29,17 @@ const AddTaskForm = ({statusTask, projectName, dispatchAction}) => {
         description: '', 
         subTasks: []
       });
+    
+     
     }
-
-    
-    getDocument1(firebaseApp.firestore(), userEmail,  projectsArray);
-    
-    
-
+    */
+    //addProjectsArrayToDB(firebaseApp.firestore(), userEmail,  projectsArray);
+    async function fetch() {
+      const res = await foo(user.uid, projectName, task);
+      return res;
+    }
+    console.log(fetch());
+    console.log(projectName);
     setTask('');
   };
 

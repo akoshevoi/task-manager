@@ -99,12 +99,8 @@ const SignIn = () => {
         email: '',
         password: ''
       });
-
-
     }
   }
-
-
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });

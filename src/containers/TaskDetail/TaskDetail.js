@@ -10,43 +10,6 @@ import AddDescriptionForm from '../../components/AddDescriptionForm';
 
 
 const TaskDetail = ({currentTask, isShow, projectName}) => {
-  /*
-  useSelector(state => { 
-    for (let project of state.projects) {
-      if (project.name === projectName) {
-        for (let task of project.tasks.taskList) {
-          if (task.name === currentTask.name) {
-            return task.subTasks;
-          }
-        }
-      }
-    }
-  });
-
-  useSelector(state => { 
-    for (let project of state.projects) {
-      if (project.name === projectName) {
-        for (let task of project.tasks.taskList) {
-          if (task.name === currentTask.name) {
-            return task.description;
-          }
-        }
-      }
-    }
-  });
-
-  useSelector(state => { 
-    for (let project of state.projects) {
-      if (project.name === projectName) {
-        for (let task of project.tasks.taskList) {
-          if (task.name === currentTask.name) {
-            return task.status;
-          }
-        }
-      }
-    }
-  });
-  */
   const [progressBarLength, setProgressBarLength] = useState(0);
   const dispatch = useDispatch();
 

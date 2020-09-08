@@ -214,3 +214,25 @@ const App = () => {
   );
 };
 export default App;
+
+export const pushUserSelfIdeas = async (category, text, uid) => {
+  try {
+    await firebaseDB
+      .collection(COLLECTION_NAME)
+      .doc(uid)
+      .update({
+        selfIdeas: firebase.firestore.FieldValue.arrayUnion({
+          category,
+          text,
+        }),
+      });
+  } catch (err) {
+    console.error(err);
+  }
+};
+white_check_mark
+eyes
+raised_hands
+
+2:43
+import * as firebase from 'firebase/app';

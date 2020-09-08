@@ -6,22 +6,23 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
-import {getDocument1} from '../../api/users';
+import {addProjectsArrayToDB, foo} from '../../api/projects';
 import {firebaseApp} from '../../firebaseConfig';
 
 const TaskName = ({task, statusTask, projectName}) => {
-  const projectsArray = useSelector(state => state.projects);
-  const userEmail = useSelector(state => state.user.email);
-  console.log(projectsArray);
-  
   const [status, setStatus] = useState(statusTask);
+  
+  //const projectsArray = useSelector(state => state.projects);
+  const user = useSelector(state => state.user);
+  console.log(task);
+  
   const dispatch = useDispatch();
   
   const handleChange = (event) => {
     const status = event.target.value;
     setStatus(status);
     dispatch(changingStatusTask(projectName, task, event.target.value));
-    getDocument1(firebaseApp.firestore(), userEmail,  projectsArray);
+    //addProjectsArrayToDB(firebaseApp.firestore(), userEmail,  projectsArray);
   };
 
   const openModal = () => {

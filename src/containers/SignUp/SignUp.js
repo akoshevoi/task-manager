@@ -6,7 +6,6 @@ import {useDispatch} from 'react-redux';
 import {authenticationUser} from '../../redux/actions/actions';
 import {useHistory} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import { firebaseApp } from '../../firebaseConfig';
 
 const SignUp = () => {
   let history = useHistory();
@@ -96,22 +95,11 @@ const SignUp = () => {
         saveUserById(authUser.uid, {
           uid: authUser.uid,
           name: values.name,
-          email: values.email, 
-          password: values.password
+          email: values.email
         })
           dispatch(authenticationUser(authUser));
           history.push(ROUTES.PROJECTS_BOARD);
-        //return firebaseApp.auth().currentUser
       })
-      /*
-      .then(user => {
-        user.updateProfile({
-          displayName: values.name
-        })
-        dispatch(authenticationUser(user));
-        history.push(ROUTES.PROJECTS_BOARD);
-      });
-      */
 
       setValues({
         name: '',
