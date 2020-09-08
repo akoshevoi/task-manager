@@ -14,7 +14,7 @@ const TaskDetail = ({currentTask, isShow, projectName}) => {
   const dispatch = useDispatch();
 
   const calculateProgressBarLength = useCallback(() => {
-    if(currentTask.subTasks.length > 0) {
+    if(currentTask.subTasks && currentTask.subTasks.length > 0) {
       const totalLength = currentTask.subTasks.length;
       const doneLength = currentTask.subTasks.filter(item => item.done === true).length;
       const ratio = totalLength / doneLength;

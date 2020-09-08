@@ -16,13 +16,13 @@ const ProjectsBoard = () => {
   const [projectsFromDB, setProjectsFromDB] = useState([]);
 
   const user = useSelector(state => state.user);
-
   const dispatch = useDispatch();
-
   let history = useHistory();
 
   const checkProjectNameOnRepeating = () => {
-    const repeatingProjectsName = projectsFromDB.find(projectItem => projectItem.name === project);
+    const repeatingProjectsName = projectsFromDB.find(
+      projectItem => projectItem.name === project
+    );
     return repeatingProjectsName 
     ? false
     : true;
@@ -54,12 +54,10 @@ const ProjectsBoard = () => {
     }
     
     addProjectsToDB(user.uid, project);
-    
     setProject('');
   }
 
   const goToTaskBoard = projectName => () => history.push(`${ROUTES.TASK_BOARD}/${projectName}`);
-
   
   useEffect(() => {
     async function fetch() {

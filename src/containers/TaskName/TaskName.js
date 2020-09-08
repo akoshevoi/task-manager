@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {changingStatusTask, showingModal} from '../../redux/actions/actions';
 import Paper from '@material-ui/core/Paper';
@@ -6,29 +6,42 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
-import {addProjectsArrayToDB, foo} from '../../api/projects';
+import {addProjectsArrayToDB, changeStatusTaskInDB, getTaskfromDB} from '../../api/projects';
 import {firebaseApp} from '../../firebaseConfig';
 
 const TaskName = ({task, statusTask, projectName}) => {
   const [status, setStatus] = useState(statusTask);
+  const [taskStatusFromDB, setTaskStatusFromDB] = useState(statusTask);
   
   //const projectsArray = useSelector(state => state.projects);
   const user = useSelector(state => state.user);
-  console.log(task);
+  //console.log(task);
   
   const dispatch = useDispatch();
   
   const handleChange = (event) => {
     const status = event.target.value;
     setStatus(status);
-    dispatch(changingStatusTask(projectName, task, event.target.value));
+    //dispatch(changingStatusTask(projectName, task, event.target.value));
     //addProjectsArrayToDB(firebaseApp.firestore(), userEmail,  projectsArray);
+    changeStatusTaskInDB(user.uid, projectName, task, status);
   };
 
   const openModal = () => {
     dispatch(showingModal(true, task));
   }
+
+  useEffect(() => {
     
+    async function fetch() {
+      const fetchedTasks = await getTaskfromDB(user.uid, projectName, task);
+      
+      setStatus(fetchedTasks.status);
+    }
+    fetch();
+  
+  }, [user, projectName, task]);
+
   return (
     <div className='task-name'>
       <Paper>

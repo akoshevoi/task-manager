@@ -12,12 +12,24 @@ const checkProjectNameOnRepeating = async (userId, project) => {
   return repeatingProjectsName 
   ? false
   : true;
-}
+};
 
+const checkTaskNameOnRepeating = async (userId, projectName, taskName, statusTask) => {
+  const projectRef = db.collection('projects').where('userId', '==', userId);
+  const projectSnap = await projectRef.get();
+  const docs = projectSnap.docs;
+  const projects = docs.map(projectItem => projectItem.data());
+  const project = projects.find(project => project.name === projectName);
+  const taskArray = project.tasks.taskList;
+  const repeatingTaskName = taskArray.find(taskItem => taskItem.name === taskName);
+  return repeatingTaskName 
+  ? false
+  : true;
+}
 
 export const addProjectsToDB = async (userId, project) => {
   const conditionAddingProjectToDB = await checkProjectNameOnRepeating(userId, project);
-  if (conditionAddingProjectToDB) {
+  if (conditionAddingProjectToDB && project.length > 0) {
     const projectRef = db.collection('projects');
     const projectItem = await projectRef.add({
       userId, 
@@ -78,25 +90,97 @@ export const getProjectsFromDB = async userId => {
   return projects;
 }
 
-export const foo = async (userId, projectName, taskName) => {
+export const getTasksfromDB = async (userId, projectName) => {
   const projectsArray = await getProjectsFromDB(userId);
   const project = projectsArray.find(projectItem => projectItem.name === projectName);
-  console.log(project);
+  return project.tasks.taskList;
+}
+
+export const getTaskfromDB = async (userId, projectName, task) => {
+  const projectsArray = await getProjectsFromDB(userId);
+  const project = projectsArray.find(projectItem => projectItem.name === projectName);
+  const searchingTask = project.tasks.taskList.find(projectItem => projectItem.name === task.name);
+  return searchingTask;
+}
+
+export const addTaskToDB = async (userId, projectName, taskName, statusTask) => {
+  const conditionAddingTaskToDB = await checkTaskNameOnRepeating(userId, projectName, taskName, statusTask);
+
+  if (conditionAddingTaskToDB && taskName.length > 0)  {
+    const projectsArray = await getProjectsFromDB(userId);
+    const project = projectsArray.find(projectItem => projectItem.name === projectName);
+    const docRef = db.collection('projects').doc(project.projectId);
+    await docRef.update({
+      ...project,
+      'tasks.taskList': [
+        ...project.tasks.taskList,
+        {
+          name: taskName,
+          status: statusTask,
+          description: '',
+          subtasks: []
+        }
+      ]
+    })
+  }
+}
+
+export const changeStatusTaskInDB = async (userId, projectName, task, status) => {
+  const projectsArray = await getProjectsFromDB(userId);
+  const project = projectsArray.find(projectItem => projectItem.name === projectName);
   const docRef = db.collection('projects').doc(project.projectId);
-  console.log(docRef);
-  await docRef.update({
-    'tasks.taskList:':{
-    name: taskName,
-    description: '',
-    subtasks: []
-    }
-  })
+  const gettedDoc = await docRef.get();
+  const taskList = gettedDoc.data().tasks.taskList;
+  const findingTask = taskList.find(taskItem => taskItem.name === task.name);
+  const changingTask = findingTask.status = status;
   
   /*
-  return project.tasks.taskList.update({
-    name: taskName,
-    description: '',
-    subtasks: []
+  await docRef.update({
+    ...project,
+    'tasks.taskList': firebase.firestore.FieldValue.arrayUnion({...task, status})
   })
   */
+  /*
+  await docRef.update({
+    ...project,
+    'tasks.taskList': [
+      ...project.tasks.taskList,
+      {...task, status}
+    ]
+  })
+  */
+  /*
+  await docRef.update({
+    ...project,
+    'tasks.taskList': [
+      ...project.tasks.taskList,
+      firebase.firestore.FieldValue.arrayRemove(task),
+      firebase.firestore.FieldValue.arrayUnion({...task, status})
+    ]
+  })
+  */
+  await docRef.update({
+    ...project,
+    'tasks.taskList': [...taskList]
+  })
+}
+
+export const addDescriptionToDB = async (userId, projectName, taskName, description) => {
+  const projectsArray = await getProjectsFromDB(userId);
+  const project = projectsArray.find(projectItem => projectItem.name === projectName);
+  const docRef = db.collection('projects').doc(project.projectId);
+  const gettingDoc = await docRef.get();
+  const gettingData = gettingDoc.data();
+  const searchingTask = gettingData.tasks.taskList.find(taskItem => taskItem.name === taskName);
+  console.log(searchingTask);
+  await docRef.update({
+    ...project,
+    'tasks.taskList': [
+      //...project.tasks.taskList,
+      {
+        ...searchingTask,
+        description
+      }
+    ]
+  })
 }

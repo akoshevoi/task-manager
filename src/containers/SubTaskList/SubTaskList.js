@@ -5,7 +5,7 @@ import SubTask from '../SubTask';
 const SubTaskList = ({projectName, currentTask, calculateProgressBarLength}) => {
   return (
     <div className='sub-tasks'>
-      {currentTask.subTasks.map(task => {
+      {currentTask.subTasks && currentTask.subTasks.map(task => {
         let uid = generate();
           return (
             <SubTask 

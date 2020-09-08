@@ -6,13 +6,13 @@ import {generate} from 'shortid';
 import AddTaskForm from '../../components/AddTaskForm';
 import TaskName from '../TaskName';
 import TaskDetail from '../TaskDetail';
-import {getProjectsFromDB} from '../../api/projects'; 
+import {getProjectsFromDB, getTasksfromDB} from '../../api/projects'; 
 
 const Column = ({statusTask}) => {
-  const [projectsFromDB, setProjectsFromDB] = useState([]);
-
+  //const [projectFromDB, setProjectFromDB] = useState([]);
+  const [tasksFromDB, setTasksFromDB] = useState([]);
+  
   const user = useSelector(state => state.user);
-
   let params = useParams();
 
 /*
@@ -31,15 +31,23 @@ const Column = ({statusTask}) => {
   const dispatchAction = (...args) => {
     dispatch(addingTask(...args))
   }  
-
+/*
   useEffect(() => {
     async function fetch() {
       const fetchedProjects = await getProjectsFromDB(user.uid);
-      setProjectsFromDB(fetchedProjects);
+      setProjectFromDB(fetchedProjects);
     }
     fetch();
   }, [user]);
-
+*/
+  useEffect(() => {
+    async function fetch() {
+      const fetchedTasks = await getTasksfromDB(user.uid, params.projectName);
+      setTasksFromDB(fetchedTasks);
+    }
+    fetch();
+  }, [user, params]);
+  
   return (
     <div className='column'>
       <h3 className='column__title'>{statusTask}</h3>
@@ -47,8 +55,10 @@ const Column = ({statusTask}) => {
         statusTask={statusTask} 
         projectName={params.projectName} 
         dispatchAction={dispatchAction}
+        setTasksFromDB={setTasksFromDB}
+        tasksFromDB={tasksFromDB}
       />
-       {projectsFromDB.map(task => {
+       {tasksFromDB.map(task => {
         let uid = generate();  
         return (
           task.status === statusTask
@@ -60,7 +70,7 @@ const Column = ({statusTask}) => {
             />
           : null
         )
-      })} 
+      })}
       <TaskDetail 
         currentTask={currentTask} 
         isShow={isShow} 
