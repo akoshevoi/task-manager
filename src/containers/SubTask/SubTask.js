@@ -1,8 +1,6 @@
 import React from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {changingStatusSubTask} from '../../redux/actions/actions';
-import {addProjectsArrayToDB} from '../../api/projects';
-import {firebaseApp} from '../../firebaseConfig';
 
 const SubTask = ({
   task, 
@@ -11,8 +9,6 @@ const SubTask = ({
   calculateProgressBarLength
 }) => {
   const dispatch = useDispatch();
-  const projectsArray = useSelector(state => state.projects);
-  const userEmail = useSelector(state => state.user.email);
 
   const handleChangeCheckbox = event => {
     let isCheckedCheckbox = event.target.checked;
@@ -20,7 +16,6 @@ const SubTask = ({
     dispatch(changingStatusSubTask(
       projectName, currentTask, nameCheckbox, isCheckedCheckbox
     ));
-    addProjectsArrayToDB(firebaseApp.firestore(), userEmail,  projectsArray);
     calculateProgressBarLength();
   }
   return (

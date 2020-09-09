@@ -16,19 +16,19 @@ const searchingSubTask = (state, payload) => {
   });
 };
 
-
 export const checkRepeatingProjectName = (state, payload) => {
   const a = state.find(item => item.name === payload);
   return !a ? true : false; 
 }
 
 export const addTaskToProject = (state, payload) => {
-  const findingProject = searchingProject(state, payload);
-  const findingTask = searchingTask(state, payload);
-  if (!(findingTask && payload.task.name === findingTask.name)) {
-    findingProject.tasks.taskList.push(payload.task);
-  }
-  return state;
+  return state.projectList.map(p => {
+    if (p.name === payload.project.name){
+      p.taskList.push(payload.task);
+      return {...p }
+    }
+    return p;
+  })
 };
 
 export const changingStatusTask = (state, payload) => {

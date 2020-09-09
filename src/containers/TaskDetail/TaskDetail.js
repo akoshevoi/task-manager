@@ -8,7 +8,6 @@ import SubTaskList from '../SubTaskList';
 import AddSubTaskForm from '../../components/AddSubTaskForm';
 import AddDescriptionForm from '../../components/AddDescriptionForm';
 
-
 const TaskDetail = ({currentTask, isShow, projectName}) => {
   const [progressBarLength, setProgressBarLength] = useState(0);
   const dispatch = useDispatch();

@@ -1,15 +1,11 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {firebaseApp} from '../../firebaseConfig';
-import {addProjectsArrayToDB, addDescriptionToDB} from '../../api/projects';
+import {addDescriptionToDB} from '../../api/projects';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) => {
   const [description, setDescription] = useState('');
-
-  const projectsArray = useSelector(state => state.projects);
-  //const userEmail = useSelector(state => state.user.email);
   const user = useSelector(state => state.user);
 
   const handleChange = event => {
@@ -21,10 +17,8 @@ const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) 
     event.preventDefault();
     
     if (description.length > 0) {
-      //dispatchAction(action(projectName, currentTask, description));
       addDescriptionToDB(user.uid, projectName, currentTask.name, description);
     }
-    //addProjectsArrayToDB(firebaseApp.firestore(), user.email,  projectsArray);
     setDescription('');
   };
 

@@ -1,28 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {addingTask} from '../../redux/actions/actions';
-import {useParams} from 'react-router-dom';
+import {useParams, useLocation, useHistory} from 'react-router-dom';
 import {generate} from 'shortid';
 import AddTaskForm from '../../components/AddTaskForm';
 import TaskName from '../TaskName';
 import TaskDetail from '../TaskDetail';
-import {getProjectsFromDB, getTasksfromDB} from '../../api/projects'; 
+import {getTaskArrayFromDB, getProjectsFromDB} from '../../api/projects'; 
 
 const Column = ({statusTask}) => {
-  //const [projectFromDB, setProjectFromDB] = useState([]);
+
   const [tasksFromDB, setTasksFromDB] = useState([]);
   
   const user = useSelector(state => state.user);
-  let params = useParams();
+  const params = useParams();
+  const history = useHistory();
 
-/*
-  useSelector(state => state.projects);
-    const taskList = useSelector(state => {
-      const projects = state.projects;
-      const project = projects.find(project => project.name === params.projectName);
-      return project.tasks.taskList;
-  });
-*/
   const dispatch = useDispatch();
 
   const currentTask = useSelector(state => state.modal.task);
@@ -31,21 +24,22 @@ const Column = ({statusTask}) => {
   const dispatchAction = (...args) => {
     dispatch(addingTask(...args))
   }  
-/*
-  useEffect(() => {
-    async function fetch() {
-      const fetchedProjects = await getProjectsFromDB(user.uid);
-      setProjectFromDB(fetchedProjects);
+  useEffect(() =>{
+    if (history.action === "POP"){
+      //const project = await getProject(params.projectName)
+      // if (!project){
+      //history.push(ROUTES.PROJECTS_BOARD)  
+      //return
+     // }
+     // setProjectIdToStore(project.id)
     }
-    fetch();
-  }, [user]);
-*/
+  }, [])
   useEffect(() => {
-    async function fetch() {
-      const fetchedTasks = await getTasksfromDB(user.uid, params.projectName);
+    async function fetchTaskArray() {
+      const fetchedTasks = await getTaskArrayFromDB(user.uid, params.projectName);
       setTasksFromDB(fetchedTasks);
     }
-    fetch();
+    fetchTaskArray();
   }, [user, params]);
   
   return (
@@ -58,7 +52,8 @@ const Column = ({statusTask}) => {
         setTasksFromDB={setTasksFromDB}
         tasksFromDB={tasksFromDB}
       />
-       {tasksFromDB.map(task => {
+
+       {/* {tasksFromDB.map(task => {
         let uid = generate();  
         return (
           task.status === statusTask
@@ -70,7 +65,8 @@ const Column = ({statusTask}) => {
             />
           : null
         )
-      })}
+      })} */}
+
       <TaskDetail 
         currentTask={currentTask} 
         isShow={isShow} 

@@ -1,7 +1,4 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {firebaseApp} from '../../firebaseConfig';
-import {addProjectsArrayToDB} from '../../api/projects';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -14,8 +11,6 @@ const AddSubTaskForm = ({
 }) => {
   const [subTask, setSubTask] = useState('');
 
-  const projectsArray = useSelector(state => state.projects);
-  const userEmail = useSelector(state => state.user.email);
   
   const handleChange = event => {
     const value = event.target.value;
@@ -28,7 +23,6 @@ const AddSubTaskForm = ({
       dispatchAction(action(projectName, currentTask, {name: subTask, done: false}));
       calculateProgressBarLength();
     }
-    addProjectsArrayToDB(firebaseApp.firestore(), userEmail,  projectsArray);
     setSubTask('');
   };
   
