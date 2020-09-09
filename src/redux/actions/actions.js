@@ -10,7 +10,6 @@ import {
   SET_PROJECTS_ARRAY_FROM_DB_TO_STORE,
   SET_PROJECT_ID
 } from '../types/types';
-import { projects } from '../reducers/projects';
 
 export const settingProjectArrayFromDbToStore = projectArray => ({
   type: SET_PROJECTS_ARRAY_FROM_DB_TO_STORE,

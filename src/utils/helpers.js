@@ -16,11 +16,6 @@ const searchingSubTask = (state, payload) => {
   });
 };
 
-export const checkRepeatingProjectName = (state, payload) => {
-  const a = state.find(item => item.name === payload);
-  return !a ? true : false; 
-}
-
 export const addTaskToProject = (state, payload) => {
   return state.projectList.map(p => {
     if (p.name === payload.project.name){
@@ -64,3 +59,14 @@ export const addDescriptionToTask = (state, payload) => {
   findingTask.description = payload.description;
   return state;
 }
+
+/*
+ * Utils 
+*/
+
+export const searchElementInArray = (array, element, key) => {
+  return array.find(item => item[key] === element);
+}
+
+export const checkRepeatingProjectName = (projectsArray, projectTitle) => 
+  !!projectsArray.find(project => project.name === projectTitle)

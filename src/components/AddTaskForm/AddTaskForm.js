@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {addTaskToDB} from '../../api/projects';
+import {addTaskToDB, getTaskFromDB} from '../../api/projects';
+import {checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddTaskForm = ({
   statusTask,
@@ -13,24 +14,20 @@ const AddTaskForm = ({
 }) => {
   
   const [taskName, setTaskName] = useState('');
-  const user = useSelector(state => state.user);
-
-  const checkTaskNameOnRepeating = () => {
-    const repeatingTaskName = tasksFromDB.find(
-      taskItem => taskItem.name === taskName
-    );
-    return repeatingTaskName 
-    ? false
-    : true;
-  }
+  const projects = useSelector(state => state.projects);
 
   const handleChange = event => {
     const value = event.target.value;
     setTaskName(value);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
+    if (!taskName.length) {
+      return;
+    }
+
     event.preventDefault();
+    /*
     const conditionAddingTask = checkTaskNameOnRepeating();
     if (taskName.length > 0 && conditionAddingTask) {
       setTasksFromDB([
@@ -43,22 +40,28 @@ const AddTaskForm = ({
         }
       ])
     }
-    async function fetch() {
-      const res = await addTaskToDB(user.uid, projectName, taskName, statusTask);
-      return res;
+    */
+
+    const projectId = projects.activeProject
+    ? projects.activeProject 
+    : localStorage.getItem('activeProjectId');
+    /*
+    const foo = async () => {
+      try {
+        const task = getTaskFromDB(projectId);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    fetch();
+    */
+    const task = await getTaskFromDB(projectId);
+    const conditionSubmitForm = checkRepeatingProjectName(task.tasks.taskList, taskName);
+    if (!conditionSubmitForm) {   
+      await addTaskToDB(projectId, taskName, statusTask);
+    }
     setTaskName('');
   };
-/*
-  useEffect(() => {
-    async function fetch() {
-      const fetchedProjects = await getTasksfromDB(user.uid, projectName);
-      setTasksFromDB(fetchedProjects);
-    }
-    fetch();
-  }, [user, projectName, setTasksFromDB]);
-*/
+
   return (
     <form onSubmit={handleSubmit} className='add-task-form__form'>
       <TextField 

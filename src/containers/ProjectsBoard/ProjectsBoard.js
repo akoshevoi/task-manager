@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import * as ROUTES from '../../constants/routes';
 import {addProjectsToDB, getProjectsFromDB} from '../../api/projects'; 
 import withAuth from '../../HOC';
+import {checkRepeatingProjectName} from '../../utils/helpers';
 
 const ProjectsBoard = () => {
   const [projectName, setProjectName] = useState('');
@@ -29,9 +30,6 @@ const ProjectsBoard = () => {
     }
   }
 
-  const checkRepeatingProjectName = (projectsArray, projectTitle) => 
-    !!projectsArray.find(project => project.name === projectTitle)
-
   const handleChange = event => {
     const value = event.target.value;
     setProjectName(value);
@@ -46,7 +44,7 @@ const ProjectsBoard = () => {
 
     const conditionSubmitForm = checkRepeatingProjectName(projects, projectName);
 
-    if (conditionSubmitForm) {
+    if (!conditionSubmitForm) {
       await addProjectsToDB(user.uid, projectName);
       updateProjectsArray();
     }
@@ -61,6 +59,7 @@ const ProjectsBoard = () => {
 
   useEffect(() => {
     updateProjectsArray();
+    // eslint-disable-next-line
   }, []);
 
   return (
