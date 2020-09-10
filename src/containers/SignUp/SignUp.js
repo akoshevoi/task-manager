@@ -3,7 +3,7 @@ import SignUpForm from '../../components/SignUpForm';
 import {createUserWithEmailAndPassword} from '../../api/auth';
 import {saveUserById} from '../../api/users';
 import {useDispatch} from 'react-redux';
-import {authenticationUser} from '../../redux/actions/actions';
+import {authenticationUser} from '../../redux/actions/user';
 import {useHistory} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 

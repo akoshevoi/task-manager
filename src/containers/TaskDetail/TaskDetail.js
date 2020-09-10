@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {showingModal, addingDescriptionToTask, addingSubTask} from '../../redux/actions/actions';
+import {showingModal} from '../../redux/actions/modal';
+import {addingDescriptionToTask, addingSubTask} from '../../redux/actions/projects';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ClearIcon from '@material-ui/icons/Clear';

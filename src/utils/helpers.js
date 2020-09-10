@@ -1,3 +1,4 @@
+/*
 const searchingProject = (state, payload) => {
   return state.find(project => project.name === payload.project);
 };
@@ -59,6 +60,7 @@ export const addDescriptionToTask = (state, payload) => {
   findingTask.description = payload.description;
   return state;
 }
+*/
 
 /*
  * Utils 

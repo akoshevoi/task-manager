@@ -1,6 +1,5 @@
 import {firebaseApp} from '../firebaseConfig';
 import * as firebase from 'firebase/app';
-import {searchElementInArray} from '../utils/helpers';
 const db = firebaseApp.firestore();
 
 /*
@@ -89,7 +88,7 @@ export async function addTaskToDB (projectId, taskName, statusTask) {
     })
   })
 };
-
+/*
 export async function changeStatusTaskInDB (userId, projectName, task, status) {
   try {
     const projectsArray = await getProjectsFromDB(userId);
@@ -106,7 +105,7 @@ export async function changeStatusTaskInDB (userId, projectName, task, status) {
     console.log(error);
   }
 };
-
+*/
 export async function getProjectsFromDB (userId) {
   try {
     const projectRef = db.collection('projects').where('userId', '==', userId);
@@ -122,6 +121,7 @@ export async function getProjectsFromDB (userId) {
   }
 };
 
+/*
 export async function getProjectFromDB (array, projectName, key) {
   try {
     return searchElementInArray()
@@ -129,7 +129,7 @@ export async function getProjectFromDB (array, projectName, key) {
     console.log(error)
   }
 }
-
+*/
 export async function addDescriptionToDB (userId, projectName, taskName, description) {
   try {
     const projectsArray = await getProjectsFromDB(userId);
@@ -163,7 +163,7 @@ export async function getTaskArrayFromDB (userId, projectName) {
   }
 };
 
-export async function getTaskFromDB (projectId) {
+export async function getProjectFromDB (projectId) {
   try {
     const projectRef = db.collection('projects').doc(projectId);
     const projectDoc = await projectRef.get();
@@ -172,3 +172,23 @@ export async function getTaskFromDB (projectId) {
     console.log(error);
   }
 };
+
+export async function changeStatusTaskInDB (projectId, taskName, taskStatus) {
+  try {
+    const project = await getProjectFromDB (projectId);
+    const newTaskArray = project.tasks.taskList.map(task => {
+      if (task.name === taskName) {
+        return {...task, status: taskStatus}
+      }
+      return task
+    });
+    await db.collection('projects').doc(projectId).update({
+      ...project,
+      'tasks.taskList': newTaskArray
+    })
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
+}
+

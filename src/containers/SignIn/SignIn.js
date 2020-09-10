@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import SignInForm from '../../components/SignInForm';
 import {signInWithEmailAndPassword} from '../../api/auth';
 import {useDispatch} from 'react-redux';
-import {authenticationUser} from '../../redux/actions/actions';
+import {authenticationUser} from '../../redux/actions/user';
 import {useHistory} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 

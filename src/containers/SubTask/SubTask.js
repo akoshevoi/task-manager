@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {changingStatusSubTask} from '../../redux/actions/actions';
+import {changingStatusSubTask} from '../../redux/actions/projects';
 
 const SubTask = ({
   task, 

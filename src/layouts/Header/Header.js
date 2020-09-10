@@ -1,6 +1,6 @@
 import React from 'react';
 import {signOut} from '../../api/auth';
-import {authenticationUser} from '../../redux/actions/actions';
+import {authenticationUser} from '../../redux/actions/user';
 import {useSelector, useDispatch} from 'react-redux';
 import LogoSvgIcon from '../../assets/icons/LogoSvgIcon';
 

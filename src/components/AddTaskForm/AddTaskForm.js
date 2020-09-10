@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {addTaskToDB, getTaskFromDB} from '../../api/projects';
-import {checkRepeatingProjectName} from '../../utils/helpers';
+import {addTaskToDB, getProjectFromDB} from '../../api/projects';
+import {searchElementInArray, checkRepeatingProjectName} from '../../utils/helpers';
+import {settingTaskArrayFromDbToStore} from '../../redux/actions/projects';
 
 const AddTaskForm = ({
   statusTask,
@@ -15,6 +16,23 @@ const AddTaskForm = ({
   
   const [taskName, setTaskName] = useState('');
   const projects = useSelector(state => state.projects);
+  const dispatch = useDispatch();
+
+  const projectId = projects.activeProject
+  ? projects.activeProject 
+  : localStorage.getItem('activeProjectId');
+/*
+  const updateTasksArray = async () => {
+    try {
+      const fetchedProject = await getProjectFromDB(projectId);
+      const {tasks} = fetchedProject
+      dispatch(settingTaskArrayFromDbToStore(projectId, tasks.taskList));
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+*/
 
   const handleChange = event => {
     const value = event.target.value;
@@ -27,38 +45,14 @@ const AddTaskForm = ({
     }
 
     event.preventDefault();
-    /*
-    const conditionAddingTask = checkTaskNameOnRepeating();
-    if (taskName.length > 0 && conditionAddingTask) {
-      setTasksFromDB([
-        ...tasksFromDB,
-        {
-          name: taskName, 
-          status: statusTask, 
-          description: '', 
-          subTasks: []
-        }
-      ])
-    }
-    */
 
-    const projectId = projects.activeProject
-    ? projects.activeProject 
-    : localStorage.getItem('activeProjectId');
-    /*
-    const foo = async () => {
-      try {
-        const task = getTaskFromDB(projectId);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    */
-    const task = await getTaskFromDB(projectId);
-    const conditionSubmitForm = checkRepeatingProjectName(task.tasks.taskList, taskName);
+    const findingProject = searchElementInArray(projects.projectList, projectId, 'projectId');
+    const conditionSubmitForm = checkRepeatingProjectName(findingProject.tasks.taskList, taskName);
+    
     if (!conditionSubmitForm) {   
       await addTaskToDB(projectId, taskName, statusTask);
     }
+    //updateTasksArray();
     setTaskName('');
   };
 

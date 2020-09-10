@@ -1,38 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {showingModal} from '../../redux/actions/actions';
+import {showingModal} from '../../redux/actions/modal';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
-import {changeStatusTaskInDB, getTaskFromDB} from '../../api/projects';
+import {
+  changeStatusTaskInDB, 
+} from '../../api/projects';
+import {changingStatusTask} from '../../redux/actions/projects';
 
 const TaskName = ({task, statusTask, projectName}) => {
   const [status, setStatus] = useState(statusTask);
-  //const [taskFromDB, setTaskFromDB] = useState({})
-  const user = useSelector(state => state.user);
+  const projects = useSelector(state => state.projects);
   const dispatch = useDispatch();
-  
-  const handleChange = (event) => {
+
+  const projectId = projects.activeProject
+  ? projects.activeProject 
+  : localStorage.getItem('activeProjectId');
+
+  const handleChange = async (event) => {
     const status = event.target.value;
     setStatus(status);
-    changeStatusTaskInDB(user.uid, projectName, task, status);
+    const result = await changeStatusTaskInDB(projectId, task.name, status);
+    if (result) {
+      dispatch(changingStatusTask(projectId, task.name, status));
+    }
   };
 
   const openModal = () => {
     dispatch(showingModal(true, task));
   }
-
-  useEffect(() => {
-    async function fetchTaskFromDB() {
-      console.log('task from props: ', task);
-      const fetchedTaskFromDB = await getTaskFromDB(user.uid, projectName, task);
-      console.log('fetched task from DB: ', fetchedTaskFromDB);
-      //setTaskFromDB(fetchedTaskFromDB);
-    }
-    fetchTaskFromDB();
-  }, [user, projectName, task]);
 
   return (
     <div className='task-name'>

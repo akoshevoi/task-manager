@@ -1,16 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {
-  settingProjectArrayFromDbToStore,
   settingProjectId
-} from '../../redux/actions/actions';
+} from '../../redux/actions/projects';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../../layouts/Header';
 import Paper from '@material-ui/core/Paper';
 import * as ROUTES from '../../constants/routes';
-import {addProjectsToDB, getProjectsFromDB} from '../../api/projects'; 
+import {addProjectsToDB} from '../../api/projects'; 
 import withAuth from '../../HOC';
 import {checkRepeatingProjectName} from '../../utils/helpers';
 
@@ -20,15 +19,6 @@ const ProjectsBoard = () => {
   const projects = useSelector(state => state.projects.projectList);
   const dispatch = useDispatch();
   let history = useHistory();
-
-  const updateProjectsArray = async () => {
-    try {
-      const fetchedProjects = await getProjectsFromDB(user.uid); 
-      dispatch(settingProjectArrayFromDbToStore(fetchedProjects));
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const handleChange = event => {
     const value = event.target.value;
@@ -46,7 +36,6 @@ const ProjectsBoard = () => {
 
     if (!conditionSubmitForm) {
       await addProjectsToDB(user.uid, projectName);
-      updateProjectsArray();
     }
 
     setProjectName('');
@@ -56,11 +45,6 @@ const ProjectsBoard = () => {
     history.push(`${ROUTES.TASK_BOARD}/${project.name}`);
     dispatch(settingProjectId(project.projectId));
   }
-
-  useEffect(() => {
-    updateProjectsArray();
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <div className='projects-board'>
@@ -85,6 +69,7 @@ const ProjectsBoard = () => {
             </Button>
           </div>
         </form>
+        <button onClick>Saga</button>
       </div>
       <div className='projects-board__content'>
         {projects.map(project => (
