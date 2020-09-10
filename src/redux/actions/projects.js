@@ -7,10 +7,10 @@ import {
   ADD_DESCRIPTION_TO_TASK,
   SET_PROJECTS_ARRAY_FROM_DB_TO_STORE,
   SET_PROJECT_ID,
-  SET_TASKS_ARRAY_FROM_DB_TO_STORE
+  SET_TASKS_ARRAY_FROM_DB_TO_STORE,
 
-  GET_PROJECT,
-  SET_PROJECT,
+  FETCH_PROJECTS_ARRAY_FROM_DB,
+  SET_PROJECTS_ARRAY_TO_STORE,
 } from '../types/types';
 
 export const settingProjectArrayFromDbToStore = projectArray => ({
@@ -40,15 +40,14 @@ const updateTasksArray = async () => {
   }
 }*/
 
-
-export const gettingProject = projectId => ({
-  type: GET_PROJECT,
-  payload: { project }
+export const fetchingProjectsArrayFromDB = userId => ({
+  type: FETCH_PROJECTS_ARRAY_FROM_DB,
+  payload: { userId }
 })
 
-export const settingProject = project => ({
-  type: SET_PROJECT,
-  payload: { project }
+export const settingProjectsArrayToStore = projectArray => ({
+  type: SET_PROJECTS_ARRAY_TO_STORE,
+  payload: { projectArray }
 })
 
 //==========

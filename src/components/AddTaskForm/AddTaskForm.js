@@ -9,9 +9,7 @@ import {settingTaskArrayFromDbToStore} from '../../redux/actions/projects';
 const AddTaskForm = ({
   statusTask,
   projectName, 
-  dispatchAction, 
-  tasksFromDB, 
-  setTasksFromDB
+  dispatchAction
 }) => {
   
   const [taskName, setTaskName] = useState('');
@@ -21,7 +19,7 @@ const AddTaskForm = ({
   const projectId = projects.activeProject
   ? projects.activeProject 
   : localStorage.getItem('activeProjectId');
-/*
+
   const updateTasksArray = async () => {
     try {
       const fetchedProject = await getProjectFromDB(projectId);
@@ -32,7 +30,6 @@ const AddTaskForm = ({
       console.log(error);
     }
   }
-*/
 
   const handleChange = event => {
     const value = event.target.value;
@@ -52,7 +49,7 @@ const AddTaskForm = ({
     if (!conditionSubmitForm) {   
       await addTaskToDB(projectId, taskName, statusTask);
     }
-    //updateTasksArray();
+    updateTasksArray();
     setTaskName('');
   };
 

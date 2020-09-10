@@ -1,5 +1,5 @@
 import {
-  SET_PROJECTS_ARRAY_FROM_DB_TO_STORE,
+  SET_PROJECTS_ARRAY_TO_STORE,
   SET_PROJECT_ID,
   SET_TASKS_ARRAY_FROM_DB_TO_STORE,
   CHANGE_STATUS_TASK
@@ -11,7 +11,7 @@ const initialState = {
   
 export const projects = (state = initialState, {type, payload}) => {
   switch(type) {
-    case SET_PROJECTS_ARRAY_FROM_DB_TO_STORE: 
+    case SET_PROJECTS_ARRAY_TO_STORE: 
       return {
         ...state,
         activeProject: state.activeProject ? state.activeProject : '',
@@ -25,7 +25,7 @@ export const projects = (state = initialState, {type, payload}) => {
     case SET_TASKS_ARRAY_FROM_DB_TO_STORE:
       const latestProjectList = state.projectList.map(item => {
         if (item.projectId === payload.projectId) {
-          return {...item, tasks: {...item.tasks, taskList: payload.taskList }}
+          return {...item, tasks: {...item.tasks, taskList: payload.taskList}}
         }
         return item
       })
@@ -42,7 +42,7 @@ export const projects = (state = initialState, {type, payload}) => {
             }
             return task;
           })
-          return {...project, tasks: {...project.tasks, taskList: newTaskList }}
+          return {...project, tasks: {...project.tasks, taskList: newTaskList}}
         }
         return project;
       })

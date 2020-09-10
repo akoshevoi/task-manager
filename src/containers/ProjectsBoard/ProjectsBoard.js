@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import AddProjectForm from '../../components/AddProjectForm';
+import ProjectCard from '../../components/ProjectCard';
+import {addProjectsToDB} from '../../api/projects'; 
 import {
+  fetchingProjectsArrayFromDB, 
   settingProjectId
 } from '../../redux/actions/projects';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Header from '../../layouts/Header';
-import Paper from '@material-ui/core/Paper';
 import * as ROUTES from '../../constants/routes';
-import {addProjectsToDB} from '../../api/projects'; 
 import withAuth from '../../HOC';
 import {checkRepeatingProjectName} from '../../utils/helpers';
 
@@ -36,6 +36,7 @@ const ProjectsBoard = () => {
 
     if (!conditionSubmitForm) {
       await addProjectsToDB(user.uid, projectName);
+      dispatch(fetchingProjectsArrayFromDB(user.uid));
     }
 
     setProjectName('');
@@ -50,41 +51,20 @@ const ProjectsBoard = () => {
     <div className='projects-board'>
       <Header />
       <div className='projects-board__form-outer'>
-        <form className='projects-board__form' onSubmit={handleSubmit}>
-          <div className='projects-board__form-group'>
-            <TextField 
-              className='projects-board__input' 
-              value={projectName} 
-              onChange={handleChange}
-            />
-          </div>
-          <div className='projects-board__form-group'>
-            <Button 
-              className='projects-board__btn'
-              variant='contained' 
-              color='primary' 
-              type='submit' 
-            >
-              Add project
-            </Button>
-          </div>
-        </form>
-        <button onClick>Saga</button>
+        <AddProjectForm 
+          value={projectName}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
       </div>
       <div className='projects-board__content'>
         {projects.map(project => (
-          <div 
+          <ProjectCard 
             key={project.projectId} 
-            className='project-card' 
-            onClick={goToTaskBoard(project)}
-          >   
-            <Paper>
-              <div className='project-card__inner'>
-                <h4 className='project-card__name'>{project.name}</h4>
-              </div>
-            </Paper>
-          </div>
-          ))}
+            handleClick={goToTaskBoard(project)}
+            project={project}
+          />
+        ))}
       </div>
     </div>
   );

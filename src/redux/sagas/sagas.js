@@ -1,23 +1,23 @@
 import {takeEvery, call, put} from 'redux-saga/effects';
-import {GET_PROJECTS, SET_PROJECT, GET_PROJECT} from '../types/types';
-import {gettingProject, settingProject} from '../actions/projects';
+import {FETCH_PROJECTS_ARRAY_FROM_DB} from '../types/types';
+import {settingProjectsArrayToStore} from '../actions/projects';
 import {getProjectsFromDB} from '../../api/projects';
 
-async function foo() {
+async function fetchProjectsArray(userId) {
   try {
-    const project = await getProjectsFromDB(projectId);
-    return project;
+    const projects = await getProjectsFromDB(userId);
+    return projects;
   } catch (error) {
     console.log(error);
   }
 }
 
-function* sagaWorker() {
-  const data = yield call(foo);
-
-  yield put(settingProject(data));
+function* sagaWorkerFetchProjectsArray({payload}) {
+  const userId = payload.userId;
+  const projects = yield call(fetchProjectsArray, userId);
+  yield put(settingProjectsArrayToStore(projects));
 }
 
 export function* sagaWatcher() {
-  yield takeEvery(GET_PROJECT, sagaWorker);
+  yield takeEvery(FETCH_PROJECTS_ARRAY_FROM_DB, sagaWorkerFetchProjectsArray);
 }

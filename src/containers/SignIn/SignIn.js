@@ -19,7 +19,6 @@ const SignIn = () => {
     showPassword: false
   });
 
-
   const [isGlowError, setIsGlowError] = useState({
     email: false,
     password: false

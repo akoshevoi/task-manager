@@ -1,7 +1,6 @@
 import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {settingProjectArrayFromDbToStore} from '../../redux/actions/projects';
-import {getProjectsFromDB} from '../../api/projects'; 
+import {fetchingProjectsArrayFromDB} from '../../redux/actions/projects';
 import withAuth from '../../HOC';
 
 const DataFetcher = () => {
@@ -9,15 +8,7 @@ const DataFetcher = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const updateProjectsArray = async () => {
-      try {
-        const fetchedProjects = await getProjectsFromDB(user.uid); 
-        dispatch(settingProjectArrayFromDbToStore(fetchedProjects));
-      } catch (error) {
-        console.log(error);
-      } 
-    }
-    updateProjectsArray();
+    dispatch(fetchingProjectsArrayFromDB(user.uid));
     // eslint-disable-next-line
   }, [])
   return null

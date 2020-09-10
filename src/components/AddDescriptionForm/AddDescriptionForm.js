@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 
 const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) => {
   const [description, setDescription] = useState('');
-  const user = useSelector(state => state.user);
+  const projects = useSelector(state => state.projects);
 
   const handleChange = event => {
     const value = event.target.value;
@@ -17,7 +17,7 @@ const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) 
     event.preventDefault();
     
     if (description.length > 0) {
-      addDescriptionToDB(user.uid, projectName, currentTask.name, description);
+      addDescriptionToDB(projects.activeProject, currentTask.name, description);
     }
     setDescription('');
   };

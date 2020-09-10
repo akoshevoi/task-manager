@@ -5,7 +5,7 @@ const initialState = {};
 export const user = (state = initialState, {type, payload}) => {
   switch(type) {
     case USER_AUTHENTICATED:
-      return payload;
+      return payload.user;
     default:
       return state;
   }

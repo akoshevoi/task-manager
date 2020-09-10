@@ -1,19 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {useParams, useHistory} from 'react-router-dom';
+import Column from '../../containers/Column';
+import withAuth from '../../HOC';
+import {generate} from 'shortid';
 import {
   addingTask, 
   settingProjectId
 } from '../../redux/actions/projects';
-import {useParams, useHistory} from 'react-router-dom';
-import AddTaskForm from '../../components/AddTaskForm';
-import TaskName from '../TaskName';
-import TaskDetail from '../TaskDetail';
 import {getProjectsFromDB} from '../../api/projects'; 
 import {searchElementInArray} from '../../utils/helpers';
 import * as ROUTES from '../../constants/routes';
 
-const Column = ({statusTask}) => {
-  const [tasksFromDB, setTasksFromDB] = useState([]);
+const TaskBoard = () => {
   const user = useSelector(state => state.user);
   const projects = useSelector(state => state.projects);
   const params = useParams();
@@ -28,9 +27,9 @@ const Column = ({statusTask}) => {
 
   const dispatchAction = (...args) => {
     dispatch(addingTask(...args))
-  }  
+  } 
 
-  useEffect(() => {
+   useEffect(() => {
     if (history.action === "POP"){
       const checkСorrespondenceUrlAndProjectName = async () => {
         try {
@@ -75,39 +74,29 @@ const Column = ({statusTask}) => {
     }
     // eslint-disable-next-line
   }, [])
-  
+
+  const columnNames = ['To Do', 'In Progress', 'Done'];
   return (
-    <div className='column'>
-      <h3 className='column__title'>{statusTask}</h3>
-      <AddTaskForm 
-        statusTask={statusTask} 
-        projectName={params.projectName} 
-        dispatchAction={dispatchAction}
-        setTasksFromDB={setTasksFromDB}
-        tasksFromDB={tasksFromDB}
-      />
-        {
-        currentProject && currentProject.tasks.taskList.map(task => { 
-        return (
-          task.status === statusTask
-          ? <TaskName 
-              key={task.name} 
-              task={task} 
-              statusTask={statusTask} 
-              projectName={params.projectName} 
-            />
-          : null
-        )
-      })
-    
-      } 
-      <TaskDetail 
-        currentTask={currentTask} 
-        isShow={isShow} 
-        projectName={params.projectName} 
-      />
+    <div className='board'>
+      <h2 className='board__title'>{params.projectName}</h2>
+      <div className="board__content">      
+        {columnNames.map(name => {
+            let uid = generate();
+            return (
+              <Column 
+                key={uid} 
+                statusTask={name}
+                projectName={params.projectName} 
+                dispatchAction={dispatchAction}
+                currentProject={currentProject}
+                currentTask={currentTask}
+                isShow={isShow}
+              />
+            )
+          })}
+      </div>
     </div>
-  )
+  );
 };
 
-export default Column;
+export default withAuth(TaskBoard);

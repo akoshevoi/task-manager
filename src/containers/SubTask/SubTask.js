@@ -1,6 +1,7 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {changingStatusSubTask} from '../../redux/actions/projects';
+import {changeStatusSubTaskInDB} from '../../api/projects';
 
 const SubTask = ({
   task, 
@@ -8,14 +9,21 @@ const SubTask = ({
   projectName, 
   calculateProgressBarLength
 }) => {
+  const projects = useSelector(state => state.projects);
   const dispatch = useDispatch();
+
+  console.log(task);
+  
 
   const handleChangeCheckbox = event => {
     let isCheckedCheckbox = event.target.checked;
     let nameCheckbox = event.target.name;
+    //changeStatusSubTaskInDB(projects.activeProject, currentTask.name, )
+    /*
     dispatch(changingStatusSubTask(
       projectName, currentTask, nameCheckbox, isCheckedCheckbox
     ));
+    */
     calculateProgressBarLength();
   }
   return (
