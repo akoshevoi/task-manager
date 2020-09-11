@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../Header';
-import TaskBoard from '../TaskBoard';
+import TaskBoard from '../../containers/TaskBoard';
 
-const App = () => (
+const TaskPage = () => (
   <div className='app'>
     <Header />
     <TaskBoard />
   </div>
 );
 
-export default App;
+export default TaskPage;

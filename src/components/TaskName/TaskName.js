@@ -1,36 +1,22 @@
-import React, {useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {showingModal} from '../../redux/actions/modal';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
-import {
-  changeStatusTaskInDB, 
-} from '../../api/projects';
-import {changingStatusTask} from '../../redux/actions/projects';
 
-const TaskName = ({task, statusTask, projectName}) => {
-  const [status, setStatus] = useState(statusTask);
-  const projects = useSelector(state => state.projects);
-  const dispatch = useDispatch();
-
-  const projectId = projects.activeProject
-  ? projects.activeProject 
-  : localStorage.getItem('activeProjectId');
-
-  const handleChange = async (event) => {
-    const status = event.target.value;
-    setStatus(status);
-    const result = await changeStatusTaskInDB(projectId, task.name, status);
-    if (result) {
-      dispatch(changingStatusTask(projectId, task.name, status));
-    }
-  };
-
-  const openModal = () => {
-    dispatch(showingModal(true, task));
+const TaskName = ({
+  task, 
+  statusTask, 
+  changeStatusTask,
+  openModal,
+}) => {
+  const handleChange = event => {
+    changeStatusTask(event, task.name, statusTask);
+  }
+    
+  const handleModal = () => {
+    openModal(task);
   }
 
   return (
@@ -45,7 +31,7 @@ const TaskName = ({task, statusTask, projectName}) => {
               <InputLabel id='demo-simple-select-label'>Status</InputLabel>
               <Select
                 labelId='demo-simple-select-label'
-                value={status}
+                value={statusTask}
                 onChange={handleChange}
               >
                 <MenuItem value='To Do'>To Do</MenuItem>
@@ -54,7 +40,7 @@ const TaskName = ({task, statusTask, projectName}) => {
               </Select>
             </div>
           </div>
-          <Button variant='contained' color='primary' onClick={openModal}>
+          <Button variant='contained' color='primary' onClick={handleModal}>
             Open Task
           </Button>
         </div>

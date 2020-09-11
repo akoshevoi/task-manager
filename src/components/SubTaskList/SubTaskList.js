@@ -1,19 +1,21 @@
 import React from 'react';
 import {generate} from 'shortid';
-import SubTask from '../SubTask';
+import SubTask from '../SubTask/SubTask';
 
-const SubTaskList = ({projectName, currentTask, calculateProgressBarLength}) => {
+const SubTaskList = ({projects, projectName, currentTask, calculateProgressBarLength, updateTasksArray}) => {
   return (
     <div className='sub-tasks'>
-      {currentTask.subTasks && currentTask.subTasks.map(task => {
+      {currentTask.subtasks && currentTask.subtasks.map(task => {
         let uid = generate();
           return (
             <SubTask 
               key={uid} 
-              task={task} 
+              task={task}
+              projects={projects} 
               projectName={projectName}
               currentTask={currentTask} 
               calculateProgressBarLength={calculateProgressBarLength}
+              updateTasksArray={updateTasksArray}
             />
           )
       })}

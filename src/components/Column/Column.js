@@ -1,89 +1,28 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {
-  addingTask, 
-  settingProjectId
-} from '../../redux/actions/projects';
-import {useParams, useHistory} from 'react-router-dom';
-import AddTaskForm from '../../components/AddTaskForm';
+import React from 'react';
+import AddTaskForm from '../AddTaskForm';
 import TaskName from '../TaskName';
-import TaskDetail from '../TaskDetail';
-import {getProjectsFromDB} from '../../api/projects'; 
-import {searchElementInArray} from '../../utils/helpers';
-import * as ROUTES from '../../constants/routes';
 
-const Column = ({statusTask, projectName, dispatchAction, currentProject, currentTask, isShow}) => {
-  /*
-  const user = useSelector(state => state.user);
-  const projects = useSelector(state => state.projects);
-  const params = useParams();
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const currentTask = useSelector(state => state.modal.task);
-  const isShow = useSelector(state => state.modal.isShow);
-
-  const currentProject = searchElementInArray(
-    projects.projectList, projects.activeProject, 'projectId'
-  );
-
-  const dispatchAction = (...args) => {
-    dispatch(addingTask(...args))
-  }  
-
-  useEffect(() => {
-    if (history.action === "POP"){
-      const checkСorrespondenceUrlAndProjectName = async () => {
-        try {
-          const projectsArray = await getProjectsFromDB(user.uid);
-          const conditionСorrespondence = !!searchElementInArray(
-            projectsArray, params.projectName, 'name'
-          );
-          if (!conditionСorrespondence) {
-            history.push(ROUTES.PROJECTS_BOARD)  
-            return;
-          }
-          let projectId = localStorage.getItem('activeProjectId');
-          dispatch(settingProjectId(projectId)); 
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      checkСorrespondenceUrlAndProjectName();
-      
-      //const project = await getProject(params.projectName)
-      // if (!project){
-      //history.push(ROUTES.PROJECTS_BOARD)  
-      //return
-     // }
-     // setProjectIdToStore(project.id)
-    }
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (!projects.activeProject) {
-       const getProjectId = async () => {
-        try {
-          const projectsArray = await getProjectsFromDB(user.uid);
-          const project = searchElementInArray(projectsArray, params.projectName, 'name');
-          localStorage.setItem('activeProjectId', project.projectId)
-        } catch(error) {
-          console.log(error);
-        }
-      }
-      getProjectId();
-    }
-    // eslint-disable-next-line
-  }, [])
-  */
-
+const Column = ({
+  statusTask, 
+  projectName, 
+  dispatchAction, 
+  currentProject, 
+  projectId,
+  changeStatusTask,
+  openModal,
+  projects,
+  updateTasksArray
+}) => {
   return (
     <div className='column'>
       <h3 className='column__title'>{statusTask}</h3>
       <AddTaskForm 
+        projects={projects}
+        projectId={projectId}
         statusTask={statusTask} 
         projectName={projectName} 
         dispatchAction={dispatchAction}
+        updateTasksArray={updateTasksArray}
       />
         {
         currentProject && currentProject.tasks.taskList.map(task => { 
@@ -93,18 +32,16 @@ const Column = ({statusTask, projectName, dispatchAction, currentProject, curren
               key={task.name} 
               task={task} 
               statusTask={statusTask} 
+              projects={projects}
               projectName={projectName} 
+              projectId={projectId}
+              changeStatusTask={changeStatusTask}
+              openModal={openModal}
             />
           : null
         )
       })
-    
       } 
-      <TaskDetail 
-        currentTask={currentTask} 
-        isShow={isShow} 
-        projectName={projectName} 
-      />
     </div>
   )
 };

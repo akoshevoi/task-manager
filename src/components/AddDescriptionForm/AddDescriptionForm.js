@@ -1,24 +1,28 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {addDescriptionToDB} from '../../api/projects';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+//import {useDispatch} from 'react-redux';
 
-const AddDescriptionForm = ({projectName, currentTask, dispatchAction, action}) => {
+const AddDescriptionForm = ({
+  updatedTask,
+  projects, 
+  addDescriptionToDB,
+  updateTasksArray,
+}) => {
   const [description, setDescription] = useState('');
-  const projects = useSelector(state => state.projects);
 
   const handleChange = event => {
     const value = event.target.value;
     setDescription(value);
   }
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     
     if (description.length > 0) {
-      addDescriptionToDB(projects.activeProject, currentTask.name, description);
+      await addDescriptionToDB(projects.activeProject, updatedTask.name, description);
     }
+    updateTasksArray();
     setDescription('');
   };
 

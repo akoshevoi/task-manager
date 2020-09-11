@@ -1,6 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {showingModal} from '../../redux/actions/modal';
+import React, {useState, useCallback} from 'react';
 import {addingDescriptionToTask, addingSubTask} from '../../redux/actions/projects';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -9,35 +7,35 @@ import SubTaskList from '../SubTaskList';
 import AddSubTaskForm from '../../components/AddSubTaskForm';
 import AddDescriptionForm from '../../components/AddDescriptionForm';
 
-const TaskDetail = ({currentTask, isShow, projectName}) => {
+const TaskDetail = ({
+  currentProject,
+  currentTask, 
+  isShow, 
+  projectName,
+  handleClose,
+  dispatchActionNew,
+  projects,
+  projectId,
+  updateTasksArray,
+  addDescriptionToDB
+}) => {
   const [progressBarLength, setProgressBarLength] = useState(0);
-  const dispatch = useDispatch();
-
-  const calculateProgressBarLength = useCallback(() => {
-    if(currentTask.subTasks && currentTask.subTasks.length > 0) {
-      const totalLength = currentTask.subTasks.length;
-      const doneLength = currentTask.subTasks.filter(item => item.done === true).length;
+  const calculateProgressBarLength = useCallback((subTask) => {
+    if (subTask && subTask.length > 0) {
+      const totalLength = subTask.length;
+      const doneLength = subTask.filter(item => item.done === true).length;
       const ratio = totalLength / doneLength;
       const ratioRounded = Math.floor(ratio * 100) / 100;
       const progressBarLengthRaw = 100 / ratioRounded;
       const progressBarLength = Math.floor(progressBarLengthRaw);
       return setProgressBarLength(progressBarLength);
-    } 
+    }
     setProgressBarLength(0);
-  },[currentTask]);
-
-  useEffect(() => {
-    calculateProgressBarLength();
-  },[currentTask, calculateProgressBarLength]);
-
-
-  const handleClose = () => {
-    dispatch(showingModal(false, currentTask));
-  }
-
-  const dispatchAction = action => {
-    dispatch(action);
-  }
+  },[])
+  
+const latestTask = currentProject && currentTask 
+? currentProject.tasks.taskList.find(task => task.name === currentTask.name)
+: null;
 
   return (
     <Modal
@@ -51,33 +49,41 @@ const TaskDetail = ({currentTask, isShow, projectName}) => {
           <ClearIcon />
         </div>
         <h2 className='task-detail__title'>
-          {currentTask.name && currentTask.name}
+          {latestTask && latestTask.name}
         </h2>
         <AddDescriptionForm 
           projectName={projectName} 
-          currentTask={currentTask}
-          dispatchAction={dispatchAction}
+          updatedTask={latestTask}
+          dispatchAction={dispatchActionNew}
           action={addingDescriptionToTask}
+          projects={projects}
+          addDescriptionToDB={addDescriptionToDB}
+          projectId={projectId}
+          updateTasksArray={updateTasksArray}
         />
-        { currentTask.description &&
+        {latestTask && latestTask.description &&
           <h3 className='task-detail__subtitle'>Description of task</h3>
         }
         <div className='task-detail__description'>
-          {currentTask.description && currentTask.description}
+          {latestTask && latestTask.description}
         </div>
         <LinearProgress variant='determinate' value={progressBarLength}/>
         <div className='task-detail__percent'>{progressBarLength}%</div>
         <AddSubTaskForm 
-          currentTask={currentTask} 
+          projects={projects}
+          currentTask={latestTask} 
           calculateProgressBarLength={calculateProgressBarLength}
           projectName={projectName}
-          dispatchAction={dispatchAction}
+          dispatchAction={dispatchActionNew}
           action={addingSubTask}
+          updateTasksArray={updateTasksArray}
         />
           <SubTaskList 
+            projects={projects}
             projectName={projectName}
-            currentTask={currentTask} 
+            currentTask={latestTask} 
             calculateProgressBarLength={calculateProgressBarLength}
+            updateTasksArray={updateTasksArray}
           />
       </div>
     </Modal>

@@ -1,45 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import AddProjectForm from '../../components/AddProjectForm';
 import ProjectCard from '../../components/ProjectCard';
-import {addProjectsToDB} from '../../api/projects'; 
-import {
-  fetchingProjectsArrayFromDB, 
-  settingProjectId
-} from '../../redux/actions/projects';
-import Header from '../../layouts/Header';
+import {settingProjectId} from '../../redux/actions/projects';
 import * as ROUTES from '../../constants/routes';
 import withAuth from '../../HOC';
-import {checkRepeatingProjectName} from '../../utils/helpers';
+import {addingProject} from '../../redux/actions/projects';
 
 const ProjectsBoard = () => {
-  const [projectName, setProjectName] = useState('');
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.user)
   const projects = useSelector(state => state.projects.projectList);
   const dispatch = useDispatch();
   let history = useHistory();
 
-  const handleChange = event => {
-    const value = event.target.value;
-    setProjectName(value);
-  }
-
-  const handleSubmit = async event => {
-    if (!projectName.length){
-      return;
-    }
-
-    event.preventDefault();
-
-    const conditionSubmitForm = checkRepeatingProjectName(projects, projectName);
-
-    if (!conditionSubmitForm) {
-      await addProjectsToDB(user.uid, projectName);
-      dispatch(fetchingProjectsArrayFromDB(user.uid));
-    }
-
-    setProjectName('');
+  const addProject = (projectName, userId) => {
+    dispatch(addingProject(projectName, userId));
   }
 
   const goToTaskBoard = project => () => {
@@ -49,22 +25,23 @@ const ProjectsBoard = () => {
 
   return (
     <div className='projects-board'>
-      <Header />
       <div className='projects-board__form-outer'>
         <AddProjectForm 
-          value={projectName}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
+          user={user}
+          projects={projects}
+          addProject={addProject}
         />
       </div>
       <div className='projects-board__content'>
+
         {projects.map(project => (
           <ProjectCard 
             key={project.projectId} 
             handleClick={goToTaskBoard(project)}
             project={project}
           />
-        ))}
+        ))} 
+
       </div>
     </div>
   );

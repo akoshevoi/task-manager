@@ -2,24 +2,28 @@ import {firebaseApp} from '../firebaseConfig';
 import * as firebase from 'firebase/app';
 const db = firebaseApp.firestore();
 
-export async function addProjectsToDB (userId, projectName) {
-  const projectRef = db.collection('projects');
-  const projectItem = await projectRef.add({
-    userId, 
-    name: projectName,
-    tasks: {
-      taskList: []
-    }
-  });
-  await projectRef.doc(projectItem.id).set({
-    projectId: projectItem.id
-  }, {merge: true}); 
+export async function addProjectToDB (userId, projectName) {
+  try {
+    const projectRef = db.collection('projects');
+    const projectItem = await projectRef.add({
+      userId, 
+      name: projectName,
+      tasks: {
+        taskList: []
+      }
+    });
+    await projectRef.doc(projectItem.id).set({
+      projectId: projectItem.id
+    }, {merge: true}); 
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export async function addTaskToDB (projectId, taskName, statusTask) {
-  const projectRef = await db.collection('projects').doc(projectId);
+  const projectRef = db.collection('projects').doc(projectId);
 
-  projectRef.update({
+  await projectRef.update({
     'tasks.taskList': firebase.firestore.FieldValue.arrayUnion({
       name: taskName,
       status: statusTask,
@@ -115,12 +119,13 @@ export async function changeStatusSubTaskInDB (projectId, taskName, subTaskName,
     const project = await getProjectFromDB (projectId);
     const newTaskArray = project.tasks.taskList.map(task => {
       if (task.name === taskName) {
-        task.subtasks.find(subTask => {
+        const newSubTaskList = task.subtasks.map(subTask => {
           if (subTask.name === subTaskName) {
             return {...subTask, done: checkedStatus}
           }
           return subTask;
         })
+        return {...task, subtasks: newSubTaskList}
       }
       return task;
     });
@@ -129,6 +134,6 @@ export async function changeStatusSubTaskInDB (projectId, taskName, subTaskName,
       'tasks.taskList': newTaskArray
     })
   } catch (error) {
-
+    console.log(error); 
   }
 }

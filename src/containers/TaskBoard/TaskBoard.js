@@ -1,33 +1,67 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
-import Column from '../../containers/Column';
+import Column from '../../components/Column';
 import withAuth from '../../HOC';
 import {generate} from 'shortid';
 import {
   addingTask, 
-  settingProjectId
+  settingProjectId,
+  changingStatusTask,
+  settingTaskArrayFromDbToStore
 } from '../../redux/actions/projects';
-import {getProjectsFromDB} from '../../api/projects'; 
+import {showingModal} from '../../redux/actions/modal';
+import {
+  getProjectsFromDB,
+  getProjectFromDB,
+  changeStatusTaskInDB,
+  addDescriptionToDB
+} from '../../api/projects'; 
 import {searchElementInArray} from '../../utils/helpers';
 import * as ROUTES from '../../constants/routes';
+import TaskDetail from '../../components/TaskDetail';
 
 const TaskBoard = () => {
   const user = useSelector(state => state.user);
   const projects = useSelector(state => state.projects);
+  const currentTask = useSelector(state => state.modal.task);
+  const isShow = useSelector(state => state.modal.isShow);
   const params = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const currentTask = useSelector(state => state.modal.task);
-  const isShow = useSelector(state => state.modal.isShow);
 
   const currentProject = searchElementInArray(
     projects.projectList, projects.activeProject, 'projectId'
-  );
+  )
 
   const dispatchAction = (...args) => {
     dispatch(addingTask(...args))
   } 
+
+  const projectId = projects.activeProject
+  ? projects.activeProject 
+  : localStorage.getItem('activeProjectId');
+
+
+  const changeStatusTask = async (event, taskName) => {
+    const status = event.target.value;
+    const result = await changeStatusTaskInDB(projectId, taskName, status);
+    if (result) {
+      dispatch(changingStatusTask(projectId, taskName, status));
+    }
+  };
+
+  const openModal = (task) => {
+    dispatch(showingModal(true, task));
+  }
+
+  const handleClose = () => {
+    dispatch(showingModal(false, currentTask));
+  }
+
+  const dispatchActionNew = action => {
+    dispatch(action);
+  }
 
    useEffect(() => {
     if (history.action === "POP"){
@@ -48,13 +82,6 @@ const TaskBoard = () => {
         }
       }
       checkСorrespondenceUrlAndProjectName();
-      
-      //const project = await getProject(params.projectName)
-      // if (!project){
-      //history.push(ROUTES.PROJECTS_BOARD)  
-      //return
-     // }
-     // setProjectIdToStore(project.id)
     }
     // eslint-disable-next-line
   }, [])
@@ -76,24 +103,65 @@ const TaskBoard = () => {
   }, [])
 
   const columnNames = ['To Do', 'In Progress', 'Done'];
+
+  const updateTasksArray = async () => {
+    try {
+      const fetchedProject = await getProjectFromDB(projectId);
+      const {tasks} = fetchedProject
+      dispatch(settingTaskArrayFromDbToStore(projectId, tasks.taskList));
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='board'>
       <h2 className='board__title'>{params.projectName}</h2>
       <div className="board__content">      
         {columnNames.map(name => {
-            let uid = generate();
-            return (
-              <Column 
-                key={uid} 
-                statusTask={name}
-                projectName={params.projectName} 
-                dispatchAction={dispatchAction}
-                currentProject={currentProject}
-                currentTask={currentTask}
-                isShow={isShow}
-              />
-            )
-          })}
+          let uid = generate();
+          return (
+            <Column 
+              key={uid} 
+              statusTask={name}
+              projectName={params.projectName} 
+              dispatchAction={dispatchAction}
+              currentProject={currentProject}
+              currentTask={currentTask}
+              isShow={isShow}
+              projectId={projectId}
+              changeStatusTask={changeStatusTask}
+              openModal={openModal}
+              handleClose={handleClose}
+              dispatchActionNew={dispatchActionNew}
+              user={user} 
+              projects={projects}
+              params={params} 
+              history={history}
+              dispatch={dispatch} 
+              addDescriptionToDB={addDescriptionToDB}
+              updateTasksArray={updateTasksArray}
+            />
+          )
+        })}
+        <TaskDetail 
+          currentTask={currentTask} 
+          currentProject={currentProject}
+          isShow={isShow} 
+          //progressBarLength={progressBarLength}
+          //calculateProgressBarLength={calculateProgressBarLength}
+          handleClose={handleClose}
+          dispatchActionNew={dispatchActionNew}
+          user={user} 
+          projects={projects}
+          projectId={projectId}
+          params={params} 
+          history={history}
+          dispatch={dispatch}
+          addDescriptionToDB={addDescriptionToDB}
+          updateTasksArray={updateTasksArray}
+        />
       </div>
     </div>
   );

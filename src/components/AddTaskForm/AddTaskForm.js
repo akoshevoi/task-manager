@@ -1,36 +1,18 @@
 import React, {useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {addTaskToDB, getProjectFromDB} from '../../api/projects';
+import {addTaskToDB} from '../../api/projects';
 import {searchElementInArray, checkRepeatingProjectName} from '../../utils/helpers';
-import {settingTaskArrayFromDbToStore} from '../../redux/actions/projects';
 
 const AddTaskForm = ({
+  projects,
+  projectId,
   statusTask,
-  projectName, 
-  dispatchAction
+  updateTasksArray
 }) => {
   
   const [taskName, setTaskName] = useState('');
-  const projects = useSelector(state => state.projects);
-  const dispatch = useDispatch();
-
-  const projectId = projects.activeProject
-  ? projects.activeProject 
-  : localStorage.getItem('activeProjectId');
-
-  const updateTasksArray = async () => {
-    try {
-      const fetchedProject = await getProjectFromDB(projectId);
-      const {tasks} = fetchedProject
-      dispatch(settingTaskArrayFromDbToStore(projectId, tasks.taskList));
-      
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  
   const handleChange = event => {
     const value = event.target.value;
     setTaskName(value);
