@@ -4,8 +4,10 @@ import Button from '@material-ui/core/Button';
 import {searchElementInArray, checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddTaskForm = ({
+  user,
   projects,
   projectId,
+  projectName,
   statusTask,
   updateTasksArray,
   dispatchActionAddTask
@@ -23,13 +25,16 @@ const AddTaskForm = ({
     }
 
     event.preventDefault();
-
+    /*
     const findingProject = searchElementInArray(projects.projectList, projectId, 'projectId');
     const conditionSubmitForm = checkRepeatingProjectName(findingProject.tasks.taskList, taskName);
-    
-    if (!conditionSubmitForm) {   
-      dispatchActionAddTask(projectId, taskName, statusTask);
+    */
+    /*
+    if (!conditionSubmitForm) {  
+      dispatchActionAddTask(user.uid, projectId, projectName, taskName, statusTask);
     }
+    */
+    dispatchActionAddTask(user.uid, projectId, projectName, taskName, statusTask);
     setTaskName('');
   };
 

@@ -36,11 +36,11 @@ const TaskDetail = ({
     }
     setProgressBarLength(0);
   },[])
-  
+  /*
 const latestTask = currentProject && currentTask 
 ? currentProject.tasks.taskList.find(task => task.name === currentTask.name)
 : null;
-
+*/
   return (
     <Modal
       open={isShow}
@@ -53,11 +53,13 @@ const latestTask = currentProject && currentTask
           <ClearIcon />
         </div>
         <h2 className='task-detail__title'>
-          {latestTask && latestTask.name}
+          {/* {latestTask && latestTask.name} */}
+          {currentTask && currentTask.name}
         </h2>
         <AddDescriptionForm 
           projectName={projectName} 
-          updatedTask={latestTask}
+          //updatedTask={latestTask}
+          currentTask={currentTask}
           dispatchAction={dispatchActionNew}
           action={addingDescriptionToTask}
           projects={projects}
@@ -66,17 +68,21 @@ const latestTask = currentProject && currentTask
           updateTasksArray={updateTasksArray}
           dispatchActionAddDescriptionToTask={dispatchActionAddDescriptionToTask}
         />
-        {latestTask && latestTask.description &&
+        {
+          //latestTask && latestTask.description &&
+          currentTask && currentTask.description &&
           <h3 className='task-detail__subtitle'>Description of task</h3>
         }
         <div className='task-detail__description'>
-          {latestTask && latestTask.description}
+          {/* {latestTask && latestTask.description} */}
+          {currentTask && currentTask.description}
         </div>
         <LinearProgress variant='determinate' value={progressBarLength}/>
         <div className='task-detail__percent'>{progressBarLength}%</div>
         <AddSubTaskForm 
           projects={projects}
-          currentTask={latestTask} 
+          //currentTask={latestTask} 
+          currentTask={currentTask}
           calculateProgressBarLength={calculateProgressBarLength}
           projectName={projectName}
           dispatchAction={dispatchActionNew}
@@ -88,7 +94,8 @@ const latestTask = currentProject && currentTask
           <SubTaskList 
             projects={projects}
             projectName={projectName}
-            currentTask={latestTask} 
+            //currentTask={latestTask} 
+            currentTask={currentTask}
             calculateProgressBarLength={calculateProgressBarLength}
             updateTasksArray={updateTasksArray}
             dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}

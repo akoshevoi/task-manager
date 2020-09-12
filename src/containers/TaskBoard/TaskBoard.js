@@ -31,8 +31,8 @@ const TaskBoard = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const dispatchActionAddTask = (projectId, taskName, taskStatus) => {
-    dispatch(addingTask(projectId, taskName, taskStatus))
+  const dispatchActionAddTask = (userId, projectId, projectName, taskName, taskStatus) => {
+    dispatch(addingTask(userId, projectId, projectName, taskName, taskStatus))
   }
 
   const dispatchActionChangeStatusTask = (projectId, taskName, updatedTaskStatus) => {
@@ -75,8 +75,8 @@ const TaskBoard = () => {
   const dispatchActionNew = action => {
     dispatch(action);
   }
-
-   useEffect(() => {
+  /*
+  useEffect(() => {
     if (history.action === "POP"){
       const checkСorrespondenceUrlAndProjectName = async () => {
         try {
@@ -114,9 +114,9 @@ const TaskBoard = () => {
     }
     // eslint-disable-next-line
   }, [])
-
+*/
   const columnNames = ['To Do', 'In Progress', 'Done'];
-
+  /*
   const updateTasksArray = async () => {
     try {
       const fetchedProject = await getProjectFromDataBase(projectId);
@@ -126,7 +126,7 @@ const TaskBoard = () => {
       console.log(error);
     }
   }
-
+  */
   return (
     <div className='board'>
       <h2 className='board__title'>{params.projectName}</h2>
@@ -153,7 +153,7 @@ const TaskBoard = () => {
               params={params} 
               history={history}
               dispatch={dispatch} 
-              updateTasksArray={updateTasksArray}
+              //updateTasksArray={updateTasksArray}
             />
           )
         })}
@@ -169,7 +169,7 @@ const TaskBoard = () => {
           params={params} 
           history={history}
           dispatch={dispatch}
-          updateTasksArray={updateTasksArray}
+          //updateTasksArray={updateTasksArray}
           dispatchActionAddDescriptionToTask={dispatchActionAddDescriptionToTask}
           dispatchActionAddSubTaskToTask={dispatchActionAddSubTaskToTask}
           dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}

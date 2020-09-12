@@ -12,7 +12,7 @@ async function addingProjectToDataBase(userId, projectName) {
   }
 }
 
-async function gettingProjectsFromDB (userId) {
+async function gettingProjectsFromDB(userId) {
   try {
     const projects = await getProjectsFromDataBase(userId);
     return projects;

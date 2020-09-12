@@ -34,9 +34,9 @@ export const settingProjectsArrayToStore = projectArray => ({
 
 
 //==========
-export const addingProject = (projectName, userId) => ({
+export const addingProject = (userId, projectName) => ({
   type: ADD_PROJECT,
-  payload: { projectName, userId }
+  payload: { userId, projectName }
 })
 
 export const settingProjectsToStore = project => ({
@@ -44,9 +44,9 @@ export const settingProjectsToStore = project => ({
   payload: { project }
 })
 
-export const addingTask = (projectId, taskName, taskStatus) => ({
+export const addingTask = (userId, projectId, projectName, taskName, taskStatus) => ({
   type: ADD_TASK,
-  payload: { projectId, taskName, taskStatus }
+  payload: { userId, projectId, projectName, taskName, taskStatus }
 })
 
 export const changingStatusTask = (projectId, taskName, updatedTaskStatus) => ({

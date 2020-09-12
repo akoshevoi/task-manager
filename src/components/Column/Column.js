@@ -12,12 +12,14 @@ const Column = ({
   openModal,
   projects,
   updateTasksArray,
-  dispatchActionAddTask
+  dispatchActionAddTask,
+  user
 }) => {
   return (
     <div className='column'>
       <h3 className='column__title'>{statusTask}</h3>
       <AddTaskForm 
+        user={user}
         projects={projects}
         projectId={projectId}
         statusTask={statusTask} 

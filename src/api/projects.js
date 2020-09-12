@@ -8,9 +8,6 @@ export async function addProjectToDataBase(userId, projectName) {
     const projectItem = await projectRef.add({
       userId, 
       name: projectName,
-      tasks: {
-        taskList: []
-      }
     });
     await projectRef.doc(projectItem.id).set({
       projectId: projectItem.id

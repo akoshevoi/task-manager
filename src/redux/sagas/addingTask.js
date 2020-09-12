@@ -1,18 +1,33 @@
 import {call, put, select} from 'redux-saga/effects';
 import {settingProjectsToStore} from '../actions/projects';
 import {loadingData} from '../actions/loading';
-import {addTaskToDataBase} from '../../api/projects';
+//import {addTaskToDataBase} from '../../api/projects';
+import {addTaskToDataBase} from '../../api/tasks';
 import {getProjects} from '../selectors/selectors';
 
-async function settingTaskToDB(projectId, task) {
+async function addingTaskToDataBase(userId, projectId, projectName, taskName, taskStatus) {
   try {
-    await addTaskToDataBase(projectId, task);
+    const addedTask = await addTaskToDataBase(userId, projectId, projectName, taskName, taskStatus);
+    return addedTask;
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
 export function* addTask({payload}) {
+  yield console.log(payload);
+  yield put(loadingData(true));
+  yield call(
+    addingTaskToDataBase, 
+    payload.userId, 
+    payload.projectId, 
+    payload.projectName, 
+    payload.taskName, 
+    payload.taskStatus 
+  );
+  yield put(loadingData(false));
+   
+  /*
   const projects = yield select(getProjects);
   const currentProject = projects.projectList.find(project => {
     return project.projectId === payload.projectId
@@ -42,4 +57,5 @@ export function* addTask({payload}) {
   })
   
   yield put(settingProjectsToStore(latestProjectsArray));
+  */
 }

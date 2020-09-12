@@ -18,7 +18,7 @@ const AddProjectForm = ({user, projects, addProject}) => {
     event.preventDefault();
     const conditionSubmitForm = checkRepeatingProjectName(projects, projectName);
     if (!conditionSubmitForm) {
-      addProject(projectName, user.uid);
+      addProject(user.uid, projectName);
     }
     setProjectName('');
   }
