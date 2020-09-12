@@ -8,7 +8,7 @@ const SubTaskList = ({
   currentTask, 
   calculateProgressBarLength, 
   updateTasksArray,
-  changeStatusSubTask
+  dispatchActionChangeStatusSubTask
 }) => { 
   return (
     <div className='sub-tasks'>
@@ -23,7 +23,7 @@ const SubTaskList = ({
               currentTask={currentTask} 
               calculateProgressBarLength={calculateProgressBarLength}
               updateTasksArray={updateTasksArray}
-              changeStatusSubTask={changeStatusSubTask}
+              dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}
             />
           )
       })}

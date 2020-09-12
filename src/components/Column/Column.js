@@ -8,11 +8,11 @@ const Column = ({
   dispatchAction, 
   currentProject, 
   projectId,
-  changeStatusTask,
+  dispatchActionChangeStatusTask,
   openModal,
   projects,
   updateTasksArray,
-  addTask
+  dispatchActionAddTask
 }) => {
   return (
     <div className='column'>
@@ -24,7 +24,7 @@ const Column = ({
         projectName={projectName} 
         dispatchAction={dispatchAction}
         updateTasksArray={updateTasksArray}
-        addTask={addTask}
+        dispatchActionAddTask={dispatchActionAddTask}
       />
         {
         currentProject && currentProject.tasks.taskList.map(task => { 
@@ -37,7 +37,7 @@ const Column = ({
               projects={projects}
               projectName={projectName} 
               projectId={projectId}
-              changeStatusTask={changeStatusTask}
+              dispatchActionChangeStatusTask={dispatchActionChangeStatusTask}
               openModal={openModal}
             />
           : null

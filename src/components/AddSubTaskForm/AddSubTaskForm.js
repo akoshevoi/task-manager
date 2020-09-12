@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {addSubTaskToDB} from '../../api/projects';
 import {checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddSubTaskForm = ({
@@ -9,7 +8,7 @@ const AddSubTaskForm = ({
   calculateProgressBarLength,
   currentTask,
   projects,
-  addSubTaskToTask,
+  dispatchActionAddSubTaskToTask,
   projectId
 }) => {
   const [subTaskName, setSubTaskName] = useState('');
@@ -25,16 +24,14 @@ const AddSubTaskForm = ({
     }
 
     event.preventDefault();
-
+    
     const conditionSubmitForm = checkRepeatingProjectName(currentTask.subTasks, subTaskName);
 
     if (!conditionSubmitForm) {
       const subTask = {name: subTaskName, done:false}
-      //await addSubTaskToDB(projects.activeProject, currentTask.name, subTask);
-      addSubTaskToTask(currentTask, subTask);
+      dispatchActionAddSubTaskToTask(currentTask, subTask);
       calculateProgressBarLength();
     }
-    //updateTasksArray();
     setSubTaskName('');
   };
   

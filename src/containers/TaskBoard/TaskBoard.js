@@ -15,10 +15,8 @@ import {
 } from '../../redux/actions/projects';
 import {showingModal} from '../../redux/actions/modal';
 import {
-  getProjectsFromDB,
-  getProjectFromDB,
-  changeStatusTaskInDB,
-  addDescriptionToDB
+  getProjectsFromDataBase,
+  getProjectFromDataBase,
 } from '../../api/projects'; 
 import {searchElementInArray} from '../../utils/helpers';
 import * as ROUTES from '../../constants/routes';
@@ -33,23 +31,23 @@ const TaskBoard = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const addTask = (projectId, taskName, taskStatus) => {
+  const dispatchActionAddTask = (projectId, taskName, taskStatus) => {
     dispatch(addingTask(projectId, taskName, taskStatus))
   }
 
-  const changeStatusTask = (projectId, taskName, updatedTaskStatus) => {
+  const dispatchActionChangeStatusTask = (projectId, taskName, updatedTaskStatus) => {
     dispatch(changingStatusTask(projectId, taskName, updatedTaskStatus));
   };
 
-  const addDescriptionToTask = (projectId, taskName, description) => {
+  const dispatchActionAddDescriptionToTask = (projectId, taskName, description) => {
     dispatch(addingDescriptionToTask(projectId, taskName, description));
   }
 
-  const addSubTaskToTask = (task, subTask) => {
+  const dispatchActionAddSubTaskToTask = (task, subTask) => {
     dispatch(addingSubTask(task, subTask));
   }
 
-  const changeStatusSubTask = (task, subtask, status) => {
+  const dispatchActionChangeStatusSubTask = (task, subtask, status) => {
     dispatch(changingStatusSubTask(task, subtask, status));
   }
 
@@ -82,7 +80,7 @@ const TaskBoard = () => {
     if (history.action === "POP"){
       const checkСorrespondenceUrlAndProjectName = async () => {
         try {
-          const projectsArray = await getProjectsFromDB(user.uid);
+          const projectsArray = await getProjectsFromDataBase(user.uid);
           const conditionСorrespondence = !!searchElementInArray(
             projectsArray, params.projectName, 'name'
           );
@@ -105,7 +103,7 @@ const TaskBoard = () => {
     if (!projects.activeProject) {
        const getProjectId = async () => {
         try {
-          const projectsArray = await getProjectsFromDB(user.uid);
+          const projectsArray = await getProjectsFromDataBase(user.uid);
           const project = searchElementInArray(projectsArray, params.projectName, 'name');
           localStorage.setItem('activeProjectId', project.projectId)
         } catch(error) {
@@ -121,10 +119,9 @@ const TaskBoard = () => {
 
   const updateTasksArray = async () => {
     try {
-      const fetchedProject = await getProjectFromDB(projectId);
+      const fetchedProject = await getProjectFromDataBase(projectId);
       const {tasks} = fetchedProject
       dispatch(settingTaskArrayFromDbToStore(projectId, tasks.taskList));
-      
     } catch (error) {
       console.log(error);
     }
@@ -139,7 +136,7 @@ const TaskBoard = () => {
           return (
             <Column 
               key={uid} 
-              addTask={addTask}
+              dispatchActionAddTask={dispatchActionAddTask}
               statusTask={name}
               projectName={params.projectName} 
               dispatchAction={dispatchAction}
@@ -147,7 +144,7 @@ const TaskBoard = () => {
               currentTask={currentTask}
               isShow={isShow}
               projectId={projectId}
-              changeStatusTask={changeStatusTask}
+              dispatchActionChangeStatusTask={dispatchActionChangeStatusTask}
               openModal={openModal}
               handleClose={handleClose}
               dispatchActionNew={dispatchActionNew}
@@ -156,7 +153,6 @@ const TaskBoard = () => {
               params={params} 
               history={history}
               dispatch={dispatch} 
-              addDescriptionToDB={addDescriptionToDB}
               updateTasksArray={updateTasksArray}
             />
           )
@@ -173,11 +169,10 @@ const TaskBoard = () => {
           params={params} 
           history={history}
           dispatch={dispatch}
-          addDescriptionToDB={addDescriptionToDB}
           updateTasksArray={updateTasksArray}
-          addDescriptionToTask={addDescriptionToTask}
-          addSubTaskToTask={addSubTaskToTask}
-          changeStatusSubTask={changeStatusSubTask}
+          dispatchActionAddDescriptionToTask={dispatchActionAddDescriptionToTask}
+          dispatchActionAddSubTaskToTask={dispatchActionAddSubTaskToTask}
+          dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}
         />
       </div>
     </div>

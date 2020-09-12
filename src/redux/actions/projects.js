@@ -5,21 +5,12 @@ import {
   CHANGE_STATUS_TASK,
   CHANGE_STATUS_SUB_TASK,
   ADD_DESCRIPTION_TO_TASK,
-  //SET_PROJECTS_ARRAY_FROM_DB_TO_STORE,
   SET_PROJECT_ID,
   SET_TASKS_ARRAY_FROM_DB_TO_STORE,
-
   FETCH_PROJECTS_ARRAY_FROM_DB,
   SET_PROJECTS_ARRAY_TO_STORE,
   SET_PROJECTS_TO_STORE
 } from '../types/types';
-
-/*
-export const settingProjectArrayFromDbToStore = projectArray => ({
-  type: SET_PROJECTS_ARRAY_FROM_DB_TO_STORE,
-  payload: { projectArray }
-})
-*/
 
 export const settingProjectId = projectId => ({
   type: SET_PROJECT_ID,
@@ -28,20 +19,8 @@ export const settingProjectId = projectId => ({
 
 export const settingTaskArrayFromDbToStore = (projectId, taskList) => ({
   type: SET_TASKS_ARRAY_FROM_DB_TO_STORE,
-  payload: {projectId, taskList}
+  payload: { projectId, taskList }
 })
-
-/*/
-const updateTasksArray = async () => {
-  try {
-    const fetchedProject = await getProjectFromDB(projectId);
-    const {tasks} = fetchedProject;
-    dispatch(settingTaskArrayFromDbToStore(projectId, tasks.taskList));
-    console.log('FETCH LATEST', {fetchedProject})
-  } catch (error) {
-    console.log(error);
-  }
-}*/
 
 export const fetchingProjectsArrayFromDB = userId => ({
   type: FETCH_PROJECTS_ARRAY_FROM_DB,
@@ -67,12 +46,12 @@ export const settingProjectsToStore = project => ({
 
 export const addingTask = (projectId, taskName, taskStatus) => ({
   type: ADD_TASK,
-  payload: {projectId, taskName, taskStatus}
+  payload: { projectId, taskName, taskStatus }
 })
 
 export const changingStatusTask = (projectId, taskName, updatedTaskStatus) => ({
   type: CHANGE_STATUS_TASK,
-  payload: {projectId, taskName, updatedTaskStatus}
+  payload: { projectId, taskName, updatedTaskStatus }
 })
 
 export const addingSubTask = (task, subTask) => ({
@@ -82,10 +61,10 @@ export const addingSubTask = (task, subTask) => ({
 
 export const changingStatusSubTask = (task, subTaskName, subTaskStatus) => ({
   type: CHANGE_STATUS_SUB_TASK,
-  payload: {task, subTaskName, subTaskStatus}
+  payload: { task, subTaskName, subTaskStatus }
 })
 
 export const addingDescriptionToTask = (projectId, taskName, description) => ({
   type: ADD_DESCRIPTION_TO_TASK,
-  payload: {projectId, taskName, description}
+  payload: { projectId, taskName, description }
 })

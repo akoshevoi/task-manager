@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-//import {useDispatch} from 'react-redux';
 
 const AddDescriptionForm = ({
   updatedTask,
   projects, 
   addDescriptionToDB,
   updateTasksArray,
-  addDescriptionToTask,
+  dispatchActionAddDescriptionToTask,
   projectId
 }) => {
   const [description, setDescription] = useState('');
@@ -23,9 +22,7 @@ const AddDescriptionForm = ({
       return;
     }
     event.preventDefault();
-    addDescriptionToTask(projectId, updatedTask.name, description);
-    //await addDescriptionToDB(projects.activeProject, updatedTask.name, description);
-    //updateTasksArray();
+    dispatchActionAddDescriptionToTask(projectId, updatedTask.name, description);
     setDescription('');
   };
 

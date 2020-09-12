@@ -2,7 +2,7 @@ import {firebaseApp} from '../firebaseConfig';
 import * as firebase from 'firebase/app';
 const db = firebaseApp.firestore();
 
-export async function addProjectToDB (userId, projectName) {
+export async function addProjectToDataBase(userId, projectName) {
   try {
     const projectRef = db.collection('projects');
     const projectItem = await projectRef.add({
@@ -20,14 +20,14 @@ export async function addProjectToDB (userId, projectName) {
   }
 };
 
-export async function addTaskToDB (projectId, task) {
+export async function addTaskToDataBase(projectId, task) {
   const projectRef = db.collection('projects').doc(projectId);
   await projectRef.update({
     'tasks.taskList': firebase.firestore.FieldValue.arrayUnion(task)
   })
 };
 
-export async function getProjectsFromDB (userId) {
+export async function getProjectsFromDataBase(userId) {
   try {
     const projectRef = db.collection('projects').where('userId', '==', userId);
     const projectSnap = await projectRef.get();
@@ -42,7 +42,7 @@ export async function getProjectsFromDB (userId) {
   }
 };
 
-export async function getProjectFromDB (projectId) {
+export async function getProjectFromDataBase (projectId) {
   try {
     const projectRef = db.collection('projects').doc(projectId);
     const projectDoc = await projectRef.get();
@@ -52,92 +52,14 @@ export async function getProjectFromDB (projectId) {
   }
 };
 
-export async function changeStatusTaskInDB (projectId, newTaskArray) {
+export async function updateTaskArrayInDataBase(projectId, newTaskArray) {
   try {
-    const project = await getProjectFromDB (projectId);
-    /*
-    const newTaskArray = project.tasks.taskList.map(task => {
-      if (task.name === taskName) {
-        return {...task, status: taskStatus}
-      }
-      return task
-    });
-    */
+    const project = await getProjectFromDataBase (projectId);
     await db.collection('projects').doc(projectId).update({
       ...project,
       'tasks.taskList': newTaskArray
     })
-    //return true;
   } catch (error) {
     console.log(error);
-  }
-}
-
-export async function addDescriptionToDB (projectId, newTaskArray) {
-  try {
-    const project = await getProjectFromDB (projectId);
-    /*
-    const newTaskArray = project.tasks.taskList.map(task => {
-      if (task.name === taskName) {
-        return {...task, description}
-      }
-      return task;
-    });
-    */
-    await db.collection('projects').doc(projectId).update({
-      ...project, 
-      'tasks.taskList': newTaskArray
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-export async function addSubTaskToDB (projectId, task) {
-  try {
-    const project = await getProjectFromDB(projectId);
-    const task = project.tasks.taskList.find(taskItem => taskItem.name === task.name);
-    
-    /*
-    const newTaskArray = project.tasks.taskList.map(task => {
-      if (task.name === taskName) {
-        task.subtasks.push(subTask);
-      }
-      return task;
-    });
-    */
-    /*
-    await db.collection('projects').doc(projectId).update({
-      ...project, 
-      'tasks.taskList': newTaskArray
-    })
-    */
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function changeStatusSubTaskInDB (projectId, taskName, subTaskName, checkedStatus) {
-  try {
-    const project = await getProjectFromDB (projectId);
-    const newTaskArray = project.tasks.taskList.map(task => {
-      if (task.name === taskName) {
-        const newSubTaskList = task.subtasks.map(subTask => {
-          if (subTask.name === subTaskName) {
-            return {...subTask, done: checkedStatus}
-          }
-          return subTask;
-        })
-        return {...task, subtasks: newSubTaskList}
-      }
-      return task;
-    });
-    await db.collection('projects').doc(projectId).update({
-      ...project, 
-      'tasks.taskList': newTaskArray
-    })
-  } catch (error) {
-    console.log(error); 
   }
 }

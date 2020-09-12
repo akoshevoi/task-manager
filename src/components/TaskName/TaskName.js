@@ -9,12 +9,12 @@ const TaskName = ({
   task, 
   projectId,
   statusTask, 
-  changeStatusTask,
+  dispatchActionChangeStatusTask,
   openModal
 }) => {
   const handleChange = event => {
     const updatedTaskStatus = event.target.value;
-    changeStatusTask(projectId, task.name, updatedTaskStatus);
+    dispatchActionChangeStatusTask(projectId, task.name, updatedTaskStatus);
   }
     
   const handleModal = () => {

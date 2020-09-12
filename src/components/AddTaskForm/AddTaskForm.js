@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {addTaskToDB} from '../../api/projects';
 import {searchElementInArray, checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddTaskForm = ({
@@ -9,13 +8,9 @@ const AddTaskForm = ({
   projectId,
   statusTask,
   updateTasksArray,
-  addTask
+  dispatchActionAddTask
 }) => {
-  
   const [taskName, setTaskName] = useState('');
-
-  
-  
   
   const handleChange = event => {
     const value = event.target.value;
@@ -33,10 +28,8 @@ const AddTaskForm = ({
     const conditionSubmitForm = checkRepeatingProjectName(findingProject.tasks.taskList, taskName);
     
     if (!conditionSubmitForm) {   
-      addTask(projectId, taskName, statusTask);
-      //await addTaskToDB(projectId, taskName, statusTask);
+      dispatchActionAddTask(projectId, taskName, statusTask);
     }
-    //updateTasksArray();
     setTaskName('');
   };
 

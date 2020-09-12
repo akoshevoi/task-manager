@@ -6,6 +6,7 @@ import {authenticationUser} from '../../redux/actions/user';
 
 const AuthUserListener = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const unsubscribe = firebaseApp.auth().onAuthStateChanged(async u => {
       if (!u) {

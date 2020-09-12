@@ -8,13 +8,13 @@ const initialState = {
   }
 }
 
-export const modal = (state = initialState, action) => {
-  switch(action.type) {
+export const modal = (state = initialState, {type, payload}) => {
+  switch(type) {
     case MODAL_SHOW:
       return {
         ...state,
-        isShow: action.payload,
-        task: action.target,
+        isShow: payload.isShowModal,
+        task: payload.task,
       }
     default:
       return state;
