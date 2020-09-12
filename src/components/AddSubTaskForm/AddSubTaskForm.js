@@ -8,7 +8,9 @@ const AddSubTaskForm = ({
   updateTasksArray,
   calculateProgressBarLength,
   currentTask,
-  projects
+  projects,
+  addSubTaskToTask,
+  projectId
 }) => {
   const [subTaskName, setSubTaskName] = useState('');
 
@@ -24,14 +26,15 @@ const AddSubTaskForm = ({
 
     event.preventDefault();
 
-    const conditionSubmitForm = checkRepeatingProjectName(currentTask.subtasks, subTaskName);
+    const conditionSubmitForm = checkRepeatingProjectName(currentTask.subTasks, subTaskName);
 
     if (!conditionSubmitForm) {
       const subTask = {name: subTaskName, done:false}
-      await addSubTaskToDB(projects.activeProject, currentTask.name, subTask);
+      //await addSubTaskToDB(projects.activeProject, currentTask.name, subTask);
+      addSubTaskToTask(currentTask, subTask);
       calculateProgressBarLength();
     }
-    updateTasksArray();
+    //updateTasksArray();
     setSubTaskName('');
   };
   

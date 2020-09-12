@@ -7,12 +7,14 @@ import Button from '@material-ui/core/Button';
 
 const TaskName = ({
   task, 
+  projectId,
   statusTask, 
   changeStatusTask,
-  openModal,
+  openModal
 }) => {
   const handleChange = event => {
-    changeStatusTask(event, task.name, statusTask);
+    const updatedTaskStatus = event.target.value;
+    changeStatusTask(projectId, task.name, updatedTaskStatus);
   }
     
   const handleModal = () => {

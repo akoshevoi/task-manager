@@ -1,23 +1,24 @@
 import React, {useEffect} from 'react';
-import {changeStatusSubTaskInDB} from '../../api/projects';
+//import {changeStatusSubTaskInDB} from '../../api/projects';
 
 const SubTask = ({
   task, 
   currentTask, 
   projects,
   calculateProgressBarLength,
-  updateTasksArray
+  updateTasksArray,
+  changeStatusSubTask
 }) => {
   const handleChangeCheckbox = async event => {
     let isCheckedCheckbox = event.target.checked;
     let nameCheckbox = event.target.name;
-    await changeStatusSubTaskInDB(projects.activeProject, currentTask.name, nameCheckbox, isCheckedCheckbox);
-    
+    changeStatusSubTask(currentTask, nameCheckbox, isCheckedCheckbox);
+    //await changeStatusSubTaskInDB(projects.activeProject, currentTask.name, nameCheckbox, isCheckedCheckbox);
     updateTasksArray();
   }
 
   useEffect(() => {
-    calculateProgressBarLength(currentTask.subtasks);
+    calculateProgressBarLength(currentTask.subTasks);
   })
 
   return (

@@ -1,5 +1,8 @@
 .sub-tasks {
+  max-height: 160px;
   margin: 20px 0;
+
+  overflow-y: auto;
 }
 
 .sub-task {

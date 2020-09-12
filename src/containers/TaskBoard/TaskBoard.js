@@ -8,7 +8,10 @@ import {
   addingTask, 
   settingProjectId,
   changingStatusTask,
-  settingTaskArrayFromDbToStore
+  settingTaskArrayFromDbToStore,
+  addingDescriptionToTask,
+  addingSubTask,
+  changingStatusSubTask
 } from '../../redux/actions/projects';
 import {showingModal} from '../../redux/actions/modal';
 import {
@@ -30,6 +33,26 @@ const TaskBoard = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const addTask = (projectId, taskName, taskStatus) => {
+    dispatch(addingTask(projectId, taskName, taskStatus))
+  }
+
+  const changeStatusTask = (projectId, taskName, updatedTaskStatus) => {
+    dispatch(changingStatusTask(projectId, taskName, updatedTaskStatus));
+  };
+
+  const addDescriptionToTask = (projectId, taskName, description) => {
+    dispatch(addingDescriptionToTask(projectId, taskName, description));
+  }
+
+  const addSubTaskToTask = (task, subTask) => {
+    dispatch(addingSubTask(task, subTask));
+  }
+
+  const changeStatusSubTask = (task, subtask, status) => {
+    dispatch(changingStatusSubTask(task, subtask, status));
+  }
+
   const currentProject = searchElementInArray(
     projects.projectList, projects.activeProject, 'projectId'
   )
@@ -42,14 +65,6 @@ const TaskBoard = () => {
   ? projects.activeProject 
   : localStorage.getItem('activeProjectId');
 
-
-  const changeStatusTask = async (event, taskName) => {
-    const status = event.target.value;
-    const result = await changeStatusTaskInDB(projectId, taskName, status);
-    if (result) {
-      dispatch(changingStatusTask(projectId, taskName, status));
-    }
-  };
 
   const openModal = (task) => {
     dispatch(showingModal(true, task));
@@ -124,6 +139,7 @@ const TaskBoard = () => {
           return (
             <Column 
               key={uid} 
+              addTask={addTask}
               statusTask={name}
               projectName={params.projectName} 
               dispatchAction={dispatchAction}
@@ -149,8 +165,6 @@ const TaskBoard = () => {
           currentTask={currentTask} 
           currentProject={currentProject}
           isShow={isShow} 
-          //progressBarLength={progressBarLength}
-          //calculateProgressBarLength={calculateProgressBarLength}
           handleClose={handleClose}
           dispatchActionNew={dispatchActionNew}
           user={user} 
@@ -161,6 +175,9 @@ const TaskBoard = () => {
           dispatch={dispatch}
           addDescriptionToDB={addDescriptionToDB}
           updateTasksArray={updateTasksArray}
+          addDescriptionToTask={addDescriptionToTask}
+          addSubTaskToTask={addSubTaskToTask}
+          changeStatusSubTask={changeStatusSubTask}
         />
       </div>
     </div>

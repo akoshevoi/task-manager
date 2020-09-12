@@ -17,10 +17,14 @@ const TaskDetail = ({
   projects,
   projectId,
   updateTasksArray,
-  addDescriptionToDB
+  addDescriptionToDB,
+  addDescriptionToTask,
+  addSubTaskToTask,
+  changeStatusSubTask
 }) => {
   const [progressBarLength, setProgressBarLength] = useState(0);
   const calculateProgressBarLength = useCallback((subTask) => {
+    
     if (subTask && subTask.length > 0) {
       const totalLength = subTask.length;
       const doneLength = subTask.filter(item => item.done === true).length;
@@ -60,6 +64,7 @@ const latestTask = currentProject && currentTask
           addDescriptionToDB={addDescriptionToDB}
           projectId={projectId}
           updateTasksArray={updateTasksArray}
+          addDescriptionToTask={addDescriptionToTask}
         />
         {latestTask && latestTask.description &&
           <h3 className='task-detail__subtitle'>Description of task</h3>
@@ -77,6 +82,8 @@ const latestTask = currentProject && currentTask
           dispatchAction={dispatchActionNew}
           action={addingSubTask}
           updateTasksArray={updateTasksArray}
+          addSubTaskToTask={addSubTaskToTask}
+          projectId={projectId}
         />
           <SubTaskList 
             projects={projects}
@@ -84,6 +91,7 @@ const latestTask = currentProject && currentTask
             currentTask={latestTask} 
             calculateProgressBarLength={calculateProgressBarLength}
             updateTasksArray={updateTasksArray}
+            changeStatusSubTask={changeStatusSubTask}
           />
       </div>
     </Modal>

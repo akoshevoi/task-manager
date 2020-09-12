@@ -8,6 +8,8 @@ const AddDescriptionForm = ({
   projects, 
   addDescriptionToDB,
   updateTasksArray,
+  addDescriptionToTask,
+  projectId
 }) => {
   const [description, setDescription] = useState('');
 
@@ -16,13 +18,14 @@ const AddDescriptionForm = ({
     setDescription(value);
   }
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    
-    if (description.length > 0) {
-      await addDescriptionToDB(projects.activeProject, updatedTask.name, description);
+  const handleSubmit = event => {
+    if (!description.length) {
+      return;
     }
-    updateTasksArray();
+    event.preventDefault();
+    addDescriptionToTask(projectId, updatedTask.name, description);
+    //await addDescriptionToDB(projects.activeProject, updatedTask.name, description);
+    //updateTasksArray();
     setDescription('');
   };
 

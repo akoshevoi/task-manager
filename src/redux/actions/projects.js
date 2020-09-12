@@ -65,24 +65,24 @@ export const settingProjectsToStore = project => ({
   payload: { project }
 })
 
-export const addingTask = (project, task) => ({
+export const addingTask = (projectId, taskName, taskStatus) => ({
   type: ADD_TASK,
-  payload: {project, task}
+  payload: {projectId, taskName, taskStatus}
 })
 
-export const changingStatusTask = (projectId, taskName, status) => ({
+export const changingStatusTask = (projectId, taskName, updatedTaskStatus) => ({
   type: CHANGE_STATUS_TASK,
-  payload: {projectId, taskName, status}
+  payload: {projectId, taskName, updatedTaskStatus}
 })
 
-export const addingSubTask = (project, task, subTask) => ({
+export const addingSubTask = (task, subTask) => ({
   type: ADD_SUB_TASK,
-  payload: {project, task, subTask}
+  payload: {task, subTask}
 })
 
-export const changingStatusSubTask = (project, task, nameSubtask, status) => ({
+export const changingStatusSubTask = (task, subTaskName, subTaskStatus) => ({
   type: CHANGE_STATUS_SUB_TASK,
-  payload: {project, task, nameSubtask, status}
+  payload: {task, subTaskName, subTaskStatus}
 })
 
 export const addingDescriptionToTask = (projectId, taskName, description) => ({

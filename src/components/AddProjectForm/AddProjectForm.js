@@ -11,7 +11,7 @@ const AddProjectForm = ({user, projects, addProject}) => {
     setProjectName(value);
   }
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     if (!projectName.length){
       return;
     }

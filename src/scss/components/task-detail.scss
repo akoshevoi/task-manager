@@ -17,7 +17,10 @@
 }
 
 .task-detail__description {
+  max-height: 200px;
   margin-bottom: 20px;
+  
+  overflow-y: auto;
 }
 
 .task-detail__percent {

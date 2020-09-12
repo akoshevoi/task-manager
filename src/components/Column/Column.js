@@ -11,7 +11,8 @@ const Column = ({
   changeStatusTask,
   openModal,
   projects,
-  updateTasksArray
+  updateTasksArray,
+  addTask
 }) => {
   return (
     <div className='column'>
@@ -23,6 +24,7 @@ const Column = ({
         projectName={projectName} 
         dispatchAction={dispatchAction}
         updateTasksArray={updateTasksArray}
+        addTask={addTask}
       />
         {
         currentProject && currentProject.tasks.taskList.map(task => { 

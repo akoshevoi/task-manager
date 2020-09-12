@@ -8,17 +8,21 @@ const AddTaskForm = ({
   projects,
   projectId,
   statusTask,
-  updateTasksArray
+  updateTasksArray,
+  addTask
 }) => {
   
   const [taskName, setTaskName] = useState('');
+
+  
+  
   
   const handleChange = event => {
     const value = event.target.value;
     setTaskName(value);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     if (!taskName.length) {
       return;
     }
@@ -29,9 +33,10 @@ const AddTaskForm = ({
     const conditionSubmitForm = checkRepeatingProjectName(findingProject.tasks.taskList, taskName);
     
     if (!conditionSubmitForm) {   
-      await addTaskToDB(projectId, taskName, statusTask);
+      addTask(projectId, taskName, statusTask);
+      //await addTaskToDB(projectId, taskName, statusTask);
     }
-    updateTasksArray();
+    //updateTasksArray();
     setTaskName('');
   };
 
