@@ -1,5 +1,6 @@
 import {call, put, select} from 'redux-saga/effects';
 import {settingProjectsToStore} from '../actions/projects';
+import {loadingData} from '../actions/loading';
 import {updateTaskArrayInDataBase} from '../../api/projects';
 import {getProjects} from '../selectors/selectors';
 
@@ -24,9 +25,11 @@ export function* addDescriptionToTask({payload}) {
     }
     return task;
   });
-  
-  yield call(settingTaskArrayToDB, payload.projectId, newTaskList);
 
+  yield put(loadingData(true));
+  yield call(settingTaskArrayToDB, payload.projectId, newTaskList);
+  yield put(loadingData(false));
+  
   const latestProject = {
     ...currentProject, 
     tasks: {...currentProject.tasks, taskList: newTaskList}

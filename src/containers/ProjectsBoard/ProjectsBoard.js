@@ -34,7 +34,7 @@ const ProjectsBoard = () => {
       </div>
       <div className='projects-board__content'>
 
-        {projects.map(project => (
+        {projects && projects.map(project => (
           <ProjectCard 
             key={project.projectId} 
             handleClick={goToTaskBoard(project)}

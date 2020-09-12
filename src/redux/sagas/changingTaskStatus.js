@@ -1,5 +1,6 @@
 import {call, put, select} from 'redux-saga/effects';
 import {settingProjectsToStore} from '../actions/projects';
+import {loadingData} from '../actions/loading';
 import {updateTaskArrayInDataBase} from '../../api/projects';
 import {getProjects} from '../selectors/selectors';
 
@@ -23,8 +24,10 @@ export function* changeStatusTask({payload}) {
     }
     return task;
   });
-  
+
+  yield put(loadingData(true));
   yield call(settingTaskArrayToDB, payload.projectId, newTaskList);
+  yield put(loadingData(false));
 
    const latestProject = {
     ...currentProject, 

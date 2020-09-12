@@ -1,5 +1,6 @@
 import {call, put} from 'redux-saga/effects';
 import {settingProjectsToStore} from '../actions/projects';
+import {loadingData} from '../actions/loading';
 import {addProjectToDataBase, getProjectsFromDataBase} from '../../api/projects';
 
 async function addingProjectToDataBase(userId, projectName) {
@@ -21,7 +22,9 @@ async function gettingProjectsFromDB (userId) {
 }
 
 export function* addProject({payload}) {
+  yield put(loadingData(true));
   yield call(addingProjectToDataBase, payload.userId, payload.projectName);
+  yield put(loadingData(false));
   const newProjectArray = yield call (gettingProjectsFromDB, payload.userId);
   yield put(settingProjectsToStore(newProjectArray));
 }

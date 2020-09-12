@@ -1,5 +1,6 @@
 import {call, put, select} from 'redux-saga/effects';
 import {settingProjectsToStore} from '../actions/projects';
+import {loadingData} from '../actions/loading';
 import {addTaskToDataBase} from '../../api/projects';
 import {getProjects} from '../selectors/selectors';
 
@@ -22,7 +23,9 @@ export function* addTask({payload}) {
     description: '',
     subTasks: []
   };
+  yield put(loadingData(true));
   yield call(settingTaskToDB, payload.projectId, newTask);
+  yield put(loadingData(false));
   const newTaskList = currentProject.tasks.taskList;
   newTaskList.splice(newTaskList.length, 0, newTask);
 
