@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -38,6 +38,12 @@ const TaskDetail = ({
     }
     setProgressBarLength(0);
   },[]);
+
+  useEffect(() => {
+    if (latestTask) {
+      calculateProgressBarLength();
+    }
+  }, [latestTask, calculateProgressBarLength])
   
   return (
     <Modal
