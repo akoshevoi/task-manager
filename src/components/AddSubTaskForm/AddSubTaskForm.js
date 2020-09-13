@@ -6,11 +6,12 @@ import {checkRepeatingProjectName} from '../../utils/helpers';
 const AddSubTaskForm = ({
   updateTasksArray,
   calculateProgressBarLength,
-  currentTask,
+  //currentTask,
+  latestTask,
   projects,
   dispatchActionAddSubTaskToTask,
   projectId
-}) => {
+}) => {  
   const [subTaskName, setSubTaskName] = useState('');
 
   const handleChange = event => {
@@ -25,12 +26,12 @@ const AddSubTaskForm = ({
 
     event.preventDefault();
     
-    const conditionSubmitForm = checkRepeatingProjectName(currentTask.subTasks, subTaskName);
-
+    const conditionSubmitForm = checkRepeatingProjectName(latestTask.subTasks.subTasksList, subTaskName);
+    
     if (!conditionSubmitForm) {
       const subTask = {name: subTaskName, done:false}
-      dispatchActionAddSubTaskToTask(currentTask, subTask);
-      calculateProgressBarLength();
+      dispatchActionAddSubTaskToTask(latestTask, subTask);
+      //calculateProgressBarLength();
     }
     setSubTaskName('');
   };

@@ -5,7 +5,7 @@ import TaskName from '../TaskName';
 const Column = ({
   statusTask, 
   projectName, 
-  dispatchAction, 
+  //dispatchAction, 
   currentProject, 
   projectId,
   dispatchActionChangeStatusTask,
@@ -13,27 +13,29 @@ const Column = ({
   projects,
   updateTasksArray,
   dispatchActionAddTask,
-  user
+  user,
+  tasks
 }) => {
   return (
     <div className='column'>
       <h3 className='column__title'>{statusTask}</h3>
       <AddTaskForm 
+        tasks={tasks}
         user={user}
         projects={projects}
         projectId={projectId}
         statusTask={statusTask} 
         projectName={projectName} 
-        dispatchAction={dispatchAction}
+        //dispatchAction={dispatchAction}
         updateTasksArray={updateTasksArray}
         dispatchActionAddTask={dispatchActionAddTask}
       />
         {
-        currentProject && currentProject.tasks.taskList.map(task => { 
+        tasks.taskList.length > 0 && tasks.taskList.map(task => { 
         return (
           task.status === statusTask
           ? <TaskName 
-              key={task.name} 
+              key={task.taskId} 
               task={task} 
               statusTask={statusTask} 
               projects={projects}

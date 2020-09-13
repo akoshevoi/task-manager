@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {addingDescriptionToTask, addingSubTask} from '../../redux/actions/projects';
+//import {addingDescriptionToTask, addingSubTask} from '../../redux/actions/projects';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -8,6 +8,7 @@ import AddSubTaskForm from '../../components/AddSubTaskForm';
 import AddDescriptionForm from '../../components/AddDescriptionForm';
 
 const TaskDetail = ({
+  tasks,
   currentProject,
   currentTask, 
   isShow, 
@@ -24,7 +25,6 @@ const TaskDetail = ({
 }) => {
   const [progressBarLength, setProgressBarLength] = useState(0);
   const calculateProgressBarLength = useCallback((subTask) => {
-    
     if (subTask && subTask.length > 0) {
       const totalLength = subTask.length;
       const doneLength = subTask.filter(item => item.done === true).length;
@@ -35,12 +35,16 @@ const TaskDetail = ({
       return setProgressBarLength(progressBarLength);
     }
     setProgressBarLength(0);
-  },[])
+  },[]);
+  
+  const latestTask = tasks.taskList.find(task => task.taskId === currentTask.taskId);
+  
   /*
-const latestTask = currentProject && currentTask 
-? currentProject.tasks.taskList.find(task => task.name === currentTask.name)
-: null;
+  const latestTask = currentProject && currentTask 
+  ? currentProject.tasks.taskList.find(task => task.name === currentTask.name)
+  : null;
 */
+  
   return (
     <Modal
       open={isShow}
@@ -53,15 +57,15 @@ const latestTask = currentProject && currentTask
           <ClearIcon />
         </div>
         <h2 className='task-detail__title'>
-          {/* {latestTask && latestTask.name} */}
-          {currentTask && currentTask.name}
+          {latestTask && latestTask.name} 
+          {/* {currentTask && currentTask.name} */}
         </h2>
         <AddDescriptionForm 
           projectName={projectName} 
           //updatedTask={latestTask}
           currentTask={currentTask}
           dispatchAction={dispatchActionNew}
-          action={addingDescriptionToTask}
+          //action={addingDescriptionToTask}
           projects={projects}
           addDescriptionToDB={addDescriptionToDB}
           projectId={projectId}
@@ -69,24 +73,25 @@ const latestTask = currentProject && currentTask
           dispatchActionAddDescriptionToTask={dispatchActionAddDescriptionToTask}
         />
         {
-          //latestTask && latestTask.description &&
-          currentTask && currentTask.description &&
+          latestTask && latestTask.description &&
+          //currentTask && currentTask.description &&
           <h3 className='task-detail__subtitle'>Description of task</h3>
         }
         <div className='task-detail__description'>
-          {/* {latestTask && latestTask.description} */}
-          {currentTask && currentTask.description}
+          {latestTask && latestTask.description} 
+          {/* {currentTask && currentTask.description} */}
         </div>
         <LinearProgress variant='determinate' value={progressBarLength}/>
         <div className='task-detail__percent'>{progressBarLength}%</div>
         <AddSubTaskForm 
           projects={projects}
           //currentTask={latestTask} 
-          currentTask={currentTask}
+          latestTask={latestTask}
+          //currentTask={currentTask}
           calculateProgressBarLength={calculateProgressBarLength}
           projectName={projectName}
           dispatchAction={dispatchActionNew}
-          action={addingSubTask}
+          //action={addingSubTask}
           updateTasksArray={updateTasksArray}
           dispatchActionAddSubTaskToTask={dispatchActionAddSubTaskToTask}
           projectId={projectId}
@@ -94,8 +99,9 @@ const latestTask = currentProject && currentTask
           <SubTaskList 
             projects={projects}
             projectName={projectName}
+            latestTask={latestTask}
             //currentTask={latestTask} 
-            currentTask={currentTask}
+            //currentTask={currentTask}
             calculateProgressBarLength={calculateProgressBarLength}
             updateTasksArray={updateTasksArray}
             dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}

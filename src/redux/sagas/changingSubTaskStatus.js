@@ -1,53 +1,67 @@
 import {call, put, select} from 'redux-saga/effects';
-import {settingProjectsToStore} from '../actions/projects';
+import {updateTaskInDataBase} from '../../api/tasks';
+import {settingTaskToStore} from '../actions/tasks';
 import {loadingData} from '../actions/loading';
-import {updateTaskArrayInDataBase} from '../../api/projects';
-import {getProjects} from '../selectors/selectors';
+import {getTasks} from '../selectors/selectors';
 
-async function settingTaskArrayToDB(projectId, newTaskArray) {
+async function updatingTaskFromDataBase(taskId, fieldName, newProperty) {
   try {
-    await updateTaskArrayInDataBase(projectId, newTaskArray);
+    const updatedTask = await updateTaskInDataBase(taskId, fieldName, newProperty);
+    return updatedTask;
   } catch (error) {
     console.log(error);
   }
 }
 
-
 export function* changeSubTaskStatus({payload}) {
-  const newSubTaskList = payload.task.subTasks.map(subTask => {
-    if (subTask.name === payload.subTaskName) {
-      return {...subTask, done: payload.subTaskStatus}
+  const tasks = yield select(getTasks);
+  /*
+  const newTasks = tasks.taskList.find(taskItem => {
+    if (taskItem.taskId === payload.task.taskId) {
+
+      const newSubTasksList = taskItem.subTasks.subTasksList.map(subTaskItem => {
+        if (subTaskItem.name === payload.subTaskName) {
+          return {...subTaskItem, done: payload.subTaskStatus};
+        }
+        return subTaskItem;
+      });
+
+      return {
+        ...taskItem, 
+        subTasks: {
+          ...taskItem.subTasks, 
+          subTasksList: newSubTasksList
+        }
+      }
+      
     }
-    return subTask;
-  })
+    return;
+  });
+*/
 
-  const newTask = {...payload.task, subTasks: newSubTaskList};
-
-  const projects = yield select(getProjects);
-
-  const currentProject = projects.projectList.find(project => project.projectId === projects.activeProject);
-
-  const newTaskList = currentProject.tasks.taskList.map(task => {
-    if (task.name === payload.task.name) {
-      return newTask
+  const findingTask = tasks.taskList.find(taskItem => taskItem.taskId === payload.task.taskId);
+  const newSubTasksList = findingTask.subTasks.subTasksList.map(subTaskItem => {
+    if (subTaskItem.name === payload.subTaskName) {
+      return {...subTaskItem, done: payload.subTaskStatus};
     }
-    return task;
+    return subTaskItem;
   });
   yield put(loadingData(true));
-  yield call(settingTaskArrayToDB, projects.activeProject, newTaskList);
+  yield call(
+    updatingTaskFromDataBase, 
+    payload.task.taskId, 
+    'subTasks.subTasksList', 
+    newSubTasksList
+  );
   yield put(loadingData(false));
-  const latestProject = {
-    ...currentProject, 
-    tasks: {...currentProject.tasks, taskList: newTaskList}
-  };
-  
-  const latestProjectsArray = projects.projectList.map(project => {
-    if (project.projectId === latestProject.projectId) {
-      return latestProject;
-    }
-    return project;
-  })
 
-  yield put(settingProjectsToStore(latestProjectsArray));
+  const newTaskArray = tasks.taskList.map(taskItem => {
+    if (taskItem.taskId === payload.task.taskId) {
+      return {...taskItem, subTasks: {...taskItem.subTasks, subTasksList: newSubTasksList}}
+    }
+    return taskItem;
+  });
+
+  yield put(settingTaskToStore(newTaskArray));
   
 }

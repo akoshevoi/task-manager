@@ -2,21 +2,22 @@ import React, {useEffect} from 'react';
 
 const SubTask = ({
   task, 
-  currentTask, 
+  //currentTask, 
+  latestTask,
   projects,
   calculateProgressBarLength,
   updateTasksArray,
   dispatchActionChangeStatusSubTask
 }) => {
-  const handleChangeCheckbox = async event => {
+  const handleChangeCheckbox = event => {
     let isCheckedCheckbox = event.target.checked;
     let nameCheckbox = event.target.name;
-    dispatchActionChangeStatusSubTask(currentTask, nameCheckbox, isCheckedCheckbox);
-    updateTasksArray();
+    dispatchActionChangeStatusSubTask(latestTask, nameCheckbox, isCheckedCheckbox);
+    //updateTasksArray();
   }
 
   useEffect(() => {
-    calculateProgressBarLength(currentTask.subTasks);
+    calculateProgressBarLength(latestTask.subTasks.subTasksList);
   })
 
   return (

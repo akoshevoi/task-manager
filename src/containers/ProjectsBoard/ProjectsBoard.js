@@ -7,6 +7,7 @@ import {settingProjectId} from '../../redux/actions/projects';
 import * as ROUTES from '../../constants/routes';
 import withAuth from '../../HOC';
 import {addingProject} from '../../redux/actions/projects';
+import {fetchingTasksFromDataBase} from '../../redux/actions/tasks';
 
 const ProjectsBoard = () => {
   const user = useSelector(state => state.user)
@@ -21,6 +22,7 @@ const ProjectsBoard = () => {
   const goToTaskBoard = project => () => {
     history.push(`${ROUTES.TASK_BOARD}/${project.name}`);
     dispatch(settingProjectId(project.projectId));
+    dispatch(fetchingTasksFromDataBase(project.projectId));
   }
 
   return (

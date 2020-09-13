@@ -5,14 +5,15 @@ import SubTask from '../SubTask/SubTask';
 const SubTaskList = ({
   projects, 
   projectName, 
-  currentTask, 
+  //currentTask, 
+  latestTask,
   calculateProgressBarLength, 
   updateTasksArray,
   dispatchActionChangeStatusSubTask
 }) => { 
   return (
     <div className='sub-tasks'>
-      {currentTask.subTasks && currentTask.subTasks.map(task => {
+      {latestTask.subTasks.subTasksList.length > 0 && latestTask.subTasks.subTasksList.map(task => {
         let uid = generate();
           return (
             <SubTask 
@@ -20,7 +21,8 @@ const SubTaskList = ({
               task={task}
               projects={projects} 
               projectName={projectName}
-              currentTask={currentTask} 
+              latestTask={latestTask}
+              //currentTask={currentTask} 
               calculateProgressBarLength={calculateProgressBarLength}
               updateTasksArray={updateTasksArray}
               dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}

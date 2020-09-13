@@ -3,7 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const AddDescriptionForm = ({
-  updatedTask,
+  currentTask,
+  //updatedTask,
   projects, 
   addDescriptionToDB,
   updateTasksArray,
@@ -22,7 +23,7 @@ const AddDescriptionForm = ({
       return;
     }
     event.preventDefault();
-    dispatchActionAddDescriptionToTask(projectId, updatedTask.name, description);
+    dispatchActionAddDescriptionToTask(currentTask.taskId, description);
     setDescription('');
   };
 

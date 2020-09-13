@@ -10,7 +10,8 @@ const AddTaskForm = ({
   projectName,
   statusTask,
   updateTasksArray,
-  dispatchActionAddTask
+  dispatchActionAddTask,
+  tasks
 }) => {
   const [taskName, setTaskName] = useState('');
   
@@ -23,18 +24,12 @@ const AddTaskForm = ({
     if (!taskName.length) {
       return;
     }
-
     event.preventDefault();
-    /*
-    const findingProject = searchElementInArray(projects.projectList, projectId, 'projectId');
-    const conditionSubmitForm = checkRepeatingProjectName(findingProject.tasks.taskList, taskName);
-    */
-    /*
+
+    const conditionSubmitForm = checkRepeatingProjectName(tasks.taskList, taskName);
     if (!conditionSubmitForm) {  
       dispatchActionAddTask(user.uid, projectId, projectName, taskName, statusTask);
     }
-    */
-    dispatchActionAddTask(user.uid, projectId, projectName, taskName, statusTask);
     setTaskName('');
   };
 

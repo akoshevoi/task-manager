@@ -14,7 +14,7 @@ const TaskName = ({
 }) => {
   const handleChange = event => {
     const updatedTaskStatus = event.target.value;
-    dispatchActionChangeStatusTask(projectId, task.name, updatedTaskStatus);
+    dispatchActionChangeStatusTask(task.taskId, updatedTaskStatus);
   }
     
   const handleModal = () => {

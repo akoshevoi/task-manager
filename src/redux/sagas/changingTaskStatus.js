@@ -1,45 +1,28 @@
 import {call, put, select} from 'redux-saga/effects';
-import {settingProjectsToStore} from '../actions/projects';
+import {updateTaskInDataBase} from '../../api/tasks';
+import {settingTaskToStore} from '../actions/tasks';
 import {loadingData} from '../actions/loading';
-import {updateTaskArrayInDataBase} from '../../api/projects';
-import {getProjects} from '../selectors/selectors';
+import {getTasks} from '../selectors/selectors';
 
-async function settingTaskArrayToDB(projectId, newTaskArray) {
+async function updatingTaskFromDataBase(taskId, fieldName, newProperty) {
   try {
-    await updateTaskArrayInDataBase(projectId, newTaskArray);
+    const updatedTask = await updateTaskInDataBase(taskId, fieldName, newProperty);
+    return updatedTask;
   } catch (error) {
     console.log(error);
   }
 }
 
 export function* changeStatusTask({payload}) {
-  const projects = yield select(getProjects);
-  const currentProject = projects.projectList.find(project => {
-    return project.projectId === payload.projectId
-  });
-
-  const newTaskList = currentProject.tasks.taskList.map(task => {
-    if (task.name === payload.taskName) {
-      return {...task, status: payload.updatedTaskStatus}
-    }
-    return task;
-  });
-
   yield put(loadingData(true));
-  yield call(settingTaskArrayToDB, payload.projectId, newTaskList);
+  yield call(updatingTaskFromDataBase, payload.taskId, 'status', payload.updatedTaskStatus);
   yield put(loadingData(false));
-
-   const latestProject = {
-    ...currentProject, 
-    tasks: {...currentProject.tasks, taskList: newTaskList}
-  };
-  
-  const latestProjectsArray = projects.projectList.map(project => {
-    if (project.projectId === latestProject.projectId) {
-      return latestProject;
+  const tasks = yield select(getTasks);
+  const newTaskList = tasks.taskList.map(taskItem => {
+    if (taskItem.taskId === payload.taskId) {
+      return {...taskItem, status: payload.updatedTaskStatus}
     }
-    return project;
-  })
-  
-  yield put(settingProjectsToStore(latestProjectsArray));
+    return taskItem;
+  });
+  yield put(settingTaskToStore(newTaskList));
 }

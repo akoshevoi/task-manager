@@ -1,50 +1,35 @@
 import {call, put, select} from 'redux-saga/effects';
-import {settingProjectsToStore} from '../actions/projects';
+import {updateTaskInDataBase} from '../../api/tasks';
+import {settingTaskToStore} from '../actions/tasks';
 import {loadingData} from '../actions/loading';
-import {updateTaskArrayInDataBase} from '../../api/projects';
-import {getProjects} from '../selectors/selectors';
+import {getTasks} from '../selectors/selectors';
 
-async function settingTaskArrayToDB(projectId, newTaskArray) {
+async function updatingTaskFromDataBase(taskId, fieldName, newProperty) {
   try {
-    await updateTaskArrayInDataBase(projectId, newTaskArray);
+    const updatedTask = await updateTaskInDataBase(taskId, fieldName, newProperty);
+    return updatedTask;
   } catch (error) {
     console.log(error);
   }
 }
 
 export function* addSubTask({payload}) {
-  const newSubTaskList = payload.task.subTasks;
-  newSubTaskList.splice(newSubTaskList.length, 0, payload.subTask);
-
-  const projects = yield select(getProjects);
-
-  const newTask = payload.task;
-
-  const currentProject = projects.projectList.find(project => project.projectId === projects.activeProject);
-
-  const newTaskList = currentProject.tasks.taskList.map(task => {
-    if (task.name === payload.task.name) {
-      return newTask
+  const tasks = yield select(getTasks);
+  const task = tasks.taskList.find(taskItem => {
+    if (taskItem.taskId === payload.task.taskId) {
+      return taskItem.subTasks.subTasksList.splice(
+        taskItem.subTasks.subTasksList.length, 0, payload.subTask
+      );
     }
-    return task;
+    return;
   });
-
   yield put(loadingData(true));
-  yield call(settingTaskArrayToDB, projects.activeProject, newTaskList);
+  yield call(
+    updatingTaskFromDataBase, 
+    payload.task.taskId, 
+    'subTasks.subTasksList', 
+    task.subTasks.subTasksList
+  );
   yield put(loadingData(false));
-  
-  const latestProject = {
-    ...currentProject, 
-    tasks: {...currentProject.tasks, taskList: newTaskList}
-  };
-  
-  const latestProjectsArray = projects.projectList.map(project => {
-    if (project.projectId === latestProject.projectId) {
-      return latestProject;
-    }
-    return project;
-  })
-
-  yield put(settingProjectsToStore(latestProjectsArray));
-  
+  yield put(settingTaskToStore(tasks.taskList));
 }
