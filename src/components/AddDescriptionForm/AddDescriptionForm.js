@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 
 const AddDescriptionForm = ({
   currentTask,
-  //updatedTask,
   projects, 
   addDescriptionToDB,
   updateTasksArray,

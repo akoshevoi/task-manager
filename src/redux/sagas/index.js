@@ -7,7 +7,8 @@ import {
   CHANGE_STATUS_TASK,
   ADD_DESCRIPTION_TO_TASK,
   ADD_SUB_TASK,
-  CHANGE_STATUS_SUB_TASK
+  CHANGE_STATUS_SUB_TASK,
+  SET_PROJECT_ID_WHEN_REFRESH_PAGE
 } from '../types/types';
 
 import {addProject} from './addingProject';
@@ -18,6 +19,7 @@ import {addSubTask} from './addingSubTask';
 import {changeSubTaskStatus} from './changingSubTaskStatus';
 import {fetchProjects} from './fetchingProjects';
 import {fetchTasks} from './fetchingTasks';
+import {setProjectIdWhenRefreshPage} from './setttingProjectIdWhenRefreshPage';
 
 export function* sagaWatcher() {
   yield takeEvery(FETCH_PROJECTS_ARRAY_FROM_DB, fetchProjects);
@@ -28,4 +30,6 @@ export function* sagaWatcher() {
   yield takeEvery(ADD_DESCRIPTION_TO_TASK, addDescriptionToTask);
   yield takeEvery(ADD_SUB_TASK, addSubTask);
   yield takeEvery(CHANGE_STATUS_SUB_TASK, changeSubTaskStatus);
+  yield takeEvery(SET_PROJECT_ID_WHEN_REFRESH_PAGE, setProjectIdWhenRefreshPage)
 }
+

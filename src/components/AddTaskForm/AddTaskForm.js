@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {searchElementInArray, checkRepeatingProjectName} from '../../utils/helpers';
+import {checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddTaskForm = ({
   user,

@@ -15,30 +15,6 @@ async function updatingTaskFromDataBase(taskId, fieldName, newProperty) {
 
 export function* changeSubTaskStatus({payload}) {
   const tasks = yield select(getTasks);
-  /*
-  const newTasks = tasks.taskList.find(taskItem => {
-    if (taskItem.taskId === payload.task.taskId) {
-
-      const newSubTasksList = taskItem.subTasks.subTasksList.map(subTaskItem => {
-        if (subTaskItem.name === payload.subTaskName) {
-          return {...subTaskItem, done: payload.subTaskStatus};
-        }
-        return subTaskItem;
-      });
-
-      return {
-        ...taskItem, 
-        subTasks: {
-          ...taskItem.subTasks, 
-          subTasksList: newSubTasksList
-        }
-      }
-      
-    }
-    return;
-  });
-*/
-
   const findingTask = tasks.taskList.find(taskItem => taskItem.taskId === payload.task.taskId);
   const newSubTasksList = findingTask.subTasks.subTasksList.map(subTaskItem => {
     if (subTaskItem.name === payload.subTaskName) {

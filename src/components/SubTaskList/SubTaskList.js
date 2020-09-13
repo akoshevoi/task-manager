@@ -5,7 +5,6 @@ import SubTask from '../SubTask/SubTask';
 const SubTaskList = ({
   projects, 
   projectName, 
-  //currentTask, 
   latestTask,
   calculateProgressBarLength, 
   updateTasksArray,
@@ -22,7 +21,6 @@ const SubTaskList = ({
               projects={projects} 
               projectName={projectName}
               latestTask={latestTask}
-              //currentTask={currentTask} 
               calculateProgressBarLength={calculateProgressBarLength}
               updateTasksArray={updateTasksArray}
               dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}

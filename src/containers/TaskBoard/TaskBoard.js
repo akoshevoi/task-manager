@@ -4,21 +4,17 @@ import {useParams, useHistory} from 'react-router-dom';
 import Column from '../../components/Column';
 import withAuth from '../../HOC';
 import {generate} from 'shortid';
-import {settingProjectId} from '../../redux/actions/projects';
+import {settingProjectId, settingProjectIdWhenRefreshPage} from '../../redux/actions/projects';
 import {
   addingTaskToDataBase, 
   changingStatusTask,
-  settingTaskArrayFromDbToStore,
   addingDescriptionToTask,
   addingSubTask,
   changingStatusSubTask,
   fetchingTasksFromDataBase
 } from '../../redux/actions/tasks';
 import {showingModal} from '../../redux/actions/modal';
-import {
-  getProjectsFromDataBase,
-  getProjectFromDataBase,
-} from '../../api/projects'; 
+import {getProjectsFromDataBase} from '../../api/projects'; 
 import {searchElementInArray} from '../../utils/helpers';
 import * as ROUTES from '../../constants/routes';
 import TaskDetail from '../../components/TaskDetail';
@@ -32,10 +28,6 @@ const TaskBoard = () => {
   const params = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-/*
-  console.log('tasks: ', tasks);
-  console.log('currentTask: ', currentTask);
-  */
     
   const dispatchActionAddTask = (userId, projectId, projectName, taskName, taskStatus) => {
     dispatch(addingTaskToDataBase(userId, projectId, projectName, taskName, taskStatus))
@@ -60,15 +52,7 @@ const TaskBoard = () => {
   const currentProject = searchElementInArray(
     projects.projectList, projects.activeProject, 'projectId'
   )
-/*
-  const dispatchAction = (...args) => {
-    dispatch(addingTask(...args))
-  } 
 
-  const dispatchActionNew = action => {
-    dispatch(action);
-  }
-*/
   const projectId = projects.activeProject
   ? projects.activeProject 
   : localStorage.getItem('activeProjectId');
@@ -82,7 +66,6 @@ const TaskBoard = () => {
     dispatch(showingModal(false, currentTask));
   }
 
-  //!!!!!!!!!!!!!!!
   
   useEffect(() => {
     if (history.action === "POP"){
@@ -98,6 +81,7 @@ const TaskBoard = () => {
           }
           let projectId = localStorage.getItem('activeProjectId');
           dispatch(settingProjectId(projectId)); 
+          dispatch(settingProjectIdWhenRefreshPage(user.uid, params.projectName))
         } catch (error) {
           console.log(error);
         }
@@ -120,23 +104,12 @@ const TaskBoard = () => {
         }
       }
       getProjectId();
+      
     }
     // eslint-disable-next-line
   }, [])
 
   const columnNames = ['To Do', 'In Progress', 'Done'];
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  /*
-  const updateTasksArray = async () => {
-    try {
-      const fetchedProject = await getProjectFromDataBase(projectId);
-      const {tasks} = fetchedProject
-      dispatch(settingTaskArrayFromDbToStore(projectId, tasks.taskList));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  */
 
   return (
     <div className='board'>
@@ -150,7 +123,6 @@ const TaskBoard = () => {
               dispatchActionAddTask={dispatchActionAddTask}
               statusTask={name}
               projectName={params.projectName} 
-              //dispatchAction={dispatchAction}
               currentProject={currentProject}
               currentTask={currentTask}
               isShow={isShow}
@@ -158,14 +130,12 @@ const TaskBoard = () => {
               dispatchActionChangeStatusTask={dispatchActionChangeStatusTask}
               openModal={openModal}
               handleClose={handleClose}
-              //dispatchActionNew={dispatchActionNew}
               user={user} 
               projects={projects}
               tasks={tasks}
               params={params} 
               history={history}
               dispatch={dispatch} 
-              //updateTasksArray={updateTasksArray}
             />
           )
         })}
@@ -174,7 +144,6 @@ const TaskBoard = () => {
           currentProject={currentProject}
           isShow={isShow} 
           handleClose={handleClose}
-          //dispatchActionNew={dispatchActionNew}
           user={user} 
           projects={projects}
           projectId={projectId}
@@ -182,7 +151,6 @@ const TaskBoard = () => {
           history={history}
           dispatch={dispatch}
           tasks={tasks}
-          //updateTasksArray={updateTasksArray}
           dispatchActionAddDescriptionToTask={dispatchActionAddDescriptionToTask}
           dispatchActionAddSubTaskToTask={dispatchActionAddSubTaskToTask}
           dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}

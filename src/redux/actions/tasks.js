@@ -9,10 +9,12 @@ import {
   FETCH_TASKS_FROM_DATA_BASE
 } from '../types/types';
 
+
 export const fetchingTasksFromDataBase = projectId => ({
   type: FETCH_TASKS_FROM_DATA_BASE,
   payload: { projectId }
 })
+
 
 export const settingTaskArrayFromDataBaseToStore = taskList => ({
   type: SET_TASKS_ARRAY_FROM_DB_TO_STORE,

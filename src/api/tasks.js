@@ -1,5 +1,4 @@
 import {firebaseApp} from '../firebaseConfig';
-import * as firebase from 'firebase/app';
 const db = firebaseApp.firestore();
 
 export async function addTaskToDataBase(userId, projectId, projectName, taskName, taskStatus) {

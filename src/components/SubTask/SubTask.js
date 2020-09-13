@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 
 const SubTask = ({
   task, 
-  //currentTask, 
   latestTask,
   projects,
   calculateProgressBarLength,
@@ -13,7 +12,6 @@ const SubTask = ({
     let isCheckedCheckbox = event.target.checked;
     let nameCheckbox = event.target.name;
     dispatchActionChangeStatusSubTask(latestTask, nameCheckbox, isCheckedCheckbox);
-    //updateTasksArray();
   }
 
   useEffect(() => {

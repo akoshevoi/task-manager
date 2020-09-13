@@ -6,7 +6,6 @@ import {checkRepeatingProjectName} from '../../utils/helpers';
 const AddSubTaskForm = ({
   updateTasksArray,
   calculateProgressBarLength,
-  //currentTask,
   latestTask,
   projects,
   dispatchActionAddSubTaskToTask,
@@ -31,7 +30,6 @@ const AddSubTaskForm = ({
     if (!conditionSubmitForm) {
       const subTask = {name: subTaskName, done:false}
       dispatchActionAddSubTaskToTask(latestTask, subTask);
-      //calculateProgressBarLength();
     }
     setSubTaskName('');
   };

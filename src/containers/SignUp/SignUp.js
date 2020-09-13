@@ -91,16 +91,21 @@ const SignUp = () => {
       }); 
 
       createUserWithEmailAndPassword(values.email, values.password)
-      .then(authUser => {
-        saveUserById(authUser.uid, {
-          uid: authUser.uid,
-          name: values.name,
-          email: values.email
-        })
+        .then(authUser => {
+          saveUserById(authUser.uid, {
+            uid: authUser.uid,
+            name: values.name,
+            email: values.email
+          })
           dispatch(authenticationUser(authUser));
           history.push(ROUTES.PROJECTS_BOARD);
-      })
-
+        })
+        .catch(error => {
+          setHelperTexts({
+            ...helperTexts,
+            formSubmit: error.message
+          });
+        })
       setValues({
         name: '',
         email: '',

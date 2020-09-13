@@ -3,12 +3,18 @@ import {
   SET_PROJECT_ID,
   FETCH_PROJECTS_ARRAY_FROM_DB,
   SET_PROJECTS_ARRAY_TO_STORE,
-  SET_PROJECTS_TO_STORE
+  SET_PROJECTS_TO_STORE,
+  SET_PROJECT_ID_WHEN_REFRESH_PAGE
 } from '../types/types';
 
 export const settingProjectId = projectId => ({
   type: SET_PROJECT_ID,
   payload: { projectId }
+})
+
+export const settingProjectIdWhenRefreshPage = (userId, projectName) => ({
+  type: SET_PROJECT_ID_WHEN_REFRESH_PAGE,
+  payload: { userId, projectName }
 })
 
 export const fetchingProjectsArrayFromDB = userId => ({

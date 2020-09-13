@@ -11,7 +11,6 @@ import {useSelector} from 'react-redux';
 
 const Router = () => {
   const isLoading = useSelector(state => state.isLoading);
-
   return (
     <BrowserRouter>
       <AuthUserListener />

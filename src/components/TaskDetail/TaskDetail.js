@@ -1,5 +1,4 @@
 import React, {useState, useCallback} from 'react';
-//import {addingDescriptionToTask, addingSubTask} from '../../redux/actions/projects';
 import Modal from '@material-ui/core/Modal';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -21,8 +20,11 @@ const TaskDetail = ({
   addDescriptionToDB,
   dispatchActionAddDescriptionToTask,
   dispatchActionAddSubTaskToTask,
-  dispatchActionChangeStatusSubTask
+  dispatchActionChangeStatusSubTask,
 }) => {
+  
+  const latestTask = tasks.taskList.find(task => task.taskId === currentTask.taskId)
+
   const [progressBarLength, setProgressBarLength] = useState(0);
   const calculateProgressBarLength = useCallback((subTask) => {
     if (subTask && subTask.length > 0) {
@@ -37,14 +39,6 @@ const TaskDetail = ({
     setProgressBarLength(0);
   },[]);
   
-  const latestTask = tasks.taskList.find(task => task.taskId === currentTask.taskId);
-  
-  /*
-  const latestTask = currentProject && currentTask 
-  ? currentProject.tasks.taskList.find(task => task.name === currentTask.name)
-  : null;
-*/
-  
   return (
     <Modal
       open={isShow}
@@ -58,14 +52,11 @@ const TaskDetail = ({
         </div>
         <h2 className='task-detail__title'>
           {latestTask && latestTask.name} 
-          {/* {currentTask && currentTask.name} */}
         </h2>
         <AddDescriptionForm 
           projectName={projectName} 
-          //updatedTask={latestTask}
           currentTask={currentTask}
           dispatchAction={dispatchActionNew}
-          //action={addingDescriptionToTask}
           projects={projects}
           addDescriptionToDB={addDescriptionToDB}
           projectId={projectId}
@@ -74,24 +65,19 @@ const TaskDetail = ({
         />
         {
           latestTask && latestTask.description &&
-          //currentTask && currentTask.description &&
           <h3 className='task-detail__subtitle'>Description of task</h3>
         }
         <div className='task-detail__description'>
           {latestTask && latestTask.description} 
-          {/* {currentTask && currentTask.description} */}
         </div>
         <LinearProgress variant='determinate' value={progressBarLength}/>
         <div className='task-detail__percent'>{progressBarLength}%</div>
         <AddSubTaskForm 
           projects={projects}
-          //currentTask={latestTask} 
           latestTask={latestTask}
-          //currentTask={currentTask}
           calculateProgressBarLength={calculateProgressBarLength}
           projectName={projectName}
           dispatchAction={dispatchActionNew}
-          //action={addingSubTask}
           updateTasksArray={updateTasksArray}
           dispatchActionAddSubTaskToTask={dispatchActionAddSubTaskToTask}
           projectId={projectId}
@@ -100,8 +86,6 @@ const TaskDetail = ({
             projects={projects}
             projectName={projectName}
             latestTask={latestTask}
-            //currentTask={latestTask} 
-            //currentTask={currentTask}
             calculateProgressBarLength={calculateProgressBarLength}
             updateTasksArray={updateTasksArray}
             dispatchActionChangeStatusSubTask={dispatchActionChangeStatusSubTask}
