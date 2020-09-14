@@ -3,12 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const AddDescriptionForm = ({
-  currentTask,
-  projects, 
-  addDescriptionToDB,
-  updateTasksArray,
-  dispatchActionAddDescriptionToTask,
-  projectId
+  latestTask,
+  dispatchActionAddDescriptionToTask
 }) => {
   const [description, setDescription] = useState('');
 
@@ -22,7 +18,7 @@ const AddDescriptionForm = ({
       return;
     }
     event.preventDefault();
-    dispatchActionAddDescriptionToTask(currentTask.taskId, description);
+    dispatchActionAddDescriptionToTask(latestTask.taskId, description);
     setDescription('');
   };
 

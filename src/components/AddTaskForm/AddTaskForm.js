@@ -5,11 +5,9 @@ import {checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddTaskForm = ({
   user,
-  projects,
   projectId,
   projectName,
   statusTask,
-  updateTasksArray,
   dispatchActionAddTask,
   tasks
 }) => {

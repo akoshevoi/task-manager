@@ -8,7 +8,6 @@ import AddDescriptionForm from '../../components/AddDescriptionForm';
 
 const TaskDetail = ({
   tasks,
-  currentProject,
   currentTask, 
   isShow, 
   projectName,
@@ -61,7 +60,7 @@ const TaskDetail = ({
         </h2>
         <AddDescriptionForm 
           projectName={projectName} 
-          currentTask={currentTask}
+          latestTask={latestTask}
           dispatchAction={dispatchActionNew}
           projects={projects}
           addDescriptionToDB={addDescriptionToDB}

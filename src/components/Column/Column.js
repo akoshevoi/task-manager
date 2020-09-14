@@ -5,7 +5,6 @@ import TaskName from '../TaskName';
 const Column = ({
   statusTask, 
   projectName, 
-  currentProject, 
   projectId,
   dispatchActionChangeStatusTask,
   openModal,

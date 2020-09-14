@@ -4,12 +4,8 @@ import Button from '@material-ui/core/Button';
 import {checkRepeatingProjectName} from '../../utils/helpers';
 
 const AddSubTaskForm = ({
-  updateTasksArray,
-  calculateProgressBarLength,
   latestTask,
-  projects,
   dispatchActionAddSubTaskToTask,
-  projectId
 }) => {  
   const [subTaskName, setSubTaskName] = useState('');
 
