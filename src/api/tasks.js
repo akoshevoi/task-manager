@@ -17,9 +17,6 @@ export async function addTaskToDataBase(userId, projectId, projectName, taskName
     await taskRef.doc(taskItem.id).set({
       taskId: taskItem.id
     }, {merge: true}); 
-    const taskItemSnap = db.collection('tasks').doc(taskItem.id);
-    const taskItemDoc = await taskItemSnap.get();
-    return taskItemDoc.data();
   } catch (error) {
     console.log(error);
   }

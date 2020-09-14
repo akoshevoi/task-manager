@@ -35,7 +35,6 @@ const ProjectsBoard = () => {
         />
       </div>
       <div className='projects-board__content'>
-
         {projects && projects.map(project => (
           <ProjectCard 
             key={project.projectId} 
@@ -43,7 +42,6 @@ const ProjectsBoard = () => {
             project={project}
           />
         ))} 
-
       </div>
     </div>
   );

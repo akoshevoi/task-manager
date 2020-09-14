@@ -39,5 +39,4 @@ export function* changeSubTaskStatus({payload}) {
   });
 
   yield put(settingTaskToStore(newTaskArray));
-  
 }

@@ -11,15 +11,17 @@ import {
   SET_PROJECT_ID_WHEN_REFRESH_PAGE
 } from '../types/types';
 
-import {addProject} from './addingProject';
-import {addTask} from './addingTask';
-import {changeStatusTask} from './changingTaskStatus';
-import {addDescriptionToTask} from './addingDescriptionTask';
-import {addSubTask} from './addingSubTask';
-import {changeSubTaskStatus} from './changingSubTaskStatus';
-import {fetchProjects} from './fetchingProjects';
-import {fetchTasks} from './fetchingTasks';
-import {setProjectIdWhenRefreshPage} from './setttingProjectIdWhenRefreshPage';
+import {addProject} from './projects'
+import {addTask} from './tasks';
+import {changeStatusTask} from './tasks';
+import {addDescriptionToTask} from './tasks';
+import {addSubTask} from './tasks';
+import {changeSubTaskStatus} from './tasks';
+import {fetchProjects} from './projects';
+//import {fetchTasks} from './fetchingTasks';
+import {fetchTasks} from './tasks';
+//import {setProjectIdWhenRefreshPage} from './setttingProjectIdWhenRefreshPage';
+import {setProjectIdWhenRefreshPage} from './projects';
 
 export function* sagaWatcher() {
   yield takeEvery(FETCH_PROJECTS_ARRAY_FROM_DB, fetchProjects);

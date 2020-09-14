@@ -3,7 +3,10 @@ import SignUpForm from '../../components/SignUpForm';
 import {createUserWithEmailAndPassword} from '../../api/auth';
 import {saveUserById} from '../../api/users';
 import {useDispatch} from 'react-redux';
-import {authenticationUser} from '../../redux/actions/user';
+import {
+  signUpUser
+  //authenticationUser
+} from '../../redux/actions/user';
 import {useHistory} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
@@ -92,12 +95,15 @@ const SignUp = () => {
 
       createUserWithEmailAndPassword(values.email, values.password)
         .then(authUser => {
+          dispatch(signUpUser(authUser.uid, values.name, values.email))
+            /*
           saveUserById(authUser.uid, {
             uid: authUser.uid,
             name: values.name,
             email: values.email
           })
           dispatch(authenticationUser(authUser));
+          */
           history.push(ROUTES.PROJECTS_BOARD);
         })
         .catch(error => {

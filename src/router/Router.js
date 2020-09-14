@@ -14,7 +14,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <AuthUserListener />
-      <DataFetcher />
+      <DataFetcher /> 
       <Loader isOpen={isLoading} />
       <Switch>
         <Route exact path={ROUTES.AUTHENTICATION} component={AuthenticationPage} />
