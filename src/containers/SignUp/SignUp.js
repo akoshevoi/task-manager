@@ -95,7 +95,7 @@ const SignUp = () => {
 
       createUserWithEmailAndPassword(values.email, values.password)
         .then(authUser => {
-          dispatch(signUpUser(authUser.uid, values.name, values.email))
+          dispatch(signUpUser(authUser.uid, values.name, values.email));
             /*
           saveUserById(authUser.uid, {
             uid: authUser.uid,
@@ -104,7 +104,7 @@ const SignUp = () => {
           })
           dispatch(authenticationUser(authUser));
           */
-          history.push(ROUTES.PROJECTS_BOARD);
+         history.push(ROUTES.PROJECTS_BOARD);
         })
         .catch(error => {
           setHelperTexts({
@@ -112,6 +112,7 @@ const SignUp = () => {
             formSubmit: error.message
           });
         })
+        
       setValues({
         name: '',
         email: '',

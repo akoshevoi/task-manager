@@ -1,9 +1,9 @@
 import {firebaseApp} from '../firebaseConfig';
 const db = firebaseApp.firestore();
 
-export const saveUserById = (id, data) => {
+export const saveUserById = async (id, data) => {
   const doc = db.collection('users').doc(id);
-  doc.set(data);
+  await doc.set(data);
 }
 
 export const getAuthUserData = async (id) => {

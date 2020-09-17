@@ -1,5 +1,6 @@
 import {takeEvery} from 'redux-saga/effects';
 import {
+  SIGN_UP_USER,
   FETCH_PROJECTS_ARRAY_FROM_DB, 
   ADD_PROJECT,
   FETCH_TASKS_FROM_DATA_BASE,
@@ -11,6 +12,7 @@ import {
   SET_PROJECT_ID_WHEN_REFRESH_PAGE
 } from '../types/types';
 
+import {addUser} from './users';
 import {addProject} from './projects'
 import {addTask} from './tasks';
 import {changeStatusTask} from './tasks';
@@ -24,6 +26,7 @@ import {fetchTasks} from './tasks';
 import {setProjectIdWhenRefreshPage} from './projects';
 
 export function* sagaWatcher() {
+  yield takeEvery(SIGN_UP_USER, addUser);
   yield takeEvery(FETCH_PROJECTS_ARRAY_FROM_DB, fetchProjects);
   yield takeEvery(ADD_PROJECT, addProject);
   yield takeEvery(FETCH_TASKS_FROM_DATA_BASE, fetchTasks);
